@@ -1,0 +1,409 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   HEARTLAND GOTHIC — WPA / national-park silkscreen poster
+   data-theme='gothic'
+   Tall condensed gothic heads, flat bold color panels, chunky stripe accents,
+   square hard-shadow buttons. Loaded UNLAYERED after Tailwind, so every rule
+   here wins over the utility classes on the base markup.
+   All color comes from themed tokens — no hardcoded hex.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Crisp flat ground: kill the letterpress paper grain ─────────────────── */
+[data-theme='gothic'] body {
+  background-image: none;
+}
+
+/* ── Big display heads: condensed, uppercase, heavy poster lettering ─────── */
+[data-theme='gothic'] .hero-title,
+[data-theme='gothic'] .section-title,
+[data-theme='gothic'] .involve-title {
+  text-transform: uppercase;
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+}
+
+[data-theme='gothic'] .hero-title {
+  font-size: 3.25rem;
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .hero-title {
+    font-size: 4.75rem;
+  }
+}
+@media (min-width: 1024px) {
+  [data-theme='gothic'] .hero-title {
+    font-size: 6rem;
+  }
+}
+
+[data-theme='gothic'] .section-title,
+[data-theme='gothic'] .involve-title {
+  font-size: 2.5rem;
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .section-title,
+  [data-theme='gothic'] .involve-title {
+    font-size: 3.25rem;
+  }
+}
+
+/* Card heads — uppercase + heavier, still legible at small sizes */
+[data-theme='gothic'] .value-title,
+[data-theme='gothic'] .event-title,
+[data-theme='gothic'] .involve-card-title {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  line-height: 1;
+}
+
+/* ═══ HERO: full-bleed dark POSTER PANEL with flag-stripe accents ═════════ */
+[data-theme='gothic'] .hero {
+  background-color: var(--color-navy);
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .hero {
+    padding-top: 5.5rem;
+    padding-bottom: 5.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  [data-theme='gothic'] .hero {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+
+/* Bold stacked flag stripes across the top of the poster */
+[data-theme='gothic'] .hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 14px;
+  background: var(--color-brick);
+}
+[data-theme='gothic'] .hero::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background: var(--color-gold);
+}
+
+/* Drop the dainty double frame — this is a printed panel now */
+[data-theme='gothic'] .hero-frame {
+  border: none;
+  padding: 0;
+  position: relative;
+}
+[data-theme='gothic'] .hero-frame-inset {
+  display: none;
+}
+
+/* A second flag-stripe accent sitting under the title block */
+[data-theme='gothic'] .hero-frame > .relative::after {
+  content: '';
+  display: block;
+  width: 96px;
+  height: 6px;
+  margin: 2rem auto 0;
+  background: var(--color-gold);
+}
+
+[data-theme='gothic'] .hero-eyebrow {
+  color: var(--color-gold);
+  letter-spacing: 0.32em;
+  font-weight: 700;
+}
+[data-theme='gothic'] .hero-eyebrow .text-gold {
+  color: var(--color-gold);
+}
+
+[data-theme='gothic'] .hero-title {
+  color: var(--color-cream);
+  margin-top: 1.25rem;
+}
+
+[data-theme='gothic'] .hero-tagline {
+  color: var(--color-cream);
+  opacity: 0.82;
+  font-weight: 500;
+}
+
+/* ═══ DIVIDERS: chunky single stripe, no star ════════════════════════════ */
+[data-theme='gothic'] .section-rule,
+[data-theme='gothic'] .involve-rule {
+  position: relative;
+  min-height: 5px;
+  margin-top: 1.5rem;
+}
+/* hide the thin spans + the inline star svg */
+[data-theme='gothic'] .section-rule > span,
+[data-theme='gothic'] .involve-rule > span,
+[data-theme='gothic'] .section-rule > svg,
+[data-theme='gothic'] .involve-rule > svg {
+  display: none;
+}
+[data-theme='gothic'] .section-rule::before {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 5px;
+  background: var(--color-brick);
+}
+[data-theme='gothic'] .involve-rule::before {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 5px;
+  background: var(--color-gold);
+}
+/* keep the bar aligned with the heading's alignment */
+[data-theme='gothic'] .section-heading.text-left .section-rule {
+  justify-content: flex-start;
+}
+
+[data-theme='gothic'] .section-eyebrow,
+[data-theme='gothic'] .involve-eyebrow {
+  font-weight: 700;
+  letter-spacing: 0.26em;
+}
+
+/* ═══ BUTTONS: square, chunky, hard poster shadow ════════════════════════ */
+[data-theme='gothic'] .btn {
+  border-radius: 0;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 0.85rem 1.6rem;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background-color 160ms ease,
+    color 160ms ease;
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .btn {
+    padding: 0.95rem 1.9rem;
+  }
+}
+
+/* Solid navy on a light ground — hard shadow in deep navy */
+[data-theme='gothic'] .btn--solid {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  box-shadow: 5px 5px 0 0 var(--color-navy-deep);
+}
+[data-theme='gothic'] .btn--solid:hover {
+  background-color: var(--color-navy-deep);
+  color: var(--color-cream);
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 0 var(--color-navy-deep);
+}
+
+/* Ghost becomes a thick-bordered poster outline */
+[data-theme='gothic'] .btn--ghost {
+  background-color: transparent;
+  color: var(--color-navy);
+  border: 3px solid var(--color-navy);
+  box-shadow: 5px 5px 0 0 var(--color-brick);
+}
+[data-theme='gothic'] .btn--ghost:hover {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 0 var(--color-brick);
+}
+
+/* Accent brick (used on dark involve band) — hard gold shadow for pop */
+[data-theme='gothic'] .btn--accent {
+  background-color: var(--color-brick);
+  color: var(--color-cream);
+  box-shadow: 4px 4px 0 0 var(--color-gold);
+}
+[data-theme='gothic'] .btn--accent:hover {
+  background-color: var(--color-brick-strong);
+  color: var(--color-cream);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 var(--color-gold);
+}
+
+/* Hero ghost button sits on the dark panel — flip it light */
+[data-theme='gothic'] .hero-actions .btn--ghost {
+  color: var(--color-cream);
+  border-color: var(--color-cream);
+  box-shadow: 5px 5px 0 0 var(--color-brick);
+}
+[data-theme='gothic'] .hero-actions .btn--ghost:hover {
+  background-color: var(--color-cream);
+  color: var(--color-navy);
+}
+[data-theme='gothic'] .hero-actions .btn--solid {
+  background-color: var(--color-gold);
+  color: var(--color-navy);
+  box-shadow: 5px 5px 0 0 var(--color-brick);
+}
+[data-theme='gothic'] .hero-actions .btn--solid:hover {
+  background-color: var(--color-cream);
+  color: var(--color-navy);
+}
+
+/* ═══ MISSION: flat navy color PANELS ════════════════════════════════════ */
+[data-theme='gothic'] .section-intro {
+  font-weight: 500;
+}
+
+[data-theme='gothic'] .value-card {
+  border-radius: 0;
+  border: none;
+  background-color: var(--color-navy);
+  padding: 1.75rem;
+  box-shadow: 5px 5px 0 0 var(--color-navy-deep);
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease;
+}
+[data-theme='gothic'] .value-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 0 var(--color-gold);
+}
+[data-theme='gothic'] .value-title {
+  color: var(--color-cream);
+}
+[data-theme='gothic'] .value-body {
+  color: var(--color-cream);
+  opacity: 0.78;
+}
+[data-theme='gothic'] .value-icon,
+[data-theme='gothic'] .value-card .value-icon {
+  color: var(--color-gold);
+}
+
+/* ═══ EVENTS: ochre/wheat band, thick brick left-accent cards ════════════ */
+[data-theme='gothic'] .events {
+  background-color: var(--color-gold);
+}
+/* keep dark text legible on the warm wheat band */
+[data-theme='gothic'] .events .section-eyebrow {
+  color: var(--color-navy-deep);
+}
+[data-theme='gothic'] .events .section-title {
+  color: var(--color-navy-deep);
+}
+[data-theme='gothic'] .events .section-rule::before {
+  background: var(--color-brick);
+}
+
+[data-theme='gothic'] .event-card {
+  border-radius: 0;
+  border: none;
+  border-left: 8px solid var(--color-brick);
+  background-color: var(--color-cream);
+  box-shadow: 5px 5px 0 0 var(--color-navy);
+}
+[data-theme='gothic'] .event-date {
+  border-radius: 0;
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+}
+[data-theme='gothic'] .event-date-mon {
+  color: var(--color-gold);
+  letter-spacing: 0.2em;
+}
+[data-theme='gothic'] .event-date-day {
+  font-weight: 800;
+  color: var(--color-cream);
+}
+[data-theme='gothic'] .event-title {
+  color: var(--color-navy);
+}
+[data-theme='gothic'] .event-meta {
+  color: var(--color-brick-strong);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ═══ GET INVOLVED: dark band, light WHEAT panels with dark text ═════════ */
+[data-theme='gothic'] .involve-eyebrow {
+  color: var(--color-gold);
+}
+[data-theme='gothic'] .involve-title {
+  color: var(--color-cream);
+}
+[data-theme='gothic'] .involve-intro {
+  color: var(--color-cream);
+  opacity: 0.82;
+  font-weight: 500;
+}
+
+[data-theme='gothic'] .involve-card {
+  border-radius: 0;
+  border: none;
+  background-color: var(--color-cream);
+  padding: 1.75rem;
+  box-shadow: 6px 6px 0 0 var(--color-brick);
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease;
+}
+[data-theme='gothic'] .involve-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 9px 9px 0 0 var(--color-gold);
+}
+[data-theme='gothic'] .involve-card-title {
+  color: var(--color-navy);
+}
+[data-theme='gothic'] .involve-body {
+  color: var(--color-ink);
+  opacity: 0.85;
+}
+
+/* ═══ NEWSLETTER: squared inputs, poster-weight heading ══════════════════ */
+[data-theme='gothic'] .newsletter .section-rule::before {
+  background: var(--color-brick);
+}
+[data-theme='gothic'] .newsletter input {
+  border-radius: 0;
+  border: 2px solid var(--color-navy);
+  background-color: var(--color-cream);
+}
+[data-theme='gothic'] .newsletter input:focus {
+  border-color: var(--color-brick);
+}
+/* the newsletter submit button (not a .btn) — square it + hard shadow */
+[data-theme='gothic'] .newsletter form button[type='submit'] {
+  border-radius: 0;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  box-shadow: 5px 5px 0 0 var(--color-navy-deep);
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background-color 160ms ease;
+}
+[data-theme='gothic'] .newsletter form button[type='submit']:hover {
+  background-color: var(--color-navy-deep);
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 0 var(--color-navy-deep);
+}
+
+/* ═══ HEADER: flat poster bar with a bottom flag stripe ══════════════════ */
+[data-theme='gothic'] .site-header {
+  background-color: var(--color-cream);
+  border-bottom: 4px solid var(--color-navy);
+}
+
+/* ═══ FOOTER: top flag stripe to bookend the poster ══════════════════════ */
+[data-theme='gothic'] .site-footer {
+  border-top: 6px solid var(--color-gold);
+}

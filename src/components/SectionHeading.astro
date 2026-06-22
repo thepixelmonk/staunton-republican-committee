@@ -11,16 +11,16 @@ const { title, eyebrow, align = 'center', class: className = '' } = Astro.props;
 const isCenter = align === 'center';
 ---
 
-<div class={`${isCenter ? 'text-center' : 'text-left'} ${className}`}>
+<div class={`section-heading ${isCenter ? 'text-center' : 'text-left'} ${className}`}>
   {
     eyebrow && (
-      <p class="mb-3 font-body text-xs font-semibold uppercase tracking-[0.18em] text-brick-strong">
+      <p class="section-eyebrow mb-3 font-body text-xs font-semibold uppercase tracking-[0.18em] text-brick-strong">
         {eyebrow}
       </p>
     )
   }
-  <h2 class="font-display text-3xl font-bold text-navy sm:text-4xl">{title}</h2>
-  <div class={`mt-5 flex items-center gap-3 ${isCenter ? 'justify-center' : 'justify-start'}`}>
+  <h2 class="section-title font-display text-3xl font-bold text-navy sm:text-4xl">{title}</h2>
+  <div class={`section-rule mt-5 flex items-center gap-3 ${isCenter ? 'justify-center' : 'justify-start'}`}>
     <span class="h-px w-10 bg-gold"></span>
     <Star size={14} class="text-gold" />
     <span class="h-px w-10 bg-gold"></span>

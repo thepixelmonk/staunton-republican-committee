@@ -4,29 +4,29 @@ import Star from './Star.astro';
 import { site } from '../data/site';
 ---
 
-<section id="hero" class="bg-cream py-20 sm:py-28 lg:py-36">
-  <div class="mx-auto max-w-3xl px-6">
-    <div class="relative border border-navy/25 px-6 py-12 text-center sm:px-12 sm:py-16">
-      <div class="pointer-events-none absolute inset-[6px] border border-gold/40"></div>
+<section id="hero" class="hero bg-cream py-20 sm:py-28 lg:py-36">
+  <div class="hero-inner mx-auto max-w-3xl px-6">
+    <div class="hero-frame relative border border-navy/25 px-6 py-12 text-center sm:px-12 sm:py-16">
+      <div class="hero-frame-inset pointer-events-none absolute inset-[6px] border border-gold/40"></div>
 
       <div class="relative">
         <p
-          class="flex items-center justify-center gap-3 font-body text-xs font-semibold uppercase tracking-[0.2em] text-brick-strong"
+          class="hero-eyebrow flex items-center justify-center gap-3 font-body text-xs font-semibold uppercase tracking-[0.2em] text-brick-strong"
         >
           <Star size={14} class="text-gold" />{site.city}<Star size={14} class="text-gold" />
         </p>
 
         <h1
-          class="mt-6 font-display text-4xl font-bold leading-[1.05] text-navy sm:text-5xl lg:text-6xl"
+          class="hero-title mt-6 font-display text-4xl font-bold leading-[1.05] text-navy sm:text-5xl lg:text-6xl"
         >
           {site.name}
         </h1>
 
-        <p class="mx-auto mt-5 max-w-xl font-body text-lg leading-relaxed text-ink/80">
+        <p class="hero-tagline mx-auto mt-5 max-w-xl font-body text-lg leading-relaxed text-ink/80">
           {site.tagline}
         </p>
 
-        <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <div class="hero-actions mt-8 flex flex-wrap items-center justify-center gap-4">
           <Button href={site.primaryCta.href} variant="solid" size="md">
             {site.primaryCta.label}
           </Button>

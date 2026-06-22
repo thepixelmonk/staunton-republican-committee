@@ -10,6 +10,10 @@ import '@fontsource-variable/hanken-grotesk';
 import '@fontsource-variable/fraunces';
 import '@fontsource-variable/inter';
 import '../styles/global.css';
+// Structural overrides for the alternate design directions (loaded after
+// global.css, unlayered, so they win over Tailwind utilities).
+import '../styles/themes/gothic.css';
+import '../styles/themes/capitol.css';
 
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';

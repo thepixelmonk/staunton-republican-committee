@@ -4,21 +4,21 @@ import Star from './Star.astro';
 import { site } from '../data/site';
 ---
 
-<section id="about" class="py-20 sm:py-28">
+<section id="about" class="mission py-20 sm:py-28">
   <div class="mx-auto max-w-6xl px-6">
     <SectionHeading eyebrow="Who We Are" title="Standing Up for Staunton" />
 
-    <p class="mx-auto mt-6 max-w-2xl text-center font-body text-lg leading-relaxed text-ink/80">
+    <p class="section-intro mx-auto mt-6 max-w-2xl text-center font-body text-lg leading-relaxed text-ink/80">
       {site.description}
     </p>
 
-    <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="value-grid mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {
         site.values.map((value) => (
-          <div class="rounded-[2px] border border-navy/10 bg-cream p-6">
-            <Star size={20} class="text-gold" />
-            <h3 class="mt-4 font-display text-xl font-semibold text-navy">{value.title}</h3>
-            <p class="mt-2 font-body text-sm leading-relaxed text-ink/75">{value.body}</p>
+          <div class="value-card rounded-[2px] border border-navy/10 bg-cream p-6">
+            <Star size={20} class="value-icon text-gold" />
+            <h3 class="value-title mt-4 font-display text-xl font-semibold text-navy">{value.title}</h3>
+            <p class="value-body mt-2 font-body text-sm leading-relaxed text-ink/75">{value.body}</p>
           </div>
         ))
       }

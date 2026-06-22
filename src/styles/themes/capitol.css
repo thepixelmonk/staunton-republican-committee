@@ -1,0 +1,517 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   CAPITOL CREAM — data-theme='capitol'
+   A quiet, premium, institutional document: university-press / fine civic
+   stationery. Fraunces (serif) + Inter. Abundant whitespace, LEFT-ALIGNED
+   editorial composition, thin brass rules, almost no ornament. The most
+   minimal of the three directions.
+
+   Every selector is prefixed with [data-theme='capitol']; rules are unlayered
+   so they win over Tailwind utilities. Palette/fonts come from tokens.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. REMOVE TEXTURE ─────────────────────────────────────────────────────
+   Clean stock, no letterpress grain. Crisp page color. */
+[data-theme='capitol'] body {
+  background-image: none;
+  letter-spacing: 0.002em;
+}
+
+[data-theme='capitol'] ::selection {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+}
+
+/* Refined serif headings: title-case authority, comfortable leading. */
+[data-theme='capitol'] h1,
+[data-theme='capitol'] h2,
+[data-theme='capitol'] h3,
+[data-theme='capitol'] h4 {
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+/* ── SITE HEADER ───────────────────────────────────────────────────────────
+   Quieter, hairline rule, a touch more height — masthead-like. */
+[data-theme='capitol'] .site-header {
+  background-color: color-mix(in srgb, var(--color-cream) 88%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 12%, transparent);
+}
+
+/* ── 2 + 4 + 5. HERO — LEFT-ALIGNED EDITORIAL MASTHEAD ─────────────────────
+   Strip the framed box, align everything to a left column, let the serif
+   display set the tone, and open up the whitespace. */
+[data-theme='capitol'] .hero {
+  background-color: var(--color-cream);
+  padding-top: 5.5rem;
+  padding-bottom: 5.5rem;
+}
+
+@media (min-width: 640px) {
+  [data-theme='capitol'] .hero {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  [data-theme='capitol'] .hero {
+    padding-top: 9rem;
+    padding-bottom: 9rem;
+  }
+}
+
+/* Left-aligned column instead of centered. */
+[data-theme='capitol'] .hero-inner {
+  margin-left: 0;
+  margin-right: auto;
+  max-width: 52rem;
+  text-align: left;
+}
+
+/* Remove the framed box entirely — no border, no padding, left-aligned. */
+[data-theme='capitol'] .hero-frame {
+  border: none;
+  padding: 0;
+  text-align: left;
+}
+
+/* Hide the inset gold rule (the 2nd frame). */
+[data-theme='capitol'] .hero-frame-inset {
+  display: none;
+}
+
+/* Eyebrow: quiet small-caps label, left-aligned, no flanking stars,
+   with a short brass underline. */
+[data-theme='capitol'] .hero-eyebrow {
+  justify-content: flex-start;
+  gap: 0;
+  color: var(--color-brick-strong);
+  font-size: 0.72rem;
+  letter-spacing: 0.26em;
+  padding-bottom: 0.9rem;
+  position: relative;
+}
+
+[data-theme='capitol'] .hero-eyebrow svg {
+  display: none;
+}
+
+[data-theme='capitol'] .hero-eyebrow::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 3rem;
+  height: 2px;
+  background-color: var(--color-gold);
+}
+
+/* Display serif gets room to breathe; title-case, not uppercase. */
+[data-theme='capitol'] .hero-title {
+  margin-top: 1.6rem;
+  font-weight: 600;
+  font-size: clamp(2.6rem, 6vw, 4.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+  text-transform: none;
+  color: var(--color-navy);
+  max-width: 16ch;
+}
+
+/* Lead/tagline: left-aligned, generous, unhurried. */
+[data-theme='capitol'] .hero-tagline {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 1.6rem;
+  max-width: 40ch;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+
+/* Actions: left-aligned, comfortable spacing. */
+[data-theme='capitol'] .hero-actions {
+  justify-content: flex-start;
+  margin-top: 2.6rem;
+  gap: 1.25rem;
+}
+
+/* ── 3 + 4 + 5. SECTION HEADING — LEFT-ALIGNED, SINGLE BRASS RULE ──────────
+   Replace star dividers with a single thin brass line. */
+[data-theme='capitol'] .section-heading {
+  text-align: left;
+  max-width: 52rem;
+}
+
+[data-theme='capitol'] .section-eyebrow {
+  color: var(--color-brick-strong);
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  margin-bottom: 0.9rem;
+}
+
+[data-theme='capitol'] .section-title {
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  text-transform: none;
+  color: var(--color-navy);
+}
+
+/* Section rule: one hairline brass line, left-aligned. Hide the star and the
+   second hairline span; keep the first span as the single rule. */
+[data-theme='capitol'] .section-rule {
+  justify-content: flex-start;
+  gap: 0;
+  margin-top: 1.6rem;
+}
+
+[data-theme='capitol'] .section-rule svg {
+  display: none;
+}
+
+[data-theme='capitol'] .section-rule > span {
+  height: 2px;
+  width: 3.5rem;
+  background-color: var(--color-gold);
+}
+
+[data-theme='capitol'] .section-rule > span ~ span {
+  display: none;
+}
+
+/* ── MISSION ───────────────────────────────────────────────────────────────
+   Airy padding, left-aligned lead, lots of room before the cards. */
+[data-theme='capitol'] .mission {
+  background-color: var(--color-cream);
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 640px) {
+  [data-theme='capitol'] .mission {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+[data-theme='capitol'] .section-intro {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 1.75rem;
+  max-width: 46ch;
+  text-align: left;
+  font-size: 1.18rem;
+  line-height: 1.75;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+
+/* ── 7. VALUE CARDS — MINIMAL, BRASS TOP RULE ─────────────────────────────
+   No border, no fill. A single thin brass top rule + generous padding;
+   whitespace does the work. */
+[data-theme='capitol'] .value-grid {
+  margin-top: 4.5rem;
+  gap: 2.5rem 3rem;
+}
+
+[data-theme='capitol'] .value-card {
+  border: none;
+  border-top: 2px solid var(--color-gold);
+  background-color: transparent;
+  border-radius: 0;
+  padding: 1.75rem 0 0 0;
+}
+
+/* Drop the gold star icon — minimal direction, no ornament. */
+[data-theme='capitol'] .value-icon {
+  display: none;
+}
+
+[data-theme='capitol'] .value-title {
+  margin-top: 0;
+  font-weight: 600;
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+  color: var(--color-navy);
+}
+
+[data-theme='capitol'] .value-body {
+  margin-top: 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+}
+
+/* ── EVENTS — LIGHTER, HAIRLINE DIVIDERS, OUTLINE DATE BLOCK ────────────────
+   The band stays subtly deeper, but cards lose their heavy box: a hairline
+   bottom divider, and the date becomes an outline block (not filled navy). */
+[data-theme='capitol'] .events {
+  background-color: var(--color-cream-deep);
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 640px) {
+  [data-theme='capitol'] .events {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+[data-theme='capitol'] .event-list {
+  margin-left: 0;
+  margin-top: 3.5rem;
+  max-width: 52rem;
+  gap: 0;
+}
+
+[data-theme='capitol'] .event-card {
+  border: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 14%, transparent);
+  background-color: transparent;
+  border-radius: 0;
+  padding: 2rem 0;
+  gap: 1.75rem;
+  align-items: flex-start;
+}
+
+[data-theme='capitol'] .event-list > .event-card:first-child {
+  border-top: 1px solid color-mix(in srgb, var(--color-navy) 14%, transparent);
+}
+
+/* Outline date block: transparent bg, thin navy border, navy text. */
+[data-theme='capitol'] .event-date {
+  background-color: transparent;
+  border: 1px solid color-mix(in srgb, var(--color-navy) 35%, transparent);
+  border-radius: 0;
+  color: var(--color-navy);
+  width: 4.75rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+/* Recolor children from gold/cream to brass/navy for the light block. */
+[data-theme='capitol'] .event-date-mon {
+  color: var(--color-brick-strong);
+  letter-spacing: 0.18em;
+}
+
+[data-theme='capitol'] .event-date-day {
+  color: var(--color-navy);
+  font-weight: 600;
+}
+
+[data-theme='capitol'] .event-title {
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+  color: var(--color-navy);
+}
+
+[data-theme='capitol'] .event-meta {
+  margin-top: 0.4rem;
+  color: var(--color-brick-strong);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+[data-theme='capitol'] .event-body {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+}
+
+/* ── INVOLVE (DARK NAVY BAND) — AIRY, OUTLINE CARDS ────────────────────────
+   Light text on navy. Heading left-aligned, single brass rule, outline cards
+   with no fill. */
+[data-theme='capitol'] .involve {
+  background-color: var(--color-navy);
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 640px) {
+  [data-theme='capitol'] .involve {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+[data-theme='capitol'] .involve-heading {
+  text-align: left;
+  max-width: 52rem;
+}
+
+[data-theme='capitol'] .involve-eyebrow {
+  color: var(--color-gold);
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  margin-bottom: 0.9rem;
+}
+
+[data-theme='capitol'] .involve-title {
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  text-transform: none;
+  color: var(--color-cream);
+}
+
+/* Involve rule: single hairline brass line, left-aligned; hide star + 2nd span. */
+[data-theme='capitol'] .involve-rule {
+  justify-content: flex-start;
+  gap: 0;
+  margin-top: 1.6rem;
+}
+
+[data-theme='capitol'] .involve-rule svg {
+  display: none;
+}
+
+[data-theme='capitol'] .involve-rule > span {
+  height: 2px;
+  width: 3.5rem;
+  background-color: var(--color-gold);
+}
+
+[data-theme='capitol'] .involve-rule > span ~ span {
+  display: none;
+}
+
+[data-theme='capitol'] .involve-intro {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 1.75rem;
+  max-width: 48ch;
+  text-align: left;
+  font-size: 1.18rem;
+  line-height: 1.75;
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+}
+
+[data-theme='capitol'] .involve-grid {
+  margin-top: 4.5rem;
+  gap: 2.5rem;
+}
+
+/* Thin cream outline, no fill, airy padding. */
+[data-theme='capitol'] .involve-card {
+  border: 1px solid color-mix(in srgb, var(--color-cream) 22%, transparent);
+  background-color: transparent;
+  border-radius: 0;
+  padding: 2.25rem;
+}
+
+[data-theme='capitol'] .involve-card-title {
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+  color: var(--color-cream);
+}
+
+[data-theme='capitol'] .involve-body {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-cream) 72%, transparent);
+}
+
+/* ── NEWSLETTER — LEFT-ALIGNED, AIRY, QUIET FORM ───────────────────────────
+   The heading inside this section is already overridden above (it uses
+   .section-heading). Re-align the intro lead and form to the left column. */
+[data-theme='capitol'] .newsletter {
+  background-color: var(--color-cream);
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 640px) {
+  [data-theme='capitol'] .newsletter {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+/* The lead paragraph + form wrapper are centered (mx-auto, text-center) in
+   markup — pull them to the left column for the editorial composition. */
+[data-theme='capitol'] .newsletter > div > p {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 48ch;
+  text-align: left;
+  font-size: 1.18rem;
+  line-height: 1.75;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+
+[data-theme='capitol'] .newsletter form {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 40rem;
+}
+
+/* Quiet inputs: hairline borders, generous padding, modest radius. */
+[data-theme='capitol'] .newsletter input {
+  border: 1px solid color-mix(in srgb, var(--color-navy) 28%, transparent);
+  border-radius: 2px;
+  background-color: var(--color-cream);
+  padding: 0.85rem 1rem;
+}
+
+[data-theme='capitol'] .newsletter input:focus {
+  border-color: var(--color-navy);
+}
+
+/* ── 6. BUTTONS — REFINED, NOT LOUD ────────────────────────────────────────
+   Comfortable padding + letter-spacing, modest radius, quiet hover. */
+[data-theme='capitol'] .btn {
+  border-radius: 2px;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+/* Solid stays navy, light text — slightly more padding for an unhurried feel. */
+[data-theme='capitol'] .btn--solid {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  padding: 0.8rem 1.6rem;
+}
+
+[data-theme='capitol'] .btn--solid:hover {
+  background-color: var(--color-navy-deep);
+}
+
+/* Ghost: thin 1px outline, quiet hover (no full-fill flip). */
+[data-theme='capitol'] .btn--ghost {
+  border: 1px solid color-mix(in srgb, var(--color-navy) 45%, transparent);
+  background-color: transparent;
+  color: var(--color-navy);
+  padding: 0.8rem 1.6rem;
+}
+
+[data-theme='capitol'] .btn--ghost:hover {
+  background-color: transparent;
+  border-color: var(--color-navy);
+  color: var(--color-navy-deep);
+}
+
+/* Accent (on dark band): keep brick but refined; light text for AA. */
+[data-theme='capitol'] .btn--accent {
+  background-color: var(--color-brick);
+  color: var(--color-cream);
+}
+
+[data-theme='capitol'] .btn--accent:hover {
+  background-color: var(--color-brick-strong);
+}
+
+/* ── FOOTER ────────────────────────────────────────────────────────────────
+   Stays a navy band with light text; soften the gold star to keep it quiet. */
+[data-theme='capitol'] .site-footer {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+}

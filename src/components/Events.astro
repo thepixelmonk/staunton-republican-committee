@@ -10,7 +10,7 @@ function fmtDate(iso: string) {
 }
 ---
 
-<section id="events" class="bg-cream-deep py-20 sm:py-28">
+<section id="events" class="events bg-cream-deep py-20 sm:py-28">
   <div class="mx-auto max-w-6xl px-6">
     <SectionHeading eyebrow="Mark Your Calendar" title="Upcoming Events" />
 
@@ -20,23 +20,23 @@ function fmtDate(iso: string) {
           New events are being planned — check back soon.
         </p>
       ) : (
-        <div class="mx-auto mt-12 flex max-w-3xl flex-col gap-5">
+        <div class="event-list mx-auto mt-12 flex max-w-3xl flex-col gap-5">
           {events.map((event) => {
             const { mon, day } = fmtDate(event.date);
             return (
-              <article class="flex items-stretch gap-5 rounded-[2px] border border-navy/10 bg-cream p-5 sm:p-6">
-                <div class="flex w-20 shrink-0 flex-col items-center justify-center rounded-[2px] bg-navy py-3 text-cream">
-                  <span class="font-body text-xs font-semibold uppercase tracking-[0.15em] text-gold">
+              <article class="event-card flex items-stretch gap-5 rounded-[2px] border border-navy/10 bg-cream p-5 sm:p-6">
+                <div class="event-date flex w-20 shrink-0 flex-col items-center justify-center rounded-[2px] bg-navy py-3 text-cream">
+                  <span class="event-date-mon font-body text-xs font-semibold uppercase tracking-[0.15em] text-gold">
                     {mon}
                   </span>
-                  <span class="font-display text-3xl font-bold leading-none">{day}</span>
+                  <span class="event-date-day font-display text-3xl font-bold leading-none">{day}</span>
                 </div>
                 <div>
-                  <h3 class="font-display text-xl font-semibold text-navy">{event.title}</h3>
-                  <p class="mt-1 font-body text-sm font-semibold text-brick-strong">
+                  <h3 class="event-title font-display text-xl font-semibold text-navy">{event.title}</h3>
+                  <p class="event-meta mt-1 font-body text-sm font-semibold text-brick-strong">
                     {event.time} &middot; {event.location}
                   </p>
-                  <p class="mt-2 font-body text-sm leading-relaxed text-ink/75">
+                  <p class="event-body mt-2 font-body text-sm leading-relaxed text-ink/75">
                     {event.description}
                   </p>
                   {event.href && (
