@@ -1,17 +1,35 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Mission from '../components/Mission.astro';
+import Events from '../components/Events.astro';
+import GetInvolved from '../components/GetInvolved.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Newsletter from '../components/Newsletter.svelte';
+import { site } from '../data/site';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <Hero />
+  <Mission />
+  <Events />
+  <GetInvolved />
+
+  <section id="contact" class="bg-cream py-20 sm:py-28">
+    <div class="mx-auto max-w-6xl px-6">
+      <SectionHeading eyebrow="Stay Connected" title="Join Our Newsletter" />
+      <p class="mx-auto mt-6 max-w-2xl text-center font-body text-lg leading-relaxed text-ink/80">
+        Get committee news, event invitations, and ways to help — straight to your inbox. Prefer to
+        reach us directly? Email
+        <a
+          href={`mailto:${site.contact.email}`}
+          class="font-semibold text-brick-strong underline underline-offset-4 hover:text-brick"
+          >{site.contact.email}</a
+        >.
+      </p>
+      <div class="mt-10">
+        <Newsletter client:visible />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,58 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { events } from '../data/events';
+
+const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+function fmtDate(iso: string) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return { mon: MONTHS[m - 1], day: String(d).padStart(2, '0') };
+}
+---
+
+<section id="events" class="bg-cream-deep py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-6">
+    <SectionHeading eyebrow="Mark Your Calendar" title="Upcoming Events" />
+
+    {
+      events.length === 0 ? (
+        <p class="mt-12 text-center font-body text-ink/70">
+          New events are being planned — check back soon.
+        </p>
+      ) : (
+        <div class="mx-auto mt-12 flex max-w-3xl flex-col gap-5">
+          {events.map((event) => {
+            const { mon, day } = fmtDate(event.date);
+            return (
+              <article class="flex items-stretch gap-5 rounded-[2px] border border-navy/10 bg-cream p-5 sm:p-6">
+                <div class="flex w-20 shrink-0 flex-col items-center justify-center rounded-[2px] bg-navy py-3 text-cream">
+                  <span class="font-body text-xs font-semibold uppercase tracking-[0.15em] text-gold">
+                    {mon}
+                  </span>
+                  <span class="font-display text-3xl font-bold leading-none">{day}</span>
+                </div>
+                <div>
+                  <h3 class="font-display text-xl font-semibold text-navy">{event.title}</h3>
+                  <p class="mt-1 font-body text-sm font-semibold text-brick-strong">
+                    {event.time} &middot; {event.location}
+                  </p>
+                  <p class="mt-2 font-body text-sm leading-relaxed text-ink/75">
+                    {event.description}
+                  </p>
+                  {event.href && (
+                    <a
+                      href={event.href}
+                      class="mt-2 inline-block font-body text-sm font-semibold text-navy underline underline-offset-4 hover:text-brick"
+                    >
+                      Details
+                    </a>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )
+    }
+  </div>
+</section>

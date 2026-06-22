@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Star from '../components/Star.astro';
+import { url } from '../data/site';
+---
+
+<BaseLayout title="Page Not Found" noindex>
+  <section class="mx-auto flex max-w-2xl flex-col items-center px-6 py-28 text-center sm:py-36">
+    <Star size={28} class="text-gold" />
+    <p class="mt-6 font-display text-6xl font-bold text-navy">404</p>
+    <h1 class="mt-2 font-display text-2xl font-semibold text-navy">This page has wandered off</h1>
+    <p class="mt-4 font-body text-base leading-relaxed text-ink/75">
+      The page you’re looking for doesn’t exist or may have moved. Let’s get you back home.
+    </p>
+    <div class="mt-8">
+      <Button href={url()} variant="solid" size="md">Return Home</Button>
+    </div>
+  </section>
+</BaseLayout>

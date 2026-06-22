@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "staunton-republican-committee",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -12,6 +12,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.0.0"
+    "@astrojs/svelte": "^9.0.0",
+    "@fontsource-variable/source-sans-3": "^5.2.9",
+    "@fontsource/zilla-slab": "^5.2.8",
+    "@tailwindcss/vite": "^4.3.1",
+    "astro": "^7.0.0",
+    "svelte": "^5.56.3",
+    "tailwindcss": "^4.3.1",
+    "typescript": "^6.0.3"
   }
 }
