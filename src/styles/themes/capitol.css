@@ -1,19 +1,26 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    CAPITOL CREAM — data-theme='capitol'
-   A quiet, premium, institutional document: university-press / fine civic
-   stationery. Fraunces (serif) + Inter. Abundant whitespace, LEFT-ALIGNED
-   editorial composition, thin brass rules, almost no ornament. The most
-   minimal of the three directions.
+   A quiet, premium, INSTITUTIONAL document: university-press / fine civic
+   stationery. Fraunces (expressive serif, optical-size + italic axes) + Inter.
+   Left-aligned editorial composition, abundant whitespace, hairline brass
+   rules. The most minimal of the three directions — restraint made luxurious.
+
+   SIGNATURE MOVE: an editorial numbering spine. Each major section carries a
+   large brass numeral (01–05) set in the left gutter, paired with a small-caps
+   eyebrow riding a hairline-with-center-tick rule. Four motifs, repeated with
+   discipline: (1) tick-rule, (2) brass numeral, (3) Fraunces italic lead,
+   (4) a hairline document edge down the content column.
 
    Every selector is prefixed with [data-theme='capitol']; rules are unlayered
    so they win over Tailwind utilities. Palette/fonts come from tokens.
-   ═══════════════════════════════════════════════════════════════════════════ */
+   ─────────────────────────────────────────────────────────────────────────── */
 
-/* ── 1. REMOVE TEXTURE ─────────────────────────────────────────────────────
-   Clean stock, no letterpress grain. Crisp page color. */
+/* ── 0. DOCUMENT FOUNDATION ─────────────────────────────────────────────────
+   Clean stock — no letterpress grain. A precise, slightly open page color. */
 [data-theme='capitol'] body {
   background-image: none;
-  letter-spacing: 0.002em;
+  letter-spacing: 0.001em;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
 }
 
 [data-theme='capitol'] ::selection {
@@ -21,150 +28,254 @@
   color: var(--color-cream);
 }
 
-/* Refined serif headings: title-case authority, comfortable leading. */
+/* Fraunces shines at high optical size for display; pull its serifs sharp. */
 [data-theme='capitol'] h1,
 [data-theme='capitol'] h2,
 [data-theme='capitol'] h3,
 [data-theme='capitol'] h4 {
-  letter-spacing: -0.01em;
+  font-variation-settings: 'opsz' 110, 'wght' 460, 'SOFT' 0, 'WONK' 0;
+  letter-spacing: -0.012em;
   text-transform: none;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ── SITE HEADER ───────────────────────────────────────────────────────────
-   Quieter, hairline rule, a touch more height — masthead-like. */
+/* A single reusable small-caps label treatment (motif: the document label). */
+[data-theme='capitol'] .hero-eyebrow,
+[data-theme='capitol'] .section-eyebrow,
+[data-theme='capitol'] .involve-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* ── 1. SITE HEADER — A QUIET MASTHEAD ─────────────────────────────────────
+   Thin hairline rule below; a faint brass tick centered on the baseline to
+   echo the document spine. Slightly translucent cream for a paper feel. */
 [data-theme='capitol'] .site-header {
-  background-color: color-mix(in srgb, var(--color-cream) 88%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 12%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 90%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 14%, transparent);
 }
 
-/* ── 2 + 4 + 5. HERO — LEFT-ALIGNED EDITORIAL MASTHEAD ─────────────────────
-   Strip the framed box, align everything to a left column, let the serif
-   display set the tone, and open up the whitespace. */
+/* Fraunces sets the masthead wordmark a touch wider than the base face. Let the
+   brand link shrink (min-width:0) so its truncating text never pushes the mobile
+   menu button past the viewport edge on the narrowest screens. */
+[data-theme='capitol'] .site-header a[aria-label] {
+  min-width: 0;
+}
+
+/* ── 2. THE NUMBERING SPINE ────────────────────────────────────────────────
+   A CSS counter increments down the page. Each section's eyebrow renders the
+   running numeral as a brass folio mark. Counter is reset on the body. */
+[data-theme='capitol'] body {
+  counter-reset: capitol-folio;
+}
+
+/* The section-heading / involve-heading carry the count; the eyebrow draws it.
+   We attach the numeral via the heading's ::before so it can sit in the gutter
+   on wide screens and inline on small ones. */
+[data-theme='capitol'] .section-heading,
+[data-theme='capitol'] .involve-heading {
+  counter-increment: capitol-folio;
+  position: relative;
+}
+
+/* ── 3. HERO — EDITORIAL MASTHEAD, LEFT-ANCHORED ───────────────────────────
+   Strip the framed box, set an asymmetric left column, let Fraunces command
+   the page. The hero opens the document, so it carries folio 01 explicitly. */
 [data-theme='capitol'] .hero {
   background-color: var(--color-cream);
-  padding-top: 5.5rem;
-  padding-bottom: 5.5rem;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  position: relative;
+  overflow: hidden;
 }
 
 @media (min-width: 640px) {
   [data-theme='capitol'] .hero {
-    padding-top: 7rem;
+    padding-top: 7.5rem;
     padding-bottom: 7rem;
   }
 }
 
 @media (min-width: 1024px) {
   [data-theme='capitol'] .hero {
-    padding-top: 9rem;
+    padding-top: 9.5rem;
     padding-bottom: 9rem;
   }
 }
 
-/* Left-aligned column instead of centered. */
+/* Left-aligned column. Slightly wider so the display type can run long. */
 [data-theme='capitol'] .hero-inner {
   margin-left: 0;
   margin-right: auto;
-  max-width: 52rem;
+  max-width: 54rem;
   text-align: left;
+  position: relative;
 }
 
-/* Remove the framed box entirely — no border, no padding, left-aligned. */
+/* Remove the framed box entirely. */
 [data-theme='capitol'] .hero-frame {
   border: none;
   padding: 0;
   text-align: left;
 }
 
-/* Hide the inset gold rule (the 2nd frame). */
 [data-theme='capitol'] .hero-frame-inset {
   display: none;
 }
 
-/* Eyebrow: quiet small-caps label, left-aligned, no flanking stars,
-   with a short brass underline. */
+/* Eyebrow: small-caps label on a hairline tick-rule (the recurring motif). */
 [data-theme='capitol'] .hero-eyebrow {
   justify-content: flex-start;
-  gap: 0;
-  color: var(--color-brick-strong);
-  font-size: 0.72rem;
-  letter-spacing: 0.26em;
-  padding-bottom: 0.9rem;
+  gap: 0.9rem;
+  color: var(--color-stone);
   position: relative;
+  padding-left: 0;
 }
 
 [data-theme='capitol'] .hero-eyebrow svg {
   display: none;
 }
 
+/* A folio "No. 01" prefix typeset in Fraunces italic before the city label. */
+[data-theme='capitol'] .hero-eyebrow::before {
+  content: 'No. 01';
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 30, 'wght' 500, 'ital' 1;
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  /* Pure brass on cream fails AA (~2.85:1) at this small folio size. Darken the
+     brass with ink so the "No. 01" reads as an aged-gold mark but clears AA. */
+  color: color-mix(in srgb, var(--color-gold) 52%, var(--color-ink));
+  text-transform: none;
+}
+
+/* A short brass tick after the label, completing the rule motif. */
 [data-theme='capitol'] .hero-eyebrow::after {
   content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 3rem;
-  height: 2px;
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 1px;
   background-color: var(--color-gold);
+  align-self: center;
 }
 
-/* Display serif gets room to breathe; title-case, not uppercase. */
+/* Display serif: generous, title-case, tight leading, long measure. */
 [data-theme='capitol'] .hero-title {
-  margin-top: 1.6rem;
-  font-weight: 600;
-  font-size: clamp(2.6rem, 6vw, 4.5rem);
-  line-height: 1.04;
-  letter-spacing: -0.018em;
+  margin-top: 1.75rem;
+  font-weight: 460;
+  font-variation-settings: 'opsz' 144, 'wght' 480, 'SOFT' 0;
+  font-size: clamp(2.7rem, 6.4vw, 4.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.022em;
   text-transform: none;
   color: var(--color-navy);
-  max-width: 16ch;
+  max-width: 15ch;
+  text-wrap: balance;
 }
 
-/* Lead/tagline: left-aligned, generous, unhurried. */
+/* Lead/tagline: a touch of Fraunces italic for editorial voice. */
 [data-theme='capitol'] .hero-tagline {
   margin-left: 0;
   margin-right: 0;
   margin-top: 1.6rem;
   max-width: 40ch;
-  font-size: 1.2rem;
-  line-height: 1.7;
-  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 36, 'wght' 380, 'ital' 1;
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.4vw, 1.45rem);
+  line-height: 1.55;
+  letter-spacing: 0;
+  color: color-mix(in srgb, var(--color-ink) 74%, transparent);
 }
 
-/* Actions: left-aligned, comfortable spacing. */
+/* Actions: left-aligned, unhurried. */
 [data-theme='capitol'] .hero-actions {
   justify-content: flex-start;
-  margin-top: 2.6rem;
-  gap: 1.25rem;
+  margin-top: 2.75rem;
+  gap: 1.5rem;
+  align-items: center;
 }
 
-/* ── 3 + 4 + 5. SECTION HEADING — LEFT-ALIGNED, SINGLE BRASS RULE ──────────
-   Replace star dividers with a single thin brass line. */
+/* A whisper-thin brass edge rule down the left of the hero column on wide
+   screens — the first hint of the document spine. Kept inside bounds. */
+@media (min-width: 1024px) {
+  [data-theme='capitol'] .hero-inner::before {
+    content: '';
+    position: absolute;
+    left: -2.5rem;
+    top: 0.4rem;
+    bottom: 0.4rem;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in srgb, var(--color-gold) 55%, transparent) 18%,
+      color-mix(in srgb, var(--color-gold) 55%, transparent) 82%,
+      transparent
+    );
+  }
+}
+
+/* ── 4. SECTION HEADING — NUMERAL + SMALL-CAPS + TICK-RULE ──────────────────
+   The reusable editorial header. A large brass numeral sits to the left
+   (gutter on wide screens, inline-block above on small), the eyebrow is a
+   small-caps label, and the rule is a hairline with a center tick. */
 [data-theme='capitol'] .section-heading {
   text-align: left;
-  max-width: 52rem;
+  max-width: 54rem;
+  padding-top: 0.25rem;
+}
+
+/* The brass folio numeral, drawn from the page counter. */
+[data-theme='capitol'] .section-heading::before {
+  content: counter(capitol-folio, decimal-leading-zero);
+  display: block;
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144, 'wght' 360, 'ital' 1;
+  font-style: italic;
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  line-height: 1;
+  /* Brass at 90% on the cream / cream-deep fields fails even the large-text
+     bar (~2.3-2.5:1). Deepen the brass toward brick so the folio keeps its
+     aged-gold warmth yet clears AA on both light section backgrounds. */
+  color: color-mix(in srgb, var(--color-gold) 38%, var(--color-brick-strong));
+  letter-spacing: -0.02em;
+  margin-bottom: 0.85rem;
 }
 
 [data-theme='capitol'] .section-eyebrow {
   color: var(--color-brick-strong);
-  font-size: 0.72rem;
-  letter-spacing: 0.24em;
-  margin-bottom: 0.9rem;
+  margin-bottom: 1.1rem;
 }
 
 [data-theme='capitol'] .section-title {
-  font-weight: 600;
-  font-size: clamp(2rem, 4vw, 2.9rem);
-  line-height: 1.08;
-  letter-spacing: -0.015em;
+  font-weight: 460;
+  font-variation-settings: 'opsz' 120, 'wght' 480;
+  font-size: clamp(2rem, 4.2vw, 3rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
   text-transform: none;
   color: var(--color-navy);
+  max-width: 18ch;
+  text-wrap: balance;
 }
 
-/* Section rule: one hairline brass line, left-aligned. Hide the star and the
-   second hairline span; keep the first span as the single rule. */
+/* The tick-rule motif: a long hairline with a short raised brass tick at the
+   left, replacing the star-and-two-stubs default. */
 [data-theme='capitol'] .section-rule {
+  position: relative;
   justify-content: flex-start;
   gap: 0;
-  margin-top: 1.6rem;
+  margin-top: 1.75rem;
+  width: 100%;
+  max-width: 22rem;
+  height: 1px;
+  background-color: color-mix(in srgb, var(--color-navy) 16%, transparent);
 }
 
 [data-theme='capitol'] .section-rule svg {
@@ -172,87 +283,164 @@
 }
 
 [data-theme='capitol'] .section-rule > span {
-  height: 2px;
-  width: 3.5rem;
-  background-color: var(--color-gold);
-}
-
-[data-theme='capitol'] .section-rule > span ~ span {
   display: none;
 }
 
-/* ── MISSION ───────────────────────────────────────────────────────────────
-   Airy padding, left-aligned lead, lots of room before the cards. */
-[data-theme='capitol'] .mission {
-  background-color: var(--color-cream);
-  padding-top: 6rem;
-  padding-bottom: 6rem;
+/* The center tick: a short, slightly heavier brass stroke standing on the rule. */
+[data-theme='capitol'] .section-rule::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -2px;
+  width: 2.25rem;
+  height: 2px;
+  background-color: var(--color-gold);
 }
 
-@media (min-width: 640px) {
+/* ── 5. MISSION — DROP-CAP LEAD, AIRY VALUE COLUMNS ────────────────────────
+   The intro becomes a true editorial lead with a Fraunces drop cap. Values
+   become hairline-topped columns; whitespace and rhythm carry them. */
+[data-theme='capitol'] .mission {
+  background-color: var(--color-cream);
+  padding-top: 5.5rem;
+  padding-bottom: 5.5rem;
+}
+
+@media (min-width: 768px) {
   [data-theme='capitol'] .mission {
     padding-top: 8rem;
     padding-bottom: 8rem;
   }
 }
 
+/* The lead: larger measure, generous leading, Fraunces for editorial warmth. */
 [data-theme='capitol'] .section-intro {
   margin-left: 0;
   margin-right: 0;
-  margin-top: 1.75rem;
-  max-width: 46ch;
+  margin-top: 2.25rem;
+  max-width: 40ch;
   text-align: left;
-  font-size: 1.18rem;
-  line-height: 1.75;
-  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 40, 'wght' 380;
+  font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+  line-height: 1.55;
+  letter-spacing: -0.004em;
+  color: color-mix(in srgb, var(--color-ink) 82%, transparent);
 }
 
-/* ── 7. VALUE CARDS — MINIMAL, BRASS TOP RULE ─────────────────────────────
-   No border, no fill. A single thin brass top rule + generous padding;
-   whitespace does the work. */
+/* Drop cap: a large Fraunces italic initial, brass, optically aligned. */
+[data-theme='capitol'] .section-intro::first-letter {
+  float: left;
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144, 'wght' 460, 'ital' 1;
+  font-style: italic;
+  font-size: 3.6em;
+  line-height: 0.82;
+  padding-right: 0.08em;
+  margin-top: 0.04em;
+  color: var(--color-brick-strong);
+}
+
+/* Value columns: a single hairline rule above each, with a brass tick at the
+   start of the first — repeating the spine motif at the component scale. */
 [data-theme='capitol'] .value-grid {
   margin-top: 4.5rem;
-  gap: 2.5rem 3rem;
+  gap: 2.75rem 3rem;
+}
+
+@media (min-width: 1024px) {
+  [data-theme='capitol'] .value-grid {
+    gap: 3rem 3.5rem;
+  }
 }
 
 [data-theme='capitol'] .value-card {
   border: none;
-  border-top: 2px solid var(--color-gold);
+  border-top: 1px solid color-mix(in srgb, var(--color-navy) 20%, transparent);
   background-color: transparent;
   border-radius: 0;
-  padding: 1.75rem 0 0 0;
+  padding: 1.5rem 0 0 0;
+  position: relative;
+  transition: border-color 220ms ease;
 }
 
-/* Drop the gold star icon — minimal direction, no ornament. */
+/* A small counter for the values, set as a tiny brass index numeral. */
+[data-theme='capitol'] .value-grid {
+  counter-reset: capitol-value;
+}
+
+[data-theme='capitol'] .value-card {
+  counter-increment: capitol-value;
+}
+
+/* Brass tick sitting on the top rule, left-aligned (the recurring motif). */
+[data-theme='capitol'] .value-card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 1.75rem;
+  height: 2px;
+  background-color: var(--color-gold);
+  transition: width 260ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Tiny index numeral, top-right of the column, Fraunces italic brass. */
+[data-theme='capitol'] .value-card::after {
+  content: counter(capitol-value, decimal-leading-zero);
+  position: absolute;
+  top: 1.4rem;
+  right: 0;
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 20, 'wght' 400, 'ital' 1;
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  /* The tiny index numeral is small body-size text: pure brass on cream is
+     ~2.4:1. Darken with ink to keep a brass tint while clearing AA (>=4.5:1). */
+  color: color-mix(in srgb, var(--color-gold) 45%, var(--color-ink));
+}
+
+/* On hover the brass tick extends — a quiet, precise piece of motion. */
+[data-theme='capitol'] .value-card:hover::before {
+  width: 3.25rem;
+}
+
+/* Drop the star icon — minimal direction. */
 [data-theme='capitol'] .value-icon {
   display: none;
 }
 
 [data-theme='capitol'] .value-title {
   margin-top: 0;
-  font-weight: 600;
-  font-size: 1.35rem;
-  letter-spacing: -0.01em;
+  font-weight: 460;
+  font-variation-settings: 'opsz' 60, 'wght' 520;
+  font-size: 1.3rem;
+  letter-spacing: -0.012em;
+  line-height: 1.2;
   color: var(--color-navy);
+  max-width: 14ch;
 }
 
 [data-theme='capitol'] .value-body {
-  margin-top: 0.85rem;
-  font-size: 0.95rem;
-  line-height: 1.7;
+  margin-top: 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.72;
+  letter-spacing: 0.002em;
   color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+  max-width: 32ch;
 }
 
-/* ── EVENTS — LIGHTER, HAIRLINE DIVIDERS, OUTLINE DATE BLOCK ────────────────
-   The band stays subtly deeper, but cards lose their heavy box: a hairline
-   bottom divider, and the date becomes an outline block (not filled navy). */
+/* ── 6. EVENTS — A REFINED TYPOGRAPHIC TABLE ───────────────────────────────
+   Recast the card rows as an aligned table: a ghost date column, a title/meta
+   column, hairline row rules. No boxes, no fills — set print, beautifully. */
 [data-theme='capitol'] .events {
   background-color: var(--color-cream-deep);
-  padding-top: 6rem;
-  padding-bottom: 6rem;
+  padding-top: 5.5rem;
+  padding-bottom: 5.5rem;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   [data-theme='capitol'] .events {
     padding-top: 8rem;
     padding-bottom: 8rem;
@@ -262,77 +450,156 @@
 [data-theme='capitol'] .event-list {
   margin-left: 0;
   margin-top: 3.5rem;
-  max-width: 52rem;
+  max-width: 54rem;
   gap: 0;
+  /* a hairline cap at the top of the table */
+  border-top: 1px solid color-mix(in srgb, var(--color-navy) 22%, transparent);
 }
 
+/* Each row: aligned columns, hairline bottom rule, generous vertical rhythm. */
 [data-theme='capitol'] .event-card {
   border: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 14%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 16%, transparent);
   background-color: transparent;
   border-radius: 0;
-  padding: 2rem 0;
-  gap: 1.75rem;
-  align-items: flex-start;
-}
-
-[data-theme='capitol'] .event-list > .event-card:first-child {
-  border-top: 1px solid color-mix(in srgb, var(--color-navy) 14%, transparent);
-}
-
-/* Outline date block: transparent bg, thin navy border, navy text. */
-[data-theme='capitol'] .event-date {
-  background-color: transparent;
-  border: 1px solid color-mix(in srgb, var(--color-navy) 35%, transparent);
-  border-radius: 0;
-  color: var(--color-navy);
-  width: 4.75rem;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-}
-
-/* Recolor children from gold/cream to brass/navy for the light block. */
-[data-theme='capitol'] .event-date-mon {
-  color: var(--color-brick-strong);
-  letter-spacing: 0.18em;
-}
-
-[data-theme='capitol'] .event-date-day {
-  color: var(--color-navy);
-  font-weight: 600;
-}
-
-[data-theme='capitol'] .event-title {
-  font-weight: 600;
-  font-size: 1.3rem;
-  letter-spacing: -0.01em;
-  color: var(--color-navy);
-}
-
-[data-theme='capitol'] .event-meta {
-  margin-top: 0.4rem;
-  color: var(--color-brick-strong);
-  font-weight: 500;
-  letter-spacing: 0.01em;
-}
-
-[data-theme='capitol'] .event-body {
-  margin-top: 0.6rem;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: color-mix(in srgb, var(--color-ink) 72%, transparent);
-}
-
-/* ── INVOLVE (DARK NAVY BAND) — AIRY, OUTLINE CARDS ────────────────────────
-   Light text on navy. Heading left-aligned, single brass rule, outline cards
-   with no fill. */
-[data-theme='capitol'] .involve {
-  background-color: var(--color-navy);
-  padding-top: 6rem;
-  padding-bottom: 6rem;
+  padding: 1.75rem 0;
+  gap: 1.5rem;
+  align-items: baseline;
+  position: relative;
+  transition: background-color 200ms ease;
 }
 
 @media (min-width: 640px) {
+  [data-theme='capitol'] .event-card {
+    gap: 2.5rem;
+    padding: 2rem 0;
+  }
+}
+
+/* Subtle warm wash on hover — like a finger resting on the page. */
+[data-theme='capitol'] .event-card:hover {
+  background-color: color-mix(in srgb, var(--color-cream) 55%, transparent);
+}
+
+[data-theme='capitol'] .event-list > .event-card:first-child {
+  border-top: none;
+}
+
+/* Ghost date column: no box. The day is a large Fraunces numeral; the month is
+   a small-caps brass label above it. Fixed width so titles align in a column. */
+[data-theme='capitol'] .event-date {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  color: var(--color-navy);
+  width: 3.5rem;
+  flex: 0 0 3.5rem;
+  padding: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  position: relative;
+}
+
+@media (min-width: 640px) {
+  [data-theme='capitol'] .event-date {
+    width: 4.5rem;
+    flex-basis: 4.5rem;
+  }
+}
+
+[data-theme='capitol'] .event-date-mon {
+  order: 1;
+  color: var(--color-brick-strong);
+  font-family: var(--font-body);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+}
+
+[data-theme='capitol'] .event-date-day {
+  order: 2;
+  color: var(--color-navy);
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 80, 'wght' 460;
+  font-weight: 460;
+  font-size: 2.5rem;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+}
+
+@media (min-width: 640px) {
+  [data-theme='capitol'] .event-date-day {
+    font-size: 2.9rem;
+  }
+}
+
+[data-theme='capitol'] .event-title {
+  font-weight: 460;
+  font-variation-settings: 'opsz' 70, 'wght' 520;
+  font-size: 1.3rem;
+  line-height: 1.15;
+  letter-spacing: -0.012em;
+  color: var(--color-navy);
+}
+
+@media (min-width: 640px) {
+  [data-theme='capitol'] .event-title {
+    font-size: 1.45rem;
+  }
+}
+
+/* Meta: small-caps brass, set as a fine caption with tabular figures. */
+[data-theme='capitol'] .event-meta {
+  margin-top: 0.5rem;
+  color: var(--color-brick-strong);
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-feature-settings: 'tnum' 1;
+}
+
+[data-theme='capitol'] .event-body {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.72;
+  letter-spacing: 0.002em;
+  color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+  max-width: 52ch;
+}
+
+/* The inline "Details" link: refined underline on hover. */
+[data-theme='capitol'] .event-card a {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-navy);
+  text-decoration-color: color-mix(in srgb, var(--color-gold) 70%, transparent);
+  text-underline-offset: 4px;
+  transition: color 180ms ease, text-decoration-color 180ms ease;
+}
+
+[data-theme='capitol'] .event-card a:hover {
+  color: var(--color-brick-strong);
+  text-decoration-color: var(--color-brick-strong);
+}
+
+/* ── 7. INVOLVE — DARK NAVY LEAF, BRASS NUMERALS ON FIELD ───────────────────
+   Light text on navy. The numbering spine continues in brass; cards become
+   thin cream outlines with a brass tick — the dark counterpart of the values. */
+[data-theme='capitol'] .involve {
+  background-color: var(--color-navy);
+  padding-top: 5.5rem;
+  padding-bottom: 5.5rem;
+}
+
+@media (min-width: 768px) {
   [data-theme='capitol'] .involve {
     padding-top: 8rem;
     padding-bottom: 8rem;
@@ -341,30 +608,52 @@
 
 [data-theme='capitol'] .involve-heading {
   text-align: left;
-  max-width: 52rem;
+  max-width: 54rem;
+}
+
+/* Continue the folio numeral on the dark field. */
+[data-theme='capitol'] .involve-heading::before {
+  content: counter(capitol-folio, decimal-leading-zero);
+  display: block;
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144, 'wght' 360, 'ital' 1;
+  font-style: italic;
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  line-height: 1;
+  color: color-mix(in srgb, var(--color-gold) 95%, transparent);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.85rem;
 }
 
 [data-theme='capitol'] .involve-eyebrow {
-  color: var(--color-gold);
-  font-size: 0.72rem;
-  letter-spacing: 0.24em;
-  margin-bottom: 0.9rem;
+  /* Lift the brass with a touch of cream so the small-caps label clears AA
+     (>=4.5:1) on the navy field while keeping its aged-gold character. */
+  color: color-mix(in srgb, var(--color-gold) 72%, var(--color-cream));
+  margin-bottom: 1.1rem;
 }
 
 [data-theme='capitol'] .involve-title {
-  font-weight: 600;
-  font-size: clamp(2rem, 4vw, 2.9rem);
-  line-height: 1.08;
-  letter-spacing: -0.015em;
+  font-weight: 460;
+  font-variation-settings: 'opsz' 120, 'wght' 480;
+  font-size: clamp(2rem, 4.2vw, 3rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
   text-transform: none;
   color: var(--color-cream);
+  max-width: 18ch;
+  text-wrap: balance;
 }
 
-/* Involve rule: single hairline brass line, left-aligned; hide star + 2nd span. */
+/* Tick-rule motif, recolored for the dark field. */
 [data-theme='capitol'] .involve-rule {
+  position: relative;
   justify-content: flex-start;
   gap: 0;
-  margin-top: 1.6rem;
+  margin-top: 1.75rem;
+  width: 100%;
+  max-width: 22rem;
+  height: 1px;
+  background-color: color-mix(in srgb, var(--color-cream) 20%, transparent);
 }
 
 [data-theme='capitol'] .involve-rule svg {
@@ -372,146 +661,365 @@
 }
 
 [data-theme='capitol'] .involve-rule > span {
-  height: 2px;
-  width: 3.5rem;
-  background-color: var(--color-gold);
+  display: none;
 }
 
-[data-theme='capitol'] .involve-rule > span ~ span {
-  display: none;
+[data-theme='capitol'] .involve-rule::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -2px;
+  width: 2.25rem;
+  height: 2px;
+  background-color: var(--color-gold);
 }
 
 [data-theme='capitol'] .involve-intro {
   margin-left: 0;
   margin-right: 0;
-  margin-top: 1.75rem;
-  max-width: 48ch;
+  margin-top: 2.25rem;
+  max-width: 44ch;
   text-align: left;
-  font-size: 1.18rem;
-  line-height: 1.75;
-  color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 40, 'wght' 360;
+  font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+  line-height: 1.55;
+  letter-spacing: -0.004em;
+  color: color-mix(in srgb, var(--color-cream) 86%, transparent);
 }
 
 [data-theme='capitol'] .involve-grid {
   margin-top: 4.5rem;
-  gap: 2.5rem;
+  gap: 1.75rem;
+  counter-reset: capitol-involve;
 }
 
-/* Thin cream outline, no fill, airy padding. */
+@media (min-width: 1024px) {
+  [data-theme='capitol'] .involve-grid {
+    gap: 2.25rem;
+  }
+}
+
+/* Thin cream outline cards, airy padding, brass index + tick. */
 [data-theme='capitol'] .involve-card {
-  border: 1px solid color-mix(in srgb, var(--color-cream) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-cream) 20%, transparent);
   background-color: transparent;
   border-radius: 0;
-  padding: 2.25rem;
+  padding: 2rem 1.75rem;
+  position: relative;
+  counter-increment: capitol-involve;
+  transition: border-color 240ms ease, background-color 240ms ease;
+}
+
+@media (min-width: 1024px) {
+  [data-theme='capitol'] .involve-card {
+    padding: 2.5rem 2.25rem;
+  }
+}
+
+/* Brass tick anchored to the top-left corner edge. */
+[data-theme='capitol'] .involve-card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 2rem;
+  height: 2px;
+  background-color: var(--color-gold);
+  transition: width 260ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Tiny brass index numeral. */
+[data-theme='capitol'] .involve-card::after {
+  content: counter(capitol-involve, decimal-leading-zero);
+  position: absolute;
+  top: 1.5rem;
+  right: 1.75rem;
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 20, 'wght' 400, 'ital' 1;
+  font-style: italic;
+  font-size: 0.85rem;
+  /* Brass on navy at this small size sits at ~3.8:1 — short of AA for body
+     text. Lift the brass with cream so the index numeral clears 4.5:1 while
+     keeping the warm folio character on the dark field. */
+  color: color-mix(in srgb, var(--color-gold) 55%, var(--color-cream));
+}
+
+[data-theme='capitol'] .involve-card:hover {
+  border-color: color-mix(in srgb, var(--color-cream) 34%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 4%, transparent);
+}
+
+[data-theme='capitol'] .involve-card:hover::before {
+  width: 3.5rem;
 }
 
 [data-theme='capitol'] .involve-card-title {
-  font-weight: 600;
+  font-weight: 460;
+  font-variation-settings: 'opsz' 60, 'wght' 520;
   font-size: 1.3rem;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.012em;
+  line-height: 1.2;
   color: var(--color-cream);
+  max-width: 14ch;
 }
 
 [data-theme='capitol'] .involve-body {
-  margin-top: 0.75rem;
-  font-size: 0.95rem;
-  line-height: 1.7;
+  margin-top: 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.72;
+  letter-spacing: 0.002em;
   color: color-mix(in srgb, var(--color-cream) 72%, transparent);
 }
 
-/* ── NEWSLETTER — LEFT-ALIGNED, AIRY, QUIET FORM ───────────────────────────
-   The heading inside this section is already overridden above (it uses
-   .section-heading). Re-align the intro lead and form to the left column. */
+/* ── 8. NEWSLETTER — A QUIET SIGN-UP CARD ──────────────────────────────────
+   Left-aligned to the document column; the form set as fine stationery with
+   hairline inputs and small-caps field labels. */
 [data-theme='capitol'] .newsletter {
   background-color: var(--color-cream);
-  padding-top: 6rem;
-  padding-bottom: 6rem;
+  padding-top: 5.5rem;
+  padding-bottom: 5.5rem;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   [data-theme='capitol'] .newsletter {
     padding-top: 8rem;
     padding-bottom: 8rem;
   }
 }
 
-/* The lead paragraph + form wrapper are centered (mx-auto, text-center) in
-   markup — pull them to the left column for the editorial composition. */
+/* Pull the lead paragraph to the left column with an editorial measure. */
 [data-theme='capitol'] .newsletter > div > p {
   margin-left: 0;
   margin-right: 0;
-  max-width: 48ch;
+  max-width: 46ch;
   text-align: left;
-  font-size: 1.18rem;
-  line-height: 1.75;
-  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 36, 'wght' 360;
+  font-size: clamp(1.2rem, 2.4vw, 1.45rem);
+  line-height: 1.55;
+  letter-spacing: -0.004em;
+  color: color-mix(in srgb, var(--color-ink) 80%, transparent);
 }
 
+/* The email link inside the lead: brass underline. Allow the long address to
+   break so it never forces horizontal overflow on the narrowest screens. */
+[data-theme='capitol'] .newsletter > div > p a {
+  color: var(--color-brick-strong);
+  text-decoration-color: color-mix(in srgb, var(--color-gold) 70%, transparent);
+  text-underline-offset: 4px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  transition: text-decoration-color 180ms ease;
+}
+
+[data-theme='capitol'] .newsletter > div > p a:hover {
+  text-decoration-color: var(--color-brick-strong);
+}
+
+/* Left-anchor the form wrapper and form itself. */
 [data-theme='capitol'] .newsletter form {
   margin-left: 0;
   margin-right: 0;
-  max-width: 40rem;
+  max-width: 38rem;
 }
 
-/* Quiet inputs: hairline borders, generous padding, modest radius. */
+/* Field labels: small-caps brass-toned stationery labels. */
+[data-theme='capitol'] .newsletter form label {
+  color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+  letter-spacing: 0.18em;
+  font-size: 0.68rem;
+}
+
+/* Hairline inputs on a slightly inset cream, no heavy borders. */
 [data-theme='capitol'] .newsletter input {
-  border: 1px solid color-mix(in srgb, var(--color-navy) 28%, transparent);
-  border-radius: 2px;
-  background-color: var(--color-cream);
-  padding: 0.85rem 1rem;
+  border: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 30%, transparent);
+  border-radius: 0;
+  background-color: transparent;
+  padding: 0.65rem 0.1rem;
+  font-family: var(--font-body);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
 }
 
 [data-theme='capitol'] .newsletter input:focus {
+  outline: none;
   border-color: var(--color-navy);
+  box-shadow: 0 1px 0 0 var(--color-navy);
 }
 
-/* ── 6. BUTTONS — REFINED, NOT LOUD ────────────────────────────────────────
-   Comfortable padding + letter-spacing, modest radius, quiet hover. */
+/* Submit button (raw <button>, navy fill in markup): refine to match .btn. */
+[data-theme='capitol'] .newsletter button[type='submit'] {
+  border-radius: 1px;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: var(--color-navy);
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
+  transition: background-color 200ms ease;
+}
+
+[data-theme='capitol'] .newsletter button[type='submit']:hover {
+  background-color: var(--color-navy-deep);
+}
+
+/* The success card, restyled to the document language. */
+[data-theme='capitol'] .newsletter [role='status'] {
+  margin-left: 0;
+  margin-right: auto;
+  border: none;
+  border-left: 2px solid var(--color-gold);
+  background-color: transparent;
+  border-radius: 0;
+  text-align: left;
+  padding-left: 1.5rem;
+}
+
+/* ── 9. BUTTONS — REFINED, QUIET, PRECISE ──────────────────────────────────
+   Small-caps tracking, a 1px radius (almost square print), measured hover. */
 [data-theme='capitol'] .btn {
-  border-radius: 2px;
-  letter-spacing: 0.12em;
-  font-weight: 500;
-  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+  border-radius: 1px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: background-color 200ms ease, border-color 200ms ease,
+    color 200ms ease, box-shadow 200ms ease;
 }
 
-/* Solid stays navy, light text — slightly more padding for an unhurried feel. */
+/* Solid navy, light cream text — the primary action. Padding is kept to the
+   markup's size token so the compact header CTA stays compact; only the hero's
+   buttons get the generous, unhurried sizing below. */
 [data-theme='capitol'] .btn--solid {
   background-color: var(--color-navy);
   color: var(--color-cream);
-  padding: 0.8rem 1.6rem;
 }
 
 [data-theme='capitol'] .btn--solid:hover {
   background-color: var(--color-navy-deep);
 }
 
-/* Ghost: thin 1px outline, quiet hover (no full-fill flip). */
+[data-theme='capitol'] .btn--solid:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* Ghost: no box. A navy label with a brass underline that grows on hover —
+   the most "fine print" of the set. */
 [data-theme='capitol'] .btn--ghost {
-  border: 1px solid color-mix(in srgb, var(--color-navy) 45%, transparent);
+  border: none;
   background-color: transparent;
   color: var(--color-navy);
-  padding: 0.8rem 1.6rem;
+  position: relative;
+}
+
+[data-theme='capitol'] .btn--ghost::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.55rem;
+  height: 1px;
+  background-color: color-mix(in srgb, var(--color-gold) 80%, transparent);
+  transform: scaleX(0.55);
+  transform-origin: left center;
+  transition: transform 240ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    background-color 200ms ease;
+}
+
+/* Hero buttons get the unhurried, generous sizing — scoped so the compact
+   header/nav CTA is unaffected and the md (768px) row never overflows. */
+[data-theme='capitol'] .hero-actions .btn--solid {
+  padding: 0.85rem 1.75rem;
+}
+
+/* The hero's ghost button loses its box-padding and rides a left-anchored
+   underline, sitting flush with the solid button's baseline. */
+[data-theme='capitol'] .hero-actions .btn--ghost {
+  padding: 0.85rem 0.1rem;
+}
+
+[data-theme='capitol'] .hero-actions .btn--ghost::after {
+  bottom: 0.7rem;
 }
 
 [data-theme='capitol'] .btn--ghost:hover {
-  background-color: transparent;
-  border-color: var(--color-navy);
   color: var(--color-navy-deep);
+  background-color: transparent;
 }
 
-/* Accent (on dark band): keep brick but refined; light text for AA. */
+[data-theme='capitol'] .btn--ghost:hover::after {
+  transform: scaleX(1);
+  background-color: var(--color-brick-strong);
+}
+
+[data-theme='capitol'] .btn--ghost:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
+}
+
+/* Accent (on the navy leaf): brick fill, cream text for AA. */
 [data-theme='capitol'] .btn--accent {
   background-color: var(--color-brick);
   color: var(--color-cream);
+  padding: 0.75rem 1.4rem;
 }
 
 [data-theme='capitol'] .btn--accent:hover {
   background-color: var(--color-brick-strong);
 }
 
-/* ── FOOTER ────────────────────────────────────────────────────────────────
-   Stays a navy band with light text; soften the gold star to keep it quiet. */
+[data-theme='capitol'] .btn--accent:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* ── 10. HEADER NAV + FOOTER ────────────────────────────────────────────────
+   Nav links get a quiet brass underline on hover (echo of the ghost button).
+   Footer stays a navy leaf; section labels in brass small-caps. */
+[data-theme='capitol'] .site-header nav a {
+  position: relative;
+  transition: color 180ms ease;
+}
+
+[data-theme='capitol'] .site-header nav > a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.35rem;
+  height: 1px;
+  background-color: var(--color-brick);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+[data-theme='capitol'] .site-header nav > a:hover::after {
+  transform: scaleX(1);
+}
+
 [data-theme='capitol'] .site-footer {
   background-color: var(--color-navy);
   color: var(--color-cream);
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 30%, transparent);
+}
+
+/* Footer section labels → brass small-caps to match the document system.
+   Lift the gold toward cream so these labels clear AA on the navy footer. */
+[data-theme='capitol'] .site-footer h3 {
+  font-family: var(--font-body);
+  letter-spacing: 0.2em;
+  color: color-mix(in srgb, var(--color-gold) 72%, var(--color-cream));
+}
+
+/* ── 11. REDUCED MOTION ─────────────────────────────────────────────────────
+   Honor the user's preference: remove the quiet animations, keep the look. */
+@media (prefers-reduced-motion: reduce) {
+  [data-theme='capitol'] .value-card::before,
+  [data-theme='capitol'] .involve-card::before,
+  [data-theme='capitol'] .btn--ghost::after,
+  [data-theme='capitol'] .site-header nav > a::after {
+    transition: none;
+  }
 }

@@ -1,0 +1,850 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   LETTERPRESS CIVIC — data-theme='civic'
+   A dignified town BROADSIDE pressed onto cream paper. Zilla Slab + Source Sans.
+   Ink navy, faded brick, aged gold used ONLY as thin rules / ticks / corner
+   flourishes. The page should read like a well-set, slightly debossed handbill.
+
+   SIGNATURE MOVE — the "pressed corner rule":
+   A refined DOUBLE rule (outer hairline + inner gold hairline) whose four
+   corners are pinned with small gold star/fleuron ornaments, plus a soft inner
+   deboss shadow so the framed content sits *into* the paper. This corner-pinned
+   double-rule motif repeats at three scales: the hero broadside, the event
+   program cards, and the dark "Get Involved" band — so the system feels of one
+   press. A consistent ornamental section rule (tapered triple lines around a
+   gold star) and a slab/gold drop cap on the mission lead complete the type.
+
+   Every selector is prefixed with [data-theme='civic']; rules are unlayered so
+   they win over Tailwind utilities. Palette/fonts come from tokens — no hex.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 0. PAPER, INK, RHYTHM ──────────────────────────────────────────────────
+   A slightly richer two-pass paper: the base SVG grain (from global.css) plus a
+   very faint warm vignette + fiber tint so ink looks soaked into stock. Tighten
+   global tracking and set a comfortable measure for body copy. */
+[data-theme='civic'] body {
+  background-color: var(--color-cream);
+  background-image:
+    radial-gradient(
+      120% 80% at 50% -10%,
+      color-mix(in srgb, var(--color-cream-deep) 55%, transparent) 0%,
+      transparent 55%
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, repeat;
+  letter-spacing: 0.004em;
+}
+
+[data-theme='civic'] ::selection {
+  background-color: var(--color-brick);
+  color: var(--color-cream);
+}
+
+/* Display headings: confident slab, tight leading, faint ink optical weight. */
+[data-theme='civic'] h1,
+[data-theme='civic'] h2,
+[data-theme='civic'] h3,
+[data-theme='civic'] h4 {
+  font-family: var(--font-display);
+  color: var(--color-navy);
+  letter-spacing: 0.002em;
+}
+
+/* Consistent crisp letterpress corner — almost square everywhere. */
+[data-theme='civic'] .value-card,
+[data-theme='civic'] .event-card,
+[data-theme='civic'] .involve-card,
+[data-theme='civic'] .event-date,
+[data-theme='civic'] .btn,
+[data-theme='civic'] .newsletter input {
+  border-radius: 1px;
+}
+
+/* Shared focus ring — brick, offset, dignified. */
+[data-theme='civic'] a:focus-visible,
+[data-theme='civic'] .btn:focus-visible,
+[data-theme='civic'] input:focus-visible {
+  outline: 2px solid var(--color-brick);
+  outline-offset: 2px;
+}
+
+/* ── SITE HEADER ────────────────────────────────────────────────────────────
+   Masthead bar: a hairline navy base plus a fine gold under-tick, like the
+   rule beneath a newspaper nameplate. */
+[data-theme='civic'] .site-header {
+  background-color: color-mix(in srgb, var(--color-cream) 92%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 22%, transparent);
+  box-shadow: 0 1px 0 0 color-mix(in srgb, var(--color-gold) 45%, transparent);
+}
+
+[data-theme='civic'] .site-header a[aria-label]:hover .truncate {
+  color: var(--color-navy);
+}
+
+/* Primary nav links: brick on hover with a growing gold underline tick. */
+[data-theme='civic'] .site-header nav a:not(.btn) {
+  position: relative;
+  transition: color 180ms ease;
+}
+
+[data-theme='civic'] .site-header nav a:not(.btn)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.35rem;
+  height: 1.5px;
+  width: 0;
+  background-color: var(--color-gold);
+  transition: width 200ms ease;
+}
+
+[data-theme='civic'] .site-header nav a:not(.btn):hover {
+  color: var(--color-brick-strong);
+}
+
+[data-theme='civic'] .site-header nav a:not(.btn):hover::after {
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1. HERO — THE BROADSIDE  (signature move, full scale)
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .hero {
+  background-color: var(--color-cream);
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
+}
+
+@media (min-width: 640px) {
+  [data-theme='civic'] .hero {
+    padding-top: 6.5rem;
+    padding-bottom: 6.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  [data-theme='civic'] .hero {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+[data-theme='civic'] .hero-inner {
+  max-width: 46rem;
+}
+
+/* The framed broadside: outer ink hairline + soft deboss so the panel sits INTO
+   the paper, on a faintly lighter card. overflow:hidden keeps every ornament
+   safely inside the bounds (no horizontal scroll on mobile). */
+[data-theme='civic'] .hero-frame {
+  position: relative;
+  border: 1.5px solid color-mix(in srgb, var(--color-navy) 38%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 60%, #ffffff);
+  padding: 3.25rem 1.5rem 3rem;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-cream-deep) 70%, transparent),
+    inset 0 2px 14px color-mix(in srgb, var(--color-navy) 12%, transparent),
+    0 1px 0 0 color-mix(in srgb, var(--color-cream) 80%, #ffffff);
+}
+
+@media (min-width: 640px) {
+  [data-theme='civic'] .hero-frame {
+    padding: 4rem 3rem 3.75rem;
+  }
+}
+
+/* The INSET rule is the inner gold hairline of the double rule. ALL FOUR of its
+   corners are pinned with a small gold star (the documented signature). The four
+   stars + four cream "pin chips" that mask the rule beneath them are painted as
+   background layers on this single element, so they stay perfectly registered to
+   the gold corners at every viewport with no extra markup and never overflow
+   (the frame is overflow:hidden and the inset is 9px inside the border). */
+[data-theme='civic'] .hero-frame-inset {
+  inset: 9px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 60%, transparent);
+  background-image:
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Cpath%20d='M12%201.5%2014.47%208.6%2021.99%208.76%2015.99%2013.3%2018.17%2020.49%2012%2016.2%205.83%2020.49%208.01%2013.3%202.01%208.76%209.53%208.6Z'%20fill='%23c49a4a'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Cpath%20d='M12%201.5%2014.47%208.6%2021.99%208.76%2015.99%2013.3%2018.17%2020.49%2012%2016.2%205.83%2020.49%208.01%2013.3%202.01%208.76%209.53%208.6Z'%20fill='%23c49a4a'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Cpath%20d='M12%201.5%2014.47%208.6%2021.99%208.76%2015.99%2013.3%2018.17%2020.49%2012%2016.2%205.83%2020.49%208.01%2013.3%202.01%208.76%209.53%208.6Z'%20fill='%23c49a4a'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Cpath%20d='M12%201.5%2014.47%208.6%2021.99%208.76%2015.99%2013.3%2018.17%2020.49%2012%2016.2%205.83%2020.49%208.01%2013.3%202.01%208.76%209.53%208.6Z'%20fill='%23c49a4a'/%3E%3C/svg%3E"),
+    radial-gradient(circle at center, color-mix(in srgb, var(--color-cream) 60%, #ffffff) 60%, transparent 64%),
+    radial-gradient(circle at center, color-mix(in srgb, var(--color-cream) 60%, #ffffff) 60%, transparent 64%),
+    radial-gradient(circle at center, color-mix(in srgb, var(--color-cream) 60%, #ffffff) 60%, transparent 64%),
+    radial-gradient(circle at center, color-mix(in srgb, var(--color-cream) 60%, #ffffff) 60%, transparent 64%);
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-clip: border-box;
+  background-size:
+    13px 13px, 13px 13px, 13px 13px, 13px 13px,
+    18px 18px, 18px 18px, 18px 18px, 18px 18px;
+  background-position:
+    left -6.5px top -6.5px, right -6.5px top -6.5px,
+    left -6.5px bottom -6.5px, right -6.5px bottom -6.5px,
+    left -9px top -9px, right -9px top -9px,
+    left -9px bottom -9px, right -9px bottom -9px;
+}
+
+/* Top + bottom centered fleuron ticks on the frame: a short gold rule with a
+   star feel, drawn purely with gradients so nothing can overflow. */
+[data-theme='civic'] .hero-frame::before,
+[data-theme='civic'] .hero-frame::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3.5rem;
+  height: 9px;
+  background-image:
+    linear-gradient(
+      to right,
+      transparent 0,
+      var(--color-gold) 18%,
+      var(--color-gold) 40%,
+      transparent 46%,
+      transparent 54%,
+      var(--color-gold) 60%,
+      var(--color-gold) 82%,
+      transparent 100%
+    );
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 1.25px;
+}
+
+[data-theme='civic'] .hero-frame::before {
+  top: 16px;
+}
+
+[data-theme='civic'] .hero-frame::after {
+  bottom: 16px;
+}
+
+/* The four corner star pins are painted as background layers on the inset rule
+   (see .hero-frame-inset above), so all four corners are pinned identically; the
+   centered top/bottom fleuron ticks (.hero-frame::before/::after) sit at the two
+   midpoints. Together the four corners + two midpoints read as one engraved
+   frame, and nothing can overflow (the frame is overflow:hidden and the inset is
+   9px inside the border). */
+
+/* Eyebrow: letter-spaced small caps, gold stars flanking the city. */
+[data-theme='civic'] .hero-eyebrow {
+  color: var(--color-brick-strong);
+  font-size: 0.7rem;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  gap: 0.75rem;
+}
+
+[data-theme='civic'] .hero-eyebrow svg {
+  color: var(--color-gold);
+}
+
+/* Title: the big slab nameplate. Tight leading, optical weight, slab presence. */
+[data-theme='civic'] .hero-title {
+  margin-top: 1.5rem;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 8vw, 4.25rem);
+  line-height: 1.02;
+  letter-spacing: 0.005em;
+  color: var(--color-navy);
+}
+
+/* A short gold "EST." rule + a hairline under the title, broadside style. */
+[data-theme='civic'] .hero-title::after {
+  content: '';
+  display: block;
+  width: 4.5rem;
+  height: 2px;
+  margin: 1.25rem auto 0;
+  background-color: var(--color-gold);
+}
+
+[data-theme='civic'] .hero-tagline {
+  margin-top: 1.25rem;
+  max-width: 34ch;
+  font-size: 1.1rem;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--color-ink) 82%, transparent);
+}
+
+[data-theme='civic'] .hero-actions {
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   2. SECTION HEADING — ORNAMENTAL TRIPLE RULE (consistent motif)
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .section-eyebrow {
+  color: var(--color-brick-strong);
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  margin-bottom: 0.9rem;
+}
+
+[data-theme='civic'] .section-title {
+  font-weight: 700;
+  font-size: clamp(1.9rem, 4.5vw, 2.75rem);
+  line-height: 1.06;
+  letter-spacing: 0.004em;
+  color: var(--color-navy);
+}
+
+/* Tapered triple rule: the two hairline spans get a faded edge and a small gold
+   diamond tick on their far ends, flanking the central star. */
+[data-theme='civic'] .section-rule {
+  margin-top: 1.4rem;
+  gap: 0.85rem;
+}
+
+[data-theme='civic'] .section-rule > span {
+  position: relative;
+  height: 1.5px;
+  width: 3.25rem;
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--color-gold) 90%, transparent)
+  );
+}
+
+/* mirror the gradient direction on the right-hand span */
+[data-theme='civic'] .section-rule > span:last-child {
+  background-image: linear-gradient(
+    to left,
+    transparent,
+    color-mix(in srgb, var(--color-gold) 90%, transparent)
+  );
+}
+
+/* gold diamond ticks at the outer ends of each rule */
+[data-theme='civic'] .section-rule > span:first-child::before,
+[data-theme='civic'] .section-rule > span:last-child::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  background-color: var(--color-gold);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+[data-theme='civic'] .section-rule > span:first-child::before {
+  left: 0;
+}
+
+[data-theme='civic'] .section-rule > span:last-child::after {
+  right: 0;
+}
+
+[data-theme='civic'] .section-rule svg {
+  color: var(--color-gold);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   3. MISSION — DROP CAP LEAD + LETTERPRESS VALUE CARDS
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .mission {
+  background-color: var(--color-cream);
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 640px) {
+  [data-theme='civic'] .mission {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+
+[data-theme='civic'] .section-intro {
+  margin-top: 1.75rem;
+  max-width: 42ch;
+  font-size: 1.15rem;
+  line-height: 1.72;
+  color: color-mix(in srgb, var(--color-ink) 80%, transparent);
+  /* The lead carries a printed drop cap, so it reads left-aligned/justified
+     (centered text fights a floated initial). The block stays centered on the
+     page via the markup's mx-auto. */
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
+}
+
+/* Slab/gold drop cap on the mission lead — a printed initial. */
+[data-theme='civic'] .section-intro::first-letter {
+  float: left;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 3.4rem;
+  line-height: 0.78;
+  margin: 0.32rem 0.55rem 0 0;
+  color: var(--color-brick-strong);
+  text-shadow: 0 1px 0 color-mix(in srgb, var(--color-gold) 35%, transparent);
+}
+
+[data-theme='civic'] .value-grid {
+  margin-top: 3.5rem;
+  gap: 1.5rem;
+}
+
+/* Value cards: a printed catalog entry. Hairline navy rule, a bold gold top
+   keyline, faint deboss; lift slightly on hover. */
+[data-theme='civic'] .value-card {
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--color-navy) 16%, transparent);
+  border-top: 2.5px solid var(--color-gold);
+  background-color: color-mix(in srgb, var(--color-cream) 55%, #ffffff);
+  padding: 1.6rem 1.4rem 1.5rem;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-cream-deep) 60%, transparent);
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+[data-theme='civic'] .value-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--color-navy) 28%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-cream-deep) 60%, transparent),
+    0 10px 22px -14px color-mix(in srgb, var(--color-navy) 55%, transparent);
+}
+
+[data-theme='civic'] .value-icon {
+  color: var(--color-gold);
+}
+
+[data-theme='civic'] .value-title {
+  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--color-navy);
+}
+
+[data-theme='civic'] .value-body {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--color-ink) 74%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   4. EVENTS — PRINTED PROGRAM / TICKET CARDS
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .events {
+  background-color: var(--color-cream-deep);
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 640px) {
+  [data-theme='civic'] .events {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+
+[data-theme='civic'] .event-list {
+  margin-top: 3.25rem;
+  gap: 1.25rem;
+}
+
+/* Each event = a program ticket: ink hairline, faint deboss, and a perforated
+   gold hairline separating the date stub from the body (drawn with a dotted
+   border on the date block). */
+[data-theme='civic'] .event-card {
+  position: relative;
+  align-items: stretch;
+  border: 1px solid color-mix(in srgb, var(--color-navy) 18%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 65%, #ffffff);
+  padding: 1.25rem;
+  gap: 1.25rem;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-cream-deep) 55%, transparent);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+@media (min-width: 640px) {
+  [data-theme='civic'] .event-card {
+    padding: 1.4rem 1.6rem;
+    gap: 1.6rem;
+  }
+}
+
+[data-theme='civic'] .event-card:hover {
+  transform: translateX(2px);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-cream-deep) 55%, transparent),
+    0 8px 20px -14px color-mix(in srgb, var(--color-navy) 55%, transparent);
+}
+
+/* The date STAMP: stronger navy block, gold keyline, perforated right edge that
+   acts as the ticket tear line. */
+[data-theme='civic'] .event-date {
+  position: relative;
+  width: 4.5rem;
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  padding: 0.75rem 0.5rem;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-gold) 38%, transparent);
+}
+
+/* perforation: a dotted gold rule just inside the card between stub and body */
+[data-theme='civic'] .event-date::after {
+  content: '';
+  position: absolute;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  right: -0.7rem;
+  border-left: 2px dotted color-mix(in srgb, var(--color-gold) 75%, transparent);
+}
+
+[data-theme='civic'] .event-date-mon {
+  color: var(--color-gold);
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  font-size: 0.65rem;
+}
+
+[data-theme='civic'] .event-date-day {
+  margin-top: 0.1rem;
+  font-weight: 700;
+  font-size: 2.1rem;
+  line-height: 1;
+  color: var(--color-cream);
+}
+
+[data-theme='civic'] .event-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--color-navy);
+}
+
+[data-theme='civic'] .event-meta {
+  margin-top: 0.35rem;
+  color: var(--color-brick-strong);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+}
+
+[data-theme='civic'] .event-body {
+  margin-top: 0.55rem;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--color-ink) 74%, transparent);
+}
+
+[data-theme='civic'] .event-card a[href] {
+  color: var(--color-navy);
+  text-decoration-color: color-mix(in srgb, var(--color-gold) 80%, transparent);
+  text-underline-offset: 4px;
+  transition: color 160ms ease;
+}
+
+[data-theme='civic'] .event-card a[href]:hover {
+  color: var(--color-brick-strong);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   5. GET INVOLVED — DARK NAVY BROADSIDE (signature move, inverted)
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .involve {
+  position: relative;
+  background-color: var(--color-navy);
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  [data-theme='civic'] .involve {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+
+/* Inverted double rule: a faint inset gold frame line on the band itself, so the
+   whole dark section reads as a pressed plate. Stays inside via inset + overflow
+   hidden on the section. */
+[data-theme='civic'] .involve::before {
+  content: '';
+  position: absolute;
+  inset: 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 28%, transparent);
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  [data-theme='civic'] .involve::before {
+    inset: 1.5rem;
+  }
+}
+
+[data-theme='civic'] .involve-eyebrow {
+  color: var(--color-gold);
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  margin-bottom: 0.9rem;
+}
+
+[data-theme='civic'] .involve-title {
+  font-weight: 700;
+  font-size: clamp(1.9rem, 4.5vw, 2.75rem);
+  line-height: 1.06;
+  color: var(--color-cream);
+}
+
+/* Reuse the tapered triple-rule motif on the dark band (gold reads on navy). */
+[data-theme='civic'] .involve-rule {
+  margin-top: 1.4rem;
+  gap: 0.85rem;
+}
+
+[data-theme='civic'] .involve-rule > span {
+  position: relative;
+  height: 1.5px;
+  width: 3.25rem;
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--color-gold) 75%, transparent)
+  );
+}
+
+[data-theme='civic'] .involve-rule > span:last-child {
+  background-image: linear-gradient(
+    to left,
+    transparent,
+    color-mix(in srgb, var(--color-gold) 75%, transparent)
+  );
+}
+
+[data-theme='civic'] .involve-rule > span:first-child::before,
+[data-theme='civic'] .involve-rule > span:last-child::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  background-color: var(--color-gold);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+[data-theme='civic'] .involve-rule > span:first-child::before {
+  left: 0;
+}
+
+[data-theme='civic'] .involve-rule > span:last-child::after {
+  right: 0;
+}
+
+[data-theme='civic'] .involve-rule svg {
+  color: var(--color-gold);
+}
+
+[data-theme='civic'] .involve-intro {
+  margin-top: 1.6rem;
+  max-width: 44ch;
+  font-size: 1.12rem;
+  line-height: 1.72;
+  color: color-mix(in srgb, var(--color-cream) 84%, transparent);
+}
+
+[data-theme='civic'] .involve-grid {
+  margin-top: 3.5rem;
+  gap: 1.5rem;
+}
+
+/* Outline plates with a gold top keyline that brightens on hover. */
+[data-theme='civic'] .involve-card {
+  border: 1px solid color-mix(in srgb, var(--color-cream) 18%, transparent);
+  border-top: 2.5px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 6%, transparent);
+  padding: 1.75rem 1.5rem;
+  transition: border-color 200ms ease, background-color 200ms ease, transform 200ms ease;
+}
+
+[data-theme='civic'] .involve-card:hover {
+  transform: translateY(-3px);
+  border-top-color: var(--color-gold);
+  border-color: color-mix(in srgb, var(--color-cream) 30%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 9%, transparent);
+}
+
+[data-theme='civic'] .involve-card-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--color-cream);
+}
+
+[data-theme='civic'] .involve-body {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--color-cream) 76%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   6. NEWSLETTER — QUIET SIGN-UP COUPON
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .newsletter {
+  background-color: var(--color-cream);
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 640px) {
+  [data-theme='civic'] .newsletter {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+
+[data-theme='civic'] .newsletter > div > p {
+  max-width: 46ch;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-ink) 80%, transparent);
+}
+
+/* The markup places the email link on its own line, so the source newline
+   between "Email" and the link collapses to nothing and the words touch. Restore
+   a single word space before the inline link (the trailing period is unaffected
+   because it follows the link in source). */
+[data-theme='civic'] .newsletter > div > p a {
+  margin-left: 0.25em;
+  color: var(--color-brick-strong);
+  text-underline-offset: 4px;
+  text-decoration-color: color-mix(in srgb, var(--color-gold) 80%, transparent);
+}
+
+/* Inputs: hairline navy rule, faint inset deboss, gold focus glow. */
+[data-theme='civic'] .newsletter input {
+  border: 1px solid color-mix(in srgb, var(--color-navy) 30%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 55%, #ffffff);
+  padding: 0.8rem 1rem;
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--color-navy) 10%, transparent);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+[data-theme='civic'] .newsletter input:focus {
+  border-color: var(--color-navy);
+  box-shadow:
+    inset 0 1px 2px color-mix(in srgb, var(--color-navy) 10%, transparent),
+    0 0 0 2px color-mix(in srgb, var(--color-gold) 35%, transparent);
+}
+
+[data-theme='civic'] .newsletter label {
+  color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+  letter-spacing: 0.14em;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   7. BUTTONS — CRISP LETTERPRESS KEYS
+   Tight radius, confident tracking, a subtle highlight/deboss so each button
+   reads like a pressed type slug; a small downward "press" on :active.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .btn {
+  border-radius: 1px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease,
+    box-shadow 180ms ease, transform 120ms ease;
+}
+
+[data-theme='civic'] .btn:active {
+  transform: translateY(1px);
+}
+
+[data-theme='civic'] .btn--solid {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-cream) 18%, transparent),
+    0 1px 0 color-mix(in srgb, var(--color-navy-deep) 90%, transparent);
+}
+
+[data-theme='civic'] .btn--solid:hover {
+  background-color: var(--color-navy-deep);
+}
+
+/* Ghost: ink hairline outline, fills to navy on hover (classic broadside). */
+[data-theme='civic'] .btn--ghost {
+  border: 1.5px solid color-mix(in srgb, var(--color-navy) 55%, transparent);
+  background-color: transparent;
+  color: var(--color-navy);
+}
+
+[data-theme='civic'] .btn--ghost:hover {
+  background-color: var(--color-navy);
+  border-color: var(--color-navy);
+  color: var(--color-cream);
+}
+
+/* Accent (on dark band): brick slug with a faint top highlight. */
+[data-theme='civic'] .btn--accent {
+  background-color: var(--color-brick);
+  color: var(--color-cream);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-cream) 16%, transparent),
+    0 1px 0 color-mix(in srgb, var(--color-brick-strong) 90%, transparent);
+}
+
+[data-theme='civic'] .btn--accent:hover {
+  background-color: var(--color-brick-strong);
+}
+
+/* Newsletter submit (a real <button>, not .btn) — match the solid key. */
+[data-theme='civic'] .newsletter button[type='submit'] {
+  border-radius: 1px;
+  letter-spacing: 0.12em;
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-cream) 18%, transparent),
+    0 1px 0 color-mix(in srgb, var(--color-navy-deep) 90%, transparent);
+  transition: background-color 180ms ease, transform 120ms ease;
+}
+
+[data-theme='civic'] .newsletter button[type='submit']:hover {
+  background-color: var(--color-navy-deep);
+}
+
+[data-theme='civic'] .newsletter button[type='submit']:active {
+  transform: translateY(1px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   8. FOOTER — THE COLOPHON
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .site-footer {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  position: relative;
+}
+
+/* fine gold hairline at the very top of the footer, like a printer's rule */
+[data-theme='civic'] .site-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--color-gold) 55%, transparent) 18%,
+    color-mix(in srgb, var(--color-gold) 55%, transparent) 82%,
+    transparent
+  );
+}
+
+[data-theme='civic'] .site-footer h3 {
+  color: var(--color-gold);
+  letter-spacing: 0.2em;
+}
+
+[data-theme='civic'] .site-footer a:hover {
+  color: var(--color-cream);
+}
