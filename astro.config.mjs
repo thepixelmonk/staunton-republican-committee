@@ -18,8 +18,8 @@ export default defineConfig({
   //   • User/org root page   → https://<user>.github.io/  (repo named <user>.github.io)
   //       site: 'https://<user>.github.io'   (delete the `base` line)
   //
-  // TODO: replace `example` with your GitHub username, and confirm the repo name.
-  site: 'https://example.github.io',
+  // Live project page: https://thepixelmonk.github.io/staunton-republican-committee/
+  site: 'https://thepixelmonk.github.io',
   base: '/staunton-republican-committee',
 
   integrations: [svelte()],
