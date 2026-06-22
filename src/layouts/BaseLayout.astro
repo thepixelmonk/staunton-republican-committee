@@ -4,10 +4,16 @@ import '@fontsource/zilla-slab/500.css';
 import '@fontsource/zilla-slab/600.css';
 import '@fontsource/zilla-slab/700.css';
 import '@fontsource-variable/source-sans-3';
+// Fonts for the alternate design directions (see ThemeSwitcher).
+import '@fontsource-variable/big-shoulders';
+import '@fontsource-variable/hanken-grotesk';
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/inter';
 import '../styles/global.css';
 
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ThemeSwitcher from '../components/ThemeSwitcher.svelte';
 import { site, url } from '../data/site';
 
 interface Props {
@@ -22,10 +28,21 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : As
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="civic">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Apply the saved design direction before paint to avoid a flash. */}
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('src-theme');
+          document.documentElement.dataset.theme = t || 'civic';
+        } catch (e) {
+          document.documentElement.dataset.theme = 'civic';
+        }
+      })();
+    </script>
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     {
@@ -56,6 +73,19 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : As
     >
       Skip to content
     </a>
+
+    <!-- Demo: live design-direction selector (remove once a direction is chosen) -->
+    <div class="border-b border-navy/15 bg-cream-deep print:hidden">
+      <div
+        class="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-4 gap-y-1.5 px-6 py-2 sm:justify-start"
+      >
+        <span class="font-body text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-ink/60">
+          Preview a design direction
+        </span>
+        <ThemeSwitcher client:load />
+      </div>
+    </div>
+
     <Header />
     <main id="main" class="flex-1">
       <slot />

@@ -57,3 +57,42 @@
     scroll-behavior: auto;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Alternate design directions — toggled at runtime via [data-theme] on <html>
+   (see ThemeSwitcher.svelte). The @theme block above is "Letterpress Civic"
+   (the default). These override the SAME token slots, so every utility and
+   base style re-skins automatically. Unlayered → they win over Tailwind's
+   layered :root defaults.
+
+   NOTE: this is a demo selector. Once a direction is chosen, keep only that
+   palette/fonts, delete the other blocks + ThemeSwitcher, and drop the unused
+   @fontsource imports.
+   ───────────────────────────────────────────────────────────────────────── */
+[data-theme='gothic'] {
+  --color-cream: #f2ecdd;
+  --color-cream-deep: #e7dfca;
+  --color-ink: #222a2e;
+  --color-navy: #2c3e52;
+  --color-navy-deep: #213039;
+  --color-brick: #b0524b;
+  --color-brick-strong: #8c3f39;
+  --color-gold: #d9b26a;
+  --color-stone: #586453;
+  --font-display: 'Big Shoulders Variable', 'Arial Narrow', sans-serif;
+  --font-body: 'Hanken Grotesk Variable', system-ui, sans-serif;
+}
+
+[data-theme='capitol'] {
+  --color-cream: #f6f1e7;
+  --color-cream-deep: #ece5d4;
+  --color-ink: #211d17;
+  --color-navy: #1c2b4a;
+  --color-navy-deep: #14213b;
+  --color-brick: #9e3b34;
+  --color-brick-strong: #8a322c;
+  --color-gold: #b08a3e;
+  --color-stone: #6d665b;
+  --font-display: 'Fraunces Variable', Georgia, serif;
+  --font-body: 'Inter Variable', system-ui, sans-serif;
+}
