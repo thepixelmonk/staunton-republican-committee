@@ -15,17 +15,12 @@ import { site } from '../data/site';
   <Events />
   <GetInvolved />
 
-  <section id="contact" class="newsletter bg-cream py-20 sm:py-28">
+  <section id="contact" class="newsletter py-20 sm:py-28">
     <div class="mx-auto max-w-6xl px-6">
       <SectionHeading eyebrow="Stay Connected" title="Join Our Newsletter" />
-      <p class="mx-auto mt-6 max-w-2xl text-center font-body text-lg leading-relaxed text-ink/80">
-        Get committee news, event invitations, and ways to help — straight to your inbox. Prefer to
-        reach us directly? Email
-        <a
-          href={`mailto:${site.contact.email}`}
-          class="font-semibold text-brick-strong underline underline-offset-4 hover:text-brick"
-          >{site.contact.email}</a
-        >.
+      <p class="nl-blurb mx-auto mt-6 max-w-2xl text-center font-body text-lg leading-relaxed">
+        Prefer to reach us directly? Email{' '}
+        <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.
       </p>
       <div class="mt-10">
         <Newsletter client:visible />

@@ -1,35 +1,43 @@
 ---
-import Star from './Star.astro';
 import Button from './Button.astro';
 import { site } from '../data/site';
+
+// Flat, 2-color screenprint WPA glyphs — one per involvement card, in order.
+// Decorative (aria-hidden); drawn in currentColor so the chip tints them gold.
+const icons = [
+  // Volunteer — raised hand / pledge
+  '<path d="M12 2.2c-.9 0-1.6.7-1.6 1.6v6.1H9.2V5.1c0-.9-.7-1.6-1.6-1.6S6 4.2 6 5.1v8.4l-1.4-1.6c-.6-.7-1.6-.7-2.2-.1-.6.6-.7 1.5-.2 2.2l3.6 4.8c.8 1.1 2.1 1.7 3.5 1.7h4.1c2.4 0 4.4-2 4.4-4.4V8c0-.9-.7-1.6-1.6-1.6s-1.6.7-1.6 1.6v2h-.9V5.6c0-.9-.7-1.6-1.6-1.6s-1.6.7-1.6 1.6v4.3h-.9V3.8c0-.9-.7-1.6-1.6-1.6Z"/>',
+  // Attend a Meeting — calendar
+  '<path d="M7 2.5a1 1 0 0 1 1 1v1h8v-1a1 1 0 1 1 2 0v1h1.2A1.8 1.8 0 0 1 22 6.3v13.4A1.8 1.8 0 0 1 20.2 21.5H3.8A1.8 1.8 0 0 1 2 19.7V6.3a1.8 1.8 0 0 1 1.8-1.8H5v-1a1 1 0 0 1 1-1ZM4 9.5v10.2c0 .1.1.2.2.2h15.6c.1 0 .2-.1.2-.2V9.5Zm3 2.8h3v3H7Z"/>',
+  // Spread the Word — megaphone
+  '<path d="M3.5 9.2A1.8 1.8 0 0 0 1.7 11v2A1.8 1.8 0 0 0 3.5 14.8h1.1l1.4 4.3a1.4 1.4 0 0 0 1.3.95h.8a1.1 1.1 0 0 0 1.05-1.45l-1.2-3.8 9 4V5.2l-9 4Zm17.3-1.1c-.5-.3-1.2-.1-1.5.4-.3.5-.1 1.2.4 1.5.5.3.8.9.8 1.5s-.3 1.2-.8 1.5c-.5.3-.7 1-.4 1.5.3.5 1 .7 1.5.4 1.1-.7 1.8-1.95 1.8-3.4s-.7-2.7-1.8-3.4Z"/>',
+];
 ---
 
-<section id="get-involved" class="involve bg-navy py-20 sm:py-28">
+<section id="get-involved" class="involve py-20 sm:py-28">
   <div class="mx-auto max-w-6xl px-6">
     <div class="involve-heading text-center">
-      <p class="involve-eyebrow mb-3 font-body text-xs font-semibold uppercase tracking-[0.18em] text-gold">
-        Join Us
-      </p>
-      <h2 class="involve-title font-display text-3xl font-bold text-cream sm:text-4xl">Get Involved</h2>
-      <div class="involve-rule mt-5 flex items-center justify-center gap-3">
-        <span class="h-px w-10 bg-gold/60"></span>
-        <Star size={14} class="text-gold" />
-        <span class="h-px w-10 bg-gold/60"></span>
+      <p class="involve-eyebrow mb-3 font-body text-xs uppercase">Join Us</p>
+      <h2 class="involve-title font-display">Get Involved</h2>
+      <div class="involve-rule mt-5 flex items-center justify-center gap-3" aria-hidden="true">
+        <span class="h-px w-10"></span>
+        <span class="h-px w-10"></span>
       </div>
     </div>
 
-    <p class="involve-intro mx-auto mt-6 max-w-2xl text-center font-body text-lg leading-relaxed text-cream/80">
+    <p class="involve-intro mx-auto mt-6 max-w-2xl text-center font-body text-lg leading-relaxed">
       There's a place for every neighbor here. Whether you have an hour or an evening,
       your time and voice help build a stronger Staunton.
     </p>
 
     <div class="involve-grid mt-14 grid gap-6 sm:grid-cols-3">
       {
-        site.getInvolved.map((item) => (
-          <div class="involve-card flex flex-col rounded-[2px] border border-cream/15 bg-cream/5 p-6">
-            <h3 class="involve-card-title font-display text-xl font-semibold text-cream">{item.title}</h3>
-            <p class="involve-body mt-2 flex-1 font-body text-sm leading-relaxed text-cream/75">{item.body}</p>
-            <div class="mt-5">
+        site.getInvolved.map((item, i) => (
+          <div class="involve-card flex flex-col">
+            <span class="involve-ico" aria-hidden="true" set:html={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">${icons[i]}</svg>`} />
+            <h3 class="involve-card-title font-display text-xl">{item.title}</h3>
+            <p class="involve-body mt-2 flex-1 font-body text-sm leading-relaxed">{item.body}</p>
+            <div class="involve-cta">
               <Button href={item.cta.href} variant="accent" size="sm">
                 {item.cta.label}
               </Button>

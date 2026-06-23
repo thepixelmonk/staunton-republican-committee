@@ -1,7 +1,21 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import Star from './Star.astro';
 import { site } from '../data/site';
+
+// ─────────────────────────────────────────────────────────────────────────
+// WPA / silkscreen line-icon set — one geometric, flat, two-tone emblem per
+// value, drawn to read like a printed poster stamp. Decorative → aria-hidden.
+// Keyed by value title so the data file stays copy-only. Falls back to the
+// shield if a title isn't matched.
+// ─────────────────────────────────────────────────────────────────────────
+type IconKey = 'liberty' | 'community' | 'opportunity' | 'integrity';
+
+const ICON_FOR: Record<string, IconKey> = {
+  Liberty: 'liberty',
+  Community: 'community',
+  Opportunity: 'opportunity',
+  Integrity: 'integrity',
+};
 ---
 
 <section id="about" class="mission py-20 sm:py-28">
@@ -14,13 +28,104 @@ import { site } from '../data/site';
 
     <div class="value-grid mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {
-        site.values.map((value) => (
-          <div class="value-card rounded-[2px] border border-navy/10 bg-cream p-6">
-            <Star size={20} class="value-icon text-gold" />
-            <h3 class="value-title mt-4 font-display text-xl font-semibold text-navy">{value.title}</h3>
-            <p class="value-body mt-2 font-body text-sm leading-relaxed text-ink/75">{value.body}</p>
-          </div>
-        ))
+        site.values.map((value) => {
+          const key = ICON_FOR[value.title] ?? 'integrity';
+          return (
+            <div class="value-card" data-icon={key}>
+              <span class="value-icon" aria-hidden="true">
+                {key === 'liberty' && (
+                  /* Torch of liberty — handle, flared cup, flat flame tongues */
+                  <svg class="value-glyph" viewBox="0 0 48 48" fill="none">
+                    <path
+                      class="g-line"
+                      d="M24 22 L24 41 M19 41 L29 41"
+                      stroke-width="2.6"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      class="g-fill"
+                      d="M16 22 H32 L29.5 26 H18.5 Z"
+                    />
+                    <path
+                      class="g-flame"
+                      d="M24 4 C20 9 21 13 18 15 C18 9 16 12 15 16 C14.5 19.5 17 22 24 22 C31 22 33.5 19.5 33 16 C32 12 30 9 30 15 C27 13 28 9 24 4 Z"
+                    />
+                    <path
+                      class="g-spark"
+                      d="M24 9 C22.5 12 23 15 24 18 C25 15 25.5 12 24 9 Z"
+                    />
+                  </svg>
+                )}
+                {key === 'community' && (
+                  /* Three neighbors — heads + shoulders, clustered */
+                  <svg class="value-glyph" viewBox="0 0 48 48" fill="none">
+                    <circle class="g-fill" cx="24" cy="13" r="5.4" />
+                    <path
+                      class="g-fill"
+                      d="M13 40 C13 31 18 28 24 28 C30 28 35 31 35 40 Z"
+                    />
+                    <circle class="g-line-fill" cx="11" cy="18" r="4" />
+                    <path
+                      class="g-line-fill"
+                      d="M3 40 C3 33 6.5 31 11 31 C12.7 31 14.2 31.3 15.5 32"
+                      stroke-width="2.4"
+                      stroke-linecap="round"
+                      fill="none"
+                    />
+                    <circle class="g-line-fill" cx="37" cy="18" r="4" />
+                    <path
+                      class="g-line-fill"
+                      d="M45 40 C45 33 41.5 31 37 31 C35.3 31 33.8 31.3 32.5 32"
+                      stroke-width="2.4"
+                      stroke-linecap="round"
+                      fill="none"
+                    />
+                  </svg>
+                )}
+                {key === 'opportunity' && (
+                  /* Rising sun + rays over a field of wheat */
+                  <svg class="value-glyph" viewBox="0 0 48 48" fill="none">
+                    <path
+                      class="g-line"
+                      d="M24 6 V11 M11 12 L14.5 15.5 M37 12 L33.5 15.5 M5 25 H10 M43 25 H38"
+                      stroke-width="2.4"
+                      stroke-linecap="round"
+                    />
+                    <path class="g-fill" d="M11 26 A13 13 0 0 1 37 26 Z" />
+                    <path
+                      class="g-line"
+                      d="M4 30 H44 M4 35 H44 M4 40 H44"
+                      stroke-width="2.4"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      class="g-flame"
+                      d="M24 28 L24 44 M24 33 L20 30 M24 33 L28 30 M24 38 L20 35 M24 38 L28 35"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                      fill="none"
+                    />
+                  </svg>
+                )}
+                {key === 'integrity' && (
+                  /* Shield with a centered five-point star */
+                  <svg class="value-glyph" viewBox="0 0 48 48" fill="none">
+                    <path
+                      class="g-fill"
+                      d="M24 4 L40 9 V23 C40 33 33 40 24 44 C15 40 8 33 8 23 V9 Z"
+                    />
+                    <path
+                      class="g-flame"
+                      d="M24 13 L26.6 21 L35 21 L28.2 26 L30.8 34 L24 29 L17.2 34 L19.8 26 L13 21 L21.4 21 Z"
+                    />
+                  </svg>
+                )}
+              </span>
+              <h3 class="value-title">{value.title}</h3>
+              <p class="value-body">{value.body}</p>
+            </div>
+          );
+        })
       }
     </div>
   </div>

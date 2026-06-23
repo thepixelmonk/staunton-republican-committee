@@ -1,0 +1,515 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   HEARTLAND GOTHIC — SYSTEM + HEADER  (Specialist 2: the foundation)
+   data-theme='gothic'
+
+   This partial is the CANONICAL poster system every other section inherits:
+     • the paper ground (a very faint tooth) the whole poster is printed on
+     • the global TYPE scale (display gothic heads, stamped-label eyebrows)
+     • the four shared MOTIF recipes — FLAG-STRIPE, HALFTONE, HARD-SHADOW, BUTTON
+       — defined ONCE here so hero / events / involve / footer stay cohesive
+     • all site-wide section-heading hooks
+       (.section-heading, .section-eyebrow, .section-title, .section-rule)
+     • the masthead .site-header + nav
+
+   All color comes from themed tokens (var()/currentColor) — never hardcoded.
+   Every selector is scoped under [data-theme='gothic'].
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Poster tuning knobs (scoped) ─────────────────────────────────────────────
+   The ONE shadow + ONE easing curve the whole poster shares. Other partials
+   reference these vars so a press feels identical everywhere. */
+[data-theme='gothic'] {
+  --g-shadow: 6px 6px 0 0 var(--color-navy-deep);
+  /* press shadow + easing are the ONE shared recipe; modules.css and
+     engagement.css mirror these exact values so the press feels identical
+     regardless of partial load order (resting 6px → press 9px). */
+  --g-shadow-press: 9px 9px 0 0 var(--color-navy-deep);
+  --g-shadow-gold: 6px 6px 0 0 var(--color-ink);     /* hard shadow on gold grounds */
+  --g-ease: 130ms cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  /* the flag-stripe band proportions, reused by every stripe in the poster */
+  --g-stripe: linear-gradient(
+    to bottom,
+    var(--color-brick) 0 40%,
+    var(--color-gold) 40% 70%,
+    var(--color-navy) 70% 100%
+  );
+  /* the same stripe painted horizontally for the short section rules */
+  --g-stripe-h: linear-gradient(
+    to right,
+    var(--color-brick) 0 40%,
+    var(--color-gold) 40% 70%,
+    var(--color-navy) 70% 100%
+  );
+
+  --g-header-h: 4.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAPER GROUND — a very faint printing tooth.
+   Two near-invisible layers: a sparse fleck + a soft cross-mottle. Keeps the
+   cream from reading as a flat web swatch without ever competing with content.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] body {
+  background-color: var(--color-cream);
+  /* two near-invisible fleck layers, tinted from tokens via color-mix so the
+     tooth stays a whisper and never competes with content. */
+  background-image:
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-ink) 3.5%, transparent) 0.5px,
+      transparent 0.6px
+    ),
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-stone) 3%, transparent) 0.5px,
+      transparent 0.6px
+    );
+  background-size: 5px 5px, 9px 9px;
+  background-position: 0 0, 3px 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTIF 1 — HALFTONE / BEN-DAY FIELD  (canonical recipe)
+   Any panel that wants the screenprinted-ink feel adds .has-halftone (and is
+   position:relative). The dots inherit currentColor so the caller controls the
+   ink tone; dark panels typically scope currentColor to cream, gold panels to
+   navy/ink. Always subtle, always 6px grid, pointer-events off, behind content.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .has-halftone {
+  position: relative;
+}
+[data-theme='gothic'] .has-halftone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
+  background-size: 6px 6px;
+  opacity: 0.1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTIF 2 — FLAG-STRIPE  (canonical recipe)
+   Vertical brick→gold→navy band stack. Two reusable hooks:
+     .flag-stripe        a full-width ~8px bar (hero top edge, footer top edge)
+     .section-rule       the short bar that sits under every section heading
+   Both share the identical --g-stripe DNA so they read as the same ink.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .flag-stripe {
+  display: block;
+  width: 100%;
+  height: 8px;
+  background: var(--g-stripe);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLOBAL TYPE — tall condensed poster lettering
+   Headlines: Big Shoulders, UPPERCASE, weight 800–900, tracking −0.01em, lh 0.9.
+   Eyebrows / labels: uppercase, weight 700, tracking 0.18em, 0.72rem.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] h1,
+[data-theme='gothic'] h2,
+[data-theme='gothic'] h3,
+[data-theme='gothic'] h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+[data-theme='gothic'] body {
+  font-family: var(--font-body);
+  line-height: 1.55;
+}
+
+/* the canonical big-head treatment, shared by every section title + hero */
+[data-theme='gothic'] .section-title,
+[data-theme='gothic'] .hero-title,
+[data-theme='gothic'] .involve-title {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  font-stretch: condensed;
+  text-wrap: balance;
+}
+
+/* section titles — clamp(1.9rem, 4vw, 2.9rem) per the shared system */
+[data-theme='gothic'] .section-title,
+[data-theme='gothic'] .involve-title {
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+  color: var(--color-navy);
+}
+
+/* the canonical eyebrow / stamped label, shared everywhere */
+[data-theme='gothic'] .section-eyebrow,
+[data-theme='gothic'] .hero-eyebrow,
+[data-theme='gothic'] .involve-eyebrow {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  color: var(--color-brick-strong); /* on light grounds; dark panels override → gold */
+}
+
+/* card / small heads — condensed, heavy, legible small */
+[data-theme='gothic'] .value-title,
+[data-theme='gothic'] .event-title,
+[data-theme='gothic'] .involve-card-title {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.005em;
+  line-height: 0.95;
+  font-stretch: condensed;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION HEADINGS — consistent vertical rhythm site-wide
+   eyebrow → title → flag-stripe rule, with steady gaps.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .section-heading {
+  display: flex;
+  flex-direction: column;
+}
+[data-theme='gothic'] .section-heading .section-eyebrow {
+  margin-bottom: 0.75rem;
+}
+
+/* MOTIF 2b — the section rule IS the flag-stripe (replaces any star rule).
+   A short horizontal brick→gold→navy bar, identical DNA to the hero/footer
+   top edges. Hide any inline spans/svg the markup ships (old star rule). */
+[data-theme='gothic'] .section-rule,
+[data-theme='gothic'] .involve-rule {
+  position: relative;
+  width: 96px;
+  height: 8px;
+  margin-top: 1.4rem;
+  padding: 0;
+  border: none;
+  background: var(--g-stripe-h);
+}
+[data-theme='gothic'] .section-rule > *,
+[data-theme='gothic'] .involve-rule > * {
+  display: none;
+}
+/* center the rule when the heading block is centered */
+[data-theme='gothic'] .section-heading.text-center,
+[data-theme='gothic'] .section-heading.items-center {
+  align-items: center;
+}
+[data-theme='gothic'] .section-heading.text-center .section-rule {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTIF 3 — HARD POSTER SHADOW + PRESS  (canonical recipe)
+   Any element that carries the poster shadow + satisfying press uses
+   .has-press. Resting → 6px ink shadow; hover lifts up-left & grows to 8px;
+   active slams to 0,0 with no shadow. Motion is gated on reduced-motion.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .has-press {
+  box-shadow: var(--g-shadow);
+  transition:
+    transform var(--g-ease),
+    box-shadow var(--g-ease);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .has-press:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--g-shadow-press);
+  }
+  [data-theme='gothic'] .has-press:active {
+    transform: translate(0, 0);
+    box-shadow: 0 0 0 0 var(--color-navy-deep);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTIF 4 — BUTTONS  (canonical recipe)
+   Square, uppercase, weight 700, tracking 0.08em, chunky pad, hard shadow,
+   satisfying press. Variants: --solid (navy/cream), --accent (brick/cream),
+   --ghost (outline). Gold buttons (hero) are styled in the hero partial.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.85rem 1.7rem;
+  box-shadow: var(--g-shadow);
+  transition:
+    transform var(--g-ease),
+    box-shadow var(--g-ease),
+    background-color 160ms ease,
+    color 160ms ease;
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .btn {
+    padding: 0.95rem 2rem;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--g-shadow-press);
+  }
+  [data-theme='gothic'] .btn:active {
+    transform: translate(0, 0);
+    box-shadow: 0 0 0 0 var(--color-navy-deep);
+  }
+}
+
+/* Solid — navy on a light ground */
+[data-theme='gothic'] .btn--solid {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+}
+[data-theme='gothic'] .btn--solid:hover {
+  background-color: var(--color-navy-deep);
+  color: var(--color-cream);
+}
+
+/* Accent — brick-strong fill so the small cream label clears WCAG AA
+   (cream on brick-strong ≈ 6.2:1; the lighter brick was only ~4.3:1). */
+[data-theme='gothic'] .btn--accent {
+  background-color: var(--color-brick-strong);
+  color: var(--color-cream);
+}
+[data-theme='gothic'] .btn--accent:hover {
+  background-color: var(--color-brick-strong);
+  color: var(--color-cream);
+}
+
+/* Ghost — thick stamped outline, brick hard shadow, fills navy on hover */
+[data-theme='gothic'] .btn--ghost {
+  background-color: transparent;
+  color: var(--color-navy);
+  border: 2px solid var(--color-navy);
+  box-shadow: 6px 6px 0 0 var(--color-brick);
+}
+[data-theme='gothic'] .btn--ghost:hover {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .btn--ghost:hover {
+    box-shadow: 8px 8px 0 0 var(--color-brick);
+  }
+  [data-theme='gothic'] .btn--ghost:active {
+    box-shadow: 0 0 0 0 var(--color-brick);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MASTHEAD — the poster's top bar
+   A thin flag-stripe accent at the very top edge, a strong Seal + condensed
+   wordmark lockup, nav links with a poster underline-wipe on hover, and a
+   chunky square CTA. Sticky, legible, AA.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: var(--color-cream);
+  /* thick navy base rule + a thin gold underline echo the poster palette */
+  border-bottom: 3px solid var(--color-navy);
+  box-shadow: 0 3px 0 0 var(--color-gold);
+}
+
+/* the flag-stripe accent that caps the very top edge of the poster */
+[data-theme='gothic'] .site-header .flag-stripe {
+  height: 6px;
+}
+
+[data-theme='gothic'] .site-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--g-header-h);
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+/* SEAL + WORDMARK LOCKUP */
+[data-theme='gothic'] .masthead-lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-navy);
+  min-width: 0;
+}
+/* the seal sits in a small stamped square so it reads as a printed badge */
+[data-theme='gothic'] .masthead-seal {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--color-cream);
+  background-color: var(--color-navy);
+  padding: 0.3rem;
+  box-shadow: 3px 3px 0 0 var(--color-brick);
+}
+[data-theme='gothic'] .masthead-wordmark {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 0.92;
+}
+[data-theme='gothic'] .masthead-name {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 800;
+  font-stretch: condensed;
+  letter-spacing: -0.005em;
+  line-height: 0.86;
+  color: var(--color-navy);
+  font-size: 1.0rem;
+}
+@media (min-width: 400px) {
+  [data-theme='gothic'] .masthead-name {
+    font-size: 1.2rem;
+  }
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .masthead-name {
+    font-size: 1.45rem;
+  }
+}
+[data-theme='gothic'] .masthead-city {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  font-size: 0.58rem;
+  color: var(--color-brick-strong);
+  margin-top: 0.18rem;
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .masthead-city {
+    font-size: 0.62rem;
+  }
+}
+
+/* PRIMARY NAV */
+[data-theme='gothic'] .masthead-nav {
+  display: none;
+  align-items: center;
+  gap: 1.75rem;
+}
+@media (min-width: 768px) {
+  [data-theme='gothic'] .masthead-nav {
+    display: flex;
+  }
+}
+
+/* nav links — poster underline-WIPE: a brick rule grows L→R on hover */
+[data-theme='gothic'] .masthead-nav a:not(.btn) {
+  position: relative;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-size: 0.82rem;
+  color: var(--color-ink);
+  padding-bottom: 0.2rem;
+}
+[data-theme='gothic'] .masthead-nav a:not(.btn)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 3px;
+  background: var(--color-brick);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .masthead-nav a:not(.btn)::after {
+    transition: right var(--g-ease);
+  }
+}
+[data-theme='gothic'] .masthead-nav a:not(.btn):hover {
+  color: var(--color-brick-strong);
+}
+[data-theme='gothic'] .masthead-nav a:not(.btn):hover::after,
+[data-theme='gothic'] .masthead-nav a:not(.btn):focus-visible::after {
+  right: 0;
+}
+[data-theme='gothic'] .masthead-nav a:not(.btn):focus-visible {
+  outline: 2px solid var(--color-brick);
+  outline-offset: 3px;
+}
+
+/* the masthead CTA — a compact chunky square stamp */
+[data-theme='gothic'] .masthead-nav .btn {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.78rem;
+  box-shadow: 4px 4px 0 0 var(--color-navy-deep);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .masthead-nav .btn:hover {
+    box-shadow: 6px 6px 0 0 var(--color-navy-deep);
+  }
+}
+
+/* MOBILE TRIGGER — match the poster: square, navy outline, hard brick drop */
+[data-theme='gothic'] .masthead-mobile {
+  display: flex;
+}
+@media (min-width: 768px) {
+  [data-theme='gothic'] .masthead-mobile {
+    display: none;
+  }
+}
+[data-theme='gothic'] .masthead-mobile button {
+  border-radius: 0;
+  border: 2px solid var(--color-navy);
+  color: var(--color-navy);
+  box-shadow: 3px 3px 0 0 var(--color-brick);
+  transition:
+    transform var(--g-ease),
+    box-shadow var(--g-ease),
+    background-color 160ms ease,
+    color 160ms ease;
+}
+[data-theme='gothic'] .masthead-mobile button:hover {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .masthead-mobile button:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 0 var(--color-brick);
+  }
+  [data-theme='gothic'] .masthead-mobile button:active {
+    transform: translate(0, 0);
+    box-shadow: 0 0 0 0 var(--color-brick);
+  }
+}
+/* the mobile drop panel — squared poster sheet with a navy base rule.
+   MobileNav ships the panel at top:4rem (top-16); our masthead is the 6px
+   stripe + var(--g-header-h) bar, so re-anchor the panel flush under it. */
+[data-theme='gothic'] .masthead-mobile #mobile-menu {
+  top: calc(var(--g-header-h) + 6px);
+  border-bottom: 3px solid var(--color-navy);
+  box-shadow: 0 3px 0 0 var(--color-gold);
+}
+[data-theme='gothic'] .masthead-mobile #mobile-menu a {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+[data-theme='gothic'] .masthead-mobile #mobile-menu a:last-child {
+  border-radius: 0;
+  box-shadow: 4px 4px 0 0 var(--color-brick);
+}

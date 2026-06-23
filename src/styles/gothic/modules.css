@@ -1,0 +1,422 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   HEARTLAND GOTHIC — MODULES: VALUE PANELS + EVENT TICKETS
+   data-theme='gothic'  ·  Specialist 3 partial (src/styles/gothic/modules.css)
+
+   Owns the two content modules that make the poster feel printed and civic:
+
+     MISSION  — four numbered SCREENPRINT PANELS (gold 01–04) on navy ground,
+                each carrying the shared halftone field + hard ink shadow, and a
+                framed WPA line-emblem stamp (torch / neighbors / sunrise+wheat /
+                star shield) drawn from 2–3 token inks.
+
+     EVENTS   — a wheat band of poster ADMISSION TICKETS: a bold navy date stub
+                punched off the body by a perforated dashed seam with round
+                notches top + bottom, a "NO. 0X" press stamp, the shared hard
+                shadow, and a satisfying hover press.
+
+   Self-contained on purpose: carries forward every hook this module needs
+   (halftone, flag-stripe DNA, the one shared shadow) so it reads correctly
+   however the gothic partials are assembled. All color is themed tokens —
+   no hardcoded hex. All selectors scoped under [data-theme='gothic'].
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Shared poster knobs (re-declared so this partial stands alone) ────────── */
+[data-theme='gothic'] {
+  --g-shadow: 6px 6px 0 0 var(--color-navy-deep);
+  --g-shadow-press: 9px 9px 0 0 var(--color-navy-deep);
+  --g-ease: 130ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MISSION — section frame + intro
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .mission {
+  background-color: var(--color-cream);
+}
+
+[data-theme='gothic'] .section-intro {
+  font-weight: 500;
+  color: color-mix(in srgb, var(--color-ink) 82%, transparent);
+}
+
+/* ── VALUE GRID — numbered screenprint panels ─────────────────────────────── */
+[data-theme='gothic'] .value-grid {
+  counter-reset: value;
+}
+
+[data-theme='gothic'] .value-card {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  border-radius: 0;
+  background-color: var(--color-navy);
+  padding: 2.25rem 1.6rem 1.7rem;
+  box-shadow: var(--g-shadow);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .value-card {
+    transition:
+      transform var(--g-ease),
+      box-shadow var(--g-ease);
+  }
+  [data-theme='gothic'] .value-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--g-shadow-press);
+  }
+}
+
+/* halftone ben-day ink field on the navy panel (light dots) */
+[data-theme='gothic'] .value-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  color: var(--color-cream);
+  background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
+  background-size: 7px 7px;
+  opacity: 0.06;
+}
+
+/* big stamped index numeral, top-right of each panel (01–04) */
+[data-theme='gothic'] .value-card::before {
+  counter-increment: value;
+  content: counter(value, decimal-leading-zero);
+  position: absolute;
+  top: 0.6rem;
+  right: 1rem;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: condensed;
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--color-gold);
+  /* quiet stamp, but kept comfortably ≥3:1 on navy for the large numeral
+     (gold@75% ~= 3.8:1; the prior 0.62 sat at a borderline 3.1:1) */
+  opacity: 0.75;
+}
+
+/* lift real content above the ink field */
+[data-theme='gothic'] .value-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── ICON STAMP — framed gold-outlined badge holding the WPA emblem ───────── */
+[data-theme='gothic'] .value-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border: 2px solid var(--color-gold);
+  background-color: var(--color-navy-deep);
+  /* tiny hard drop ties the badge to the poster shadow language */
+  box-shadow: 3px 3px 0 0 var(--color-navy-deep);
+}
+[data-theme='gothic'] .value-glyph {
+  width: 1.9rem;
+  height: 1.9rem;
+  display: block;
+}
+
+/* ── EMBLEM INK ROLES — every glyph is built from these 2–3 token inks ────── */
+/* gold stroke lines (torch handle, sun rays, wheat rows) */
+[data-theme='gothic'] .value-glyph .g-line {
+  stroke: var(--color-gold);
+  fill: none;
+}
+/* gold solid masses (torch cup, neighbor torsos, sun disc, shield body) */
+[data-theme='gothic'] .value-glyph .g-fill {
+  fill: var(--color-gold);
+}
+/* secondary cream ink — the side neighbors read as a lighter print layer */
+[data-theme='gothic'] .value-glyph .g-line-fill {
+  fill: var(--color-cream);
+  stroke: var(--color-cream);
+  opacity: 0.85;
+}
+/* brick accent ink — the "live" element: flame, star, growth strokes */
+[data-theme='gothic'] .value-glyph .g-flame {
+  fill: var(--color-brick);
+  stroke: var(--color-brick);
+}
+[data-theme='gothic'] .value-glyph .g-spark {
+  fill: var(--color-gold);
+  opacity: 0.9;
+}
+
+/* the opportunity emblem uses brick strokes (no fill) for the rising sprout */
+[data-theme='gothic'] .value-card[data-icon='opportunity'] .value-glyph .g-flame {
+  fill: none;
+}
+
+/* ── TITLE / BODY HIERARCHY ───────────────────────────────────────────────── */
+[data-theme='gothic'] .value-title {
+  margin-top: 1.05rem;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 800;
+  font-stretch: condensed;
+  font-size: 1.5rem;
+  line-height: 0.95;
+  letter-spacing: 0.005em;
+  color: var(--color-cream);
+}
+[data-theme='gothic'] .value-body {
+  margin-top: 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EVENTS — wheat band; cards as poster ADMISSION TICKETS
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .events {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-gold);
+}
+
+/* darker halftone field for the warm wheat band */
+[data-theme='gothic'] .events::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  color: var(--color-navy-deep);
+  background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
+  background-size: 7px 7px;
+  opacity: 0.08;
+}
+/* lift heading + ticket list above the ink field */
+[data-theme='gothic'] .events > div {
+  position: relative;
+  z-index: 1;
+}
+
+/* dark, AA-safe heading ink on the wheat ground */
+[data-theme='gothic'] .events .section-eyebrow,
+[data-theme='gothic'] .events .section-title {
+  color: var(--color-navy-deep);
+}
+[data-theme='gothic'] .events-empty {
+  color: color-mix(in srgb, var(--color-navy-deep) 85%, transparent);
+}
+
+[data-theme='gothic'] .event-list {
+  counter-reset: ticket;
+}
+
+/* ── THE TICKET ───────────────────────────────────────────────────────────── */
+[data-theme='gothic'] .event-card {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border: none;
+  border-radius: 0;
+  background-color: var(--color-cream);
+  padding: 0;
+  overflow: hidden;
+  box-shadow: var(--g-shadow);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .event-card {
+    transition:
+      transform var(--g-ease),
+      box-shadow var(--g-ease);
+  }
+  [data-theme='gothic'] .event-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--g-shadow-press);
+  }
+}
+
+/* ── DATE STUB — solid navy stamp, carries its own halftone ───────────────── */
+[data-theme='gothic'] .event-date {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 5.25rem;
+  padding: 1.25rem 0.5rem;
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  align-self: stretch;
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .event-date {
+    width: 6rem;
+  }
+}
+[data-theme='gothic'] .event-date::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  color: var(--color-cream);
+  background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
+  background-size: 6px 6px;
+  opacity: 0.07;
+}
+[data-theme='gothic'] .event-date > * {
+  position: relative;
+  z-index: 1;
+}
+[data-theme='gothic'] .event-date-mon {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--color-gold);
+}
+[data-theme='gothic'] .event-date-day {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: condensed;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--color-cream);
+}
+
+/* ── TICKET BODY + PERFORATED SEAM ────────────────────────────────────────── */
+[data-theme='gothic'] .event-body-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0; /* let long copy wrap instead of forcing overflow */
+  padding: 1.2rem 1.25rem 1.25rem 1.5rem;
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .event-body-wrap {
+    padding: 1.5rem 1.6rem 1.5rem 1.85rem;
+  }
+}
+
+/* the perforation: a vertical dashed seam running the full height of the join,
+   connecting the two punch notches like a real torn ticket stub. */
+[data-theme='gothic'] .event-body-wrap::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-image: linear-gradient(
+    to bottom,
+    var(--color-navy) 0 6px,
+    transparent 6px 13px
+  );
+  background-size: 100% 13px;
+  background-repeat: repeat-y;
+  opacity: 0.55;
+}
+
+/* round PUNCH NOTCHES top + bottom of the seam — wheat half-circles bitten
+   out of the ticket where the stub meets the body (clipped by overflow:hidden,
+   so they never widen the card). They terminate the perforation line. */
+[data-theme='gothic'] .event-card::before,
+[data-theme='gothic'] .event-card::after {
+  content: '';
+  position: absolute;
+  left: 5.25rem; /* matches the stub width on mobile */
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: var(--color-gold); /* wheat band shows through the punch */
+  z-index: 3;
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .event-card::before,
+  [data-theme='gothic'] .event-card::after {
+    left: 6rem;
+  }
+}
+[data-theme='gothic'] .event-card::before {
+  top: 0;
+}
+[data-theme='gothic'] .event-card::after {
+  top: 100%;
+}
+
+/* "NO. 0X" press stamp, top-right of each ticket body.
+   Counter increments on the card so the stamp numbers tickets 01, 02, 03… */
+[data-theme='gothic'] .event-card {
+  counter-increment: ticket;
+}
+[data-theme='gothic'] .event-body-wrap::after {
+  content: 'NO. ' counter(ticket, decimal-leading-zero);
+  position: absolute;
+  top: 1.2rem;
+  right: 1.25rem;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  /* full brick-strong (6.2:1) — the small ~10px stamp was washed out at 0.9 */
+  color: var(--color-brick-strong);
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .event-body-wrap::after {
+    top: 1.5rem;
+    right: 1.6rem;
+  }
+}
+
+/* ── TICKET TYPE ──────────────────────────────────────────────────────────── */
+[data-theme='gothic'] .event-title {
+  position: static;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 800;
+  font-stretch: condensed;
+  font-size: 1.4rem;
+  line-height: 0.98;
+  letter-spacing: 0.005em;
+  color: var(--color-navy);
+  padding-right: 3.75rem; /* clear the NO. stamp */
+}
+[data-theme='gothic'] .event-meta {
+  margin-top: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-brick-strong);
+}
+[data-theme='gothic'] .event-body {
+  margin-top: 0.55rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+[data-theme='gothic'] .event-link {
+  display: inline-block;
+  margin-top: 0.7rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-navy);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+  transition: color 140ms ease;
+}
+[data-theme='gothic'] .event-link:hover {
+  color: var(--color-brick-strong);
+}

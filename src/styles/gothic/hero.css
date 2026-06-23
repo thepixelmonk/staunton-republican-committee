@@ -1,0 +1,301 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   HEARTLAND GOTHIC — HERO + SEAL (Specialist 1)
+   The poster's showpiece: a WPA / national-park silkscreen front panel.
+
+   A layered Blue Ridge scene (rising sun, three overlapping ranges, a lone
+   star) is locked under a MASSIVE condensed title. The same three poster
+   motifs the rest of the page uses appear here too:
+     • FLAG STRIPE  — brick→gold→navy bar tops the hero, and rules the lockup.
+     • HALFTONE      — ben-day dots in the sky + over the navy ground.
+     • HARD SHADOW   — the art window + buttons carry the offset ink shadow.
+
+   All color = themed tokens / currentColor. All selectors scoped to gothic.
+   Loaded via Hero.astro so it sits AFTER the base theme and wins on the hero.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Hero section: dark navy poster field ─────────────────────────────────── */
+[data-theme='gothic'] .hero {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-navy);
+  padding-top: 3.75rem;
+  padding-bottom: 3.75rem;
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .hero {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+@media (min-width: 1024px) {
+  [data-theme='gothic'] .hero {
+    padding-top: 6rem;
+    padding-bottom: 6.5rem;
+  }
+}
+
+/* MOTIF 2 — flag-stripe stack across the very top edge of the poster.
+   One element, three painted bands via hard-stop linear-gradient. */
+[data-theme='gothic'] .hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 22px;
+  z-index: 3;
+  background: linear-gradient(
+    to bottom,
+    var(--color-brick) 0 40%,
+    var(--color-gold) 40% 70%,
+    var(--color-navy-deep) 70% 100%
+  );
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .hero::before {
+    height: 28px;
+  }
+}
+
+/* MOTIF 1 — faint ben-day field over the whole navy ground (under content). */
+[data-theme='gothic'] .hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  color: var(--color-cream);
+  background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
+  background-size: 6px 6px;
+  opacity: 0.05;
+}
+
+/* lift real content above the ground texture */
+[data-theme='gothic'] .hero-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* drop the old centered double frame; we compose freely now */
+[data-theme='gothic'] .hero-frame {
+  border: none;
+  padding: 0.75rem 0 0;
+  text-align: center;
+}
+
+/* ── Eyebrow: gold stamped label between two stars ────────────────────────── */
+[data-theme='gothic'] .hero-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  color: var(--color-gold);
+}
+[data-theme='gothic'] .hero-eyebrow-star {
+  display: inline-flex;
+  color: var(--color-gold);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE ART WINDOW — the screenprint scene + the title locked over it
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .hero-art-wrap {
+  position: relative;
+  margin: 1.75rem auto 0;
+  max-width: 100%;
+  /* squared poster window with the shared offset ink shadow */
+  border: 3px solid var(--color-cream);
+  box-shadow: 8px 8px 0 0 var(--color-brick);
+  overflow: hidden;
+  /* fixed printable aspect — art uses slice so it always fills cleanly */
+  aspect-ratio: 8 / 5;
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .hero-art-wrap {
+    margin-top: 2rem;
+    box-shadow: 10px 10px 0 0 var(--color-brick);
+    aspect-ratio: 16 / 9;
+  }
+}
+@media (min-width: 1024px) {
+  [data-theme='gothic'] .hero-art-wrap {
+    aspect-ratio: 2 / 1;
+  }
+}
+
+[data-theme='gothic'] .hero-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* darkening scrim so the cream title always clears AA over bright art */
+[data-theme='gothic'] .hero-art-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-navy-deep) 35%, transparent) 0%,
+    color-mix(in srgb, var(--color-navy-deep) 62%, transparent) 55%,
+    color-mix(in srgb, var(--color-navy-deep) 86%, transparent) 100%
+  );
+}
+
+/* ── Title lockup: massive condensed caps, centered over the scene ───────── */
+[data-theme='gothic'] .hero-lockup {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+[data-theme='gothic'] .hero-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: condensed;
+  line-height: 0.84;
+  letter-spacing: -0.015em;
+  color: var(--color-cream);
+  text-shadow: 0 2px 0 color-mix(in srgb, var(--color-navy-deep) 70%, transparent);
+}
+[data-theme='gothic'] .hero-title span {
+  display: block;
+  /* "REPUBLICAN" (10 condensed caps) is the longest word; vw term keeps it
+     inside the padded window at every width — no clip, no overflow. */
+  font-size: clamp(2.1rem, 11vw, 6rem);
+}
+/* the middle word reads as the wheat-gold accent line */
+[data-theme='gothic'] .hero-title span:nth-child(2) {
+  color: var(--color-gold);
+  text-shadow: 0 2px 0 color-mix(in srgb, var(--color-navy-deep) 80%, transparent);
+}
+@media (min-width: 1024px) {
+  [data-theme='gothic'] .hero-title span {
+    font-size: 6.5rem;
+  }
+}
+
+/* ── Tagline ──────────────────────────────────────────────────────────────── */
+[data-theme='gothic'] .hero-tagline {
+  margin: 1.75rem auto 0;
+  max-width: 40rem;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--color-cream);
+  opacity: 0.9;
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .hero-tagline {
+    font-size: 1.1875rem;
+  }
+}
+
+/* ── MOTIF 2 — flag-stripe rule under the tagline (matches section rules) ─── */
+[data-theme='gothic'] .hero-rule {
+  width: 128px;
+  height: 8px;
+  margin: 1.75rem auto 0;
+  /* identical 40/30/30 DNA as --g-stripe-h / .section-rule; navy-deep here so
+     the navy band still reads against the navy hero ground */
+  background: linear-gradient(
+    to right,
+    var(--color-brick) 0 40%,
+    var(--color-gold) 40% 70%,
+    var(--color-navy-deep) 70% 100%
+  );
+}
+
+/* ── Actions: gold primary + cream-outline secondary ──────────────────────── */
+[data-theme='gothic'] .hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2.25rem;
+}
+
+/* gold primary button on the dark panel — navy ink, brick drop shadow */
+[data-theme='gothic'] .hero-actions .btn--solid {
+  background-color: var(--color-gold);
+  color: var(--color-navy-deep);
+  box-shadow: 6px 6px 0 0 var(--color-brick);
+}
+[data-theme='gothic'] .hero-actions .btn--solid:hover {
+  background-color: var(--color-cream);
+  color: var(--color-navy-deep);
+  box-shadow: 8px 8px 0 0 var(--color-brick);
+}
+[data-theme='gothic'] .hero-actions .btn--solid:active {
+  box-shadow: 3px 3px 0 0 var(--color-brick);
+}
+
+/* cream-outline secondary on the dark panel */
+[data-theme='gothic'] .hero-actions .btn--ghost {
+  background-color: transparent;
+  color: var(--color-cream);
+  border: 2px solid var(--color-cream);
+  box-shadow: 6px 6px 0 0 var(--color-brick);
+}
+[data-theme='gothic'] .hero-actions .btn--ghost:hover {
+  background-color: var(--color-cream);
+  color: var(--color-navy-deep);
+  box-shadow: 8px 8px 0 0 var(--color-brick);
+}
+[data-theme='gothic'] .hero-actions .btn--ghost:active {
+  box-shadow: 3px 3px 0 0 var(--color-brick);
+}
+
+/* shared poster press for both hero buttons */
+[data-theme='gothic'] .hero-actions .btn {
+  border-radius: 0;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  transition:
+    transform 140ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 140ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    background-color 160ms ease,
+    color 160ms ease;
+}
+[data-theme='gothic'] .hero-actions .btn:active {
+  transform: translate(3px, 3px);
+}
+
+/* respect reduced-motion: keep color/shadow, drop the lift/press transforms */
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .hero-actions .btn--solid:hover,
+  [data-theme='gothic'] .hero-actions .btn--ghost:hover {
+    transform: translate(-2px, -2px);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SEAL — the circular WPA emblem (sun + ridge + star, double ring, ticks)
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .seal {
+  display: inline-block;
+  vertical-align: middle;
+}

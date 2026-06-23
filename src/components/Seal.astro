@@ -1,5 +1,8 @@
 ---
-// Circular double-ring seal with a center star. Inherits color via currentColor.
+// WPA civic emblem: a double-ring seal with a rising sun, a Blue Ridge
+// silhouette, and a strong central star — all in currentColor so it inherits
+// ink/cream/gold from context. Reads cleanly at 32px (header/favicon) and large
+// (footer). Decorative-vs-labelled a11y props preserved.
 interface Props {
   size?: number;
   class?: string;
@@ -20,16 +23,57 @@ const {
   viewBox="0 0 100 100"
   width={size}
   height={size}
-  class={className}
+  class={`seal ${className}`}
   role={decorative ? undefined : 'img'}
   aria-label={decorative ? undefined : title}
   aria-hidden={decorative ? 'true' : undefined}
   fill="none"
 >
-  <circle cx="50" cy="50" r="46" stroke="currentColor" stroke-width="2.5" />
-  <circle cx="50" cy="50" r="39" stroke="currentColor" stroke-width="1.25" />
+  <!-- double ring -->
+  <circle cx="50" cy="50" r="47" stroke="currentColor" stroke-width="2.5" />
+  <circle cx="50" cy="50" r="40.5" stroke="currentColor" stroke-width="1.5" />
+
+  <!-- tick marks around the rim (12, evenly spaced) -->
+  <g stroke="currentColor" stroke-width="1.6">
+    <line x1="50" y1="3.5" x2="50" y2="9" />
+    <line x1="73.25" y1="9.74" x2="70.5" y2="14.5" />
+    <line x1="90.26" y1="26.75" x2="85.5" y2="29.5" />
+    <line x1="96.5" y1="50" x2="91" y2="50" />
+    <line x1="90.26" y1="73.25" x2="85.5" y2="70.5" />
+    <line x1="73.25" y1="90.26" x2="70.5" y2="85.5" />
+    <line x1="50" y1="96.5" x2="50" y2="91" />
+    <line x1="26.75" y1="90.26" x2="29.5" y2="85.5" />
+    <line x1="9.74" y1="73.25" x2="14.5" y2="70.5" />
+    <line x1="3.5" y1="50" x2="9" y2="50" />
+    <line x1="9.74" y1="26.75" x2="14.5" y2="29.5" />
+    <line x1="26.75" y1="9.74" x2="29.5" y2="14.5" />
+  </g>
+
+  <!-- clip the inner scene to the inner ring so nothing spills -->
+  <clipPath id={`seal-inner-${size}`}>
+    <circle cx="50" cy="50" r="38" />
+  </clipPath>
+
+  <g clip-path={`url(#seal-inner-${size})`}>
+    <!-- rising sun rays (top half) -->
+    <g stroke="currentColor" stroke-width="1.4" opacity="0.85">
+      <line x1="50" y1="36" x2="50" y2="14" />
+      <line x1="50" y1="36" x2="34" y2="20" />
+      <line x1="50" y1="36" x2="66" y2="20" />
+      <line x1="50" y1="36" x2="24" y2="28" />
+      <line x1="50" y1="36" x2="76" y2="28" />
+    </g>
+
+    <!-- Blue Ridge silhouette across the lower field -->
+    <path
+      fill="currentColor"
+      d="M12 64 L24 54 L34 62 L44 51 L55 63 L66 52 L78 64 L88 56 L88 88 L12 88 Z"
+    />
+  </g>
+
+  <!-- strong central star, sitting on the ridge line -->
   <path
     fill="currentColor"
-    d="M50 26 L55.58 42.31 L72.83 42.58 L59.04 52.94 L64.11 69.42 L50 59.5 L35.89 69.42 L40.96 52.94 L27.17 42.58 L44.42 42.31 Z"
+    d="M50 26 L54.7 39.74 L69.27 39.96 L57.62 48.71 L61.9 62.58 L50 54.2 L38.1 62.58 L42.38 48.71 L30.73 39.96 L45.3 39.74 Z"
   />
 </svg>

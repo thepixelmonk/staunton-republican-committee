@@ -1,37 +1,146 @@
 ---
 import Button from './Button.astro';
-import Star from './Star.astro';
 import { site } from '../data/site';
 ---
 
-<section id="hero" class="hero bg-cream py-20 sm:py-28 lg:py-36">
-  <div class="hero-inner mx-auto max-w-3xl px-6">
-    <div class="hero-frame relative border border-navy/25 px-6 py-12 text-center sm:px-12 sm:py-16">
-      <div class="hero-frame-inset pointer-events-none absolute inset-[6px] border border-gold/40"></div>
+<section id="hero" class="hero">
+  <div class="hero-inner mx-auto max-w-5xl px-6">
+    <div class="hero-frame">
+      <!-- ── Poster eyebrow: gold stamped label between two stars ── -->
+      <p class="hero-eyebrow">
+        <span class="hero-eyebrow-star" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13">
+            <path d="M12 1.5 14.47 8.6 21.99 8.76 15.99 13.3 18.17 20.49 12 16.2 5.83 20.49 8.01 13.3 2.01 8.76 9.53 8.6Z" />
+          </svg>
+        </span>
+        {site.city}
+        <span class="hero-eyebrow-star" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13">
+            <path d="M12 1.5 14.47 8.6 21.99 8.76 15.99 13.3 18.17 20.49 12 16.2 5.83 20.49 8.01 13.3 2.01 8.76 9.53 8.6Z" />
+          </svg>
+        </span>
+      </p>
 
-      <div class="relative">
-        <p
-          class="hero-eyebrow flex items-center justify-center gap-3 font-body text-xs font-semibold uppercase tracking-[0.2em] text-brick-strong"
+      <!-- ── The focal screenprint scene: Blue Ridge ranges + rising sun ── -->
+      <div class="hero-art-wrap">
+        <svg
+          class="hero-art"
+          viewBox="0 0 800 520"
+          preserveAspectRatio="xMidYMid slice"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <Star size={14} class="text-gold" />{site.city}<Star size={14} class="text-gold" />
-        </p>
+          <defs>
+            <!-- ben-day halftone dot field, painted only into the sky -->
+            <pattern
+              id="hero-halftone"
+              width="9"
+              height="9"
+              patternUnits="userSpaceOnUse"
+            >
+              <circle cx="2" cy="2" r="1.15" fill="var(--color-cream)" />
+            </pattern>
+            <!-- clip the whole scene to the rounded poster window -->
+            <clipPath id="hero-window">
+              <rect x="0" y="0" width="800" height="520" />
+            </clipPath>
+          </defs>
 
-        <h1
-          class="hero-title mt-6 font-display text-4xl font-bold leading-[1.05] text-navy sm:text-5xl lg:text-6xl"
-        >
-          {site.name}
-        </h1>
+          <g clip-path="url(#hero-window)">
+            <!-- sky ground -->
+            <rect x="0" y="0" width="800" height="520" fill="var(--color-navy-deep)" />
 
-        <p class="hero-tagline mx-auto mt-5 max-w-xl font-body text-lg leading-relaxed text-ink/80">
-          {site.tagline}
-        </p>
+            <!-- radiating sun rays behind everything -->
+            <g class="hero-art-rays">
+              <path d="M400 300 L400 -120 L470 -120 Z" fill="var(--color-gold)" opacity="0.16" />
+              <path d="M400 300 L300 -110 L370 -118 Z" fill="var(--color-gold)" opacity="0.16" />
+              <path d="M400 300 L530 -90 L595 -64 Z" fill="var(--color-gold)" opacity="0.16" />
+              <path d="M400 300 L210 -80 L278 -100 Z" fill="var(--color-gold)" opacity="0.16" />
+              <path d="M400 300 L650 -10 L700 40 Z" fill="var(--color-gold)" opacity="0.13" />
+              <path d="M400 300 L150 -10 L100 40 Z" fill="var(--color-gold)" opacity="0.13" />
+              <path d="M400 300 L760 120 L795 185 Z" fill="var(--color-gold)" opacity="0.11" />
+              <path d="M400 300 L40 120 L5 185 Z" fill="var(--color-gold)" opacity="0.11" />
+            </g>
 
-        <div class="hero-actions mt-8 flex flex-wrap items-center justify-center gap-4">
-          <Button href={site.primaryCta.href} variant="solid" size="md">
-            {site.primaryCta.label}
-          </Button>
-          <Button href="#events" variant="ghost" size="md">Upcoming Events</Button>
+            <!-- the rising sun disc -->
+            <circle cx="400" cy="300" r="116" fill="var(--color-gold)" />
+            <!-- a couscentric ink ring on the sun -->
+            <circle
+              cx="400"
+              cy="300"
+              r="98"
+              fill="none"
+              stroke="var(--color-navy-deep)"
+              stroke-width="3"
+              opacity="0.5"
+            />
+
+            <!-- halftone over the sky only (above the back range) -->
+            <rect x="0" y="0" width="800" height="330" fill="url(#hero-halftone)" opacity="0.10" />
+
+            <!-- a lone five-point star, upper field -->
+            <path
+              class="hero-art-star"
+              d="M118 96 L130 132 L168 133 L138 156 L149 192 L118 170 L87 192 L98 156 L68 133 L106 132 Z"
+              fill="var(--color-gold)"
+            />
+
+            <!-- ── BLUE RIDGE: three overlapping silhouettes ── -->
+            <!-- farthest range (hazy sage — sits in front of the sun) -->
+            <path
+              d="M0 348 L70 300 L150 336 L240 286 L330 332 L430 274 L520 326 L620 282 L720 330 L800 296 L800 520 L0 520 Z"
+              fill="var(--color-stone)"
+              opacity="0.78"
+            />
+            <!-- gold rim-light catching the far crest -->
+            <path
+              d="M0 348 L70 300 L150 336 L240 286 L330 332 L430 274 L520 326 L620 282 L720 330 L800 296"
+              fill="none"
+              stroke="var(--color-gold)"
+              stroke-width="2"
+              opacity="0.5"
+            />
+            <!-- mid range (navy) -->
+            <path
+              d="M0 392 L120 332 L220 384 L330 326 L450 392 L560 336 L680 392 L800 344 L800 520 L0 520 Z"
+              fill="var(--color-navy)"
+            />
+            <!-- nearest ridge (darkest navy-deep) -->
+            <path
+              d="M0 452 L90 408 L210 456 L300 414 L430 462 L540 416 L660 460 L800 420 L800 520 L0 520 Z"
+              fill="var(--color-navy-deep)"
+            />
+            <!-- bright gold rim-light along the nearest ridge crest -->
+            <path
+              d="M0 452 L90 408 L210 456 L300 414 L430 462 L540 416 L660 460 L800 420"
+              fill="none"
+              stroke="var(--color-gold)"
+              stroke-width="2.5"
+              opacity="0.7"
+            />
+          </g>
+        </svg>
+
+        <!-- ── Title lockup, layered OVER the art on a darkening scrim ── -->
+        <div class="hero-lockup">
+          <h1 class="hero-title">
+            <span>Staunton</span>
+            <span>Republican</span>
+            <span>Committee</span>
+          </h1>
         </div>
+      </div>
+
+      <p class="hero-tagline">{site.tagline}</p>
+
+      <!-- flag-stripe rule -->
+      <div class="hero-rule" aria-hidden="true"></div>
+
+      <div class="hero-actions">
+        <Button href={site.primaryCta.href} variant="solid" size="md">
+          {site.primaryCta.label}
+        </Button>
+        <Button href="#events" variant="ghost" size="md">Upcoming Events</Button>
       </div>
     </div>
   </div>

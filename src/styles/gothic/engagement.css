@@ -1,0 +1,585 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   HEARTLAND GOTHIC — SPECIALIST 4: ENGAGEMENT
+   Get Involved · Newsletter (CLIP & MAIL coupon) · Footer colophon
+
+   Same three poster motifs as the rest of the sheet:
+     1. INK / HALFTONE — ben-day dot fields on dark & gold grounds.
+     2. FLAG STRIPE     — brick→gold→navy bar; section rules + footer top edge.
+     3. HARD SHADOW     — one offset ink shadow; every block presses on hover.
+
+   All color via tokens / currentColor. Every selector scoped to the theme.
+   Loaded via the components I own so it ships alongside themes/gothic.css and
+   wins on equal specificity (same [data-theme='gothic'] prefix, later cascade).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+[data-theme='gothic'] {
+  /* shared knobs (mirror the base sheet so this partial stands alone too) */
+  --g-shadow: 6px 6px 0 0 var(--color-navy-deep);
+  --g-shadow-press: 9px 9px 0 0 var(--color-navy-deep);
+  --g-ease: 130ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GET INVOLVED — dark navy band, three bold cream poster panels
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .involve {
+  background-color: var(--color-navy);
+  position: relative;
+  overflow: hidden;
+}
+
+/* halftone ink field on the navy band (light dots) */
+[data-theme='gothic'] .involve::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(var(--color-cream) 0.9px, transparent 1.1px);
+  background-size: 7px 7px;
+  opacity: 0.06;
+}
+[data-theme='gothic'] .involve > div {
+  position: relative;
+  z-index: 1;
+}
+
+[data-theme='gothic'] .involve-eyebrow {
+  color: var(--color-gold);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+}
+[data-theme='gothic'] .involve-title {
+  color: var(--color-cream);
+  text-transform: uppercase;
+  font-weight: 800;
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  font-stretch: condensed;
+  font-size: clamp(2rem, 8.5vw, 2.75rem);
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .involve-title {
+    font-size: 3.5rem;
+  }
+}
+[data-theme='gothic'] .involve-intro {
+  color: var(--color-cream);
+  opacity: 0.86;
+  font-weight: 500;
+}
+
+/* MOTIF 2 — gold-led flag-stripe rule (reads on navy) */
+[data-theme='gothic'] .involve-rule {
+  position: relative;
+  min-height: 8px;
+  margin-top: 1.4rem; /* match .section-rule rhythm site-wide */
+}
+[data-theme='gothic'] .involve-rule > span,
+[data-theme='gothic'] .involve-rule > svg {
+  display: none;
+}
+[data-theme='gothic'] .involve-rule::before {
+  content: '';
+  display: block;
+  width: 108px;
+  height: 8px;
+  margin-inline: auto;
+  background: linear-gradient(
+    to right,
+    var(--color-gold) 0 36px,
+    var(--color-brick) 36px 72px,
+    var(--color-gold) 72px 108px
+  );
+}
+
+/* the panels — squared cream cards, big brick drop, satisfying press */
+[data-theme='gothic'] .involve-card {
+  border-radius: 0;
+  border: none;
+  background-color: var(--color-cream);
+  padding: 1.6rem 1.5rem 1.5rem;
+  box-shadow: 6px 6px 0 0 var(--color-brick);
+  position: relative;
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .involve-card {
+    transition:
+      transform var(--g-ease),
+      box-shadow var(--g-ease);
+  }
+  [data-theme='gothic'] .involve-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0 0 var(--color-gold);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-theme='gothic'] .involve-card:hover {
+    box-shadow: 9px 9px 0 0 var(--color-gold);
+  }
+}
+
+/* WPA icon chip — a squared navy stamp holding a flat screenprint glyph */
+[data-theme='gothic'] .involve-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--color-navy);
+  color: var(--color-gold);
+  margin-bottom: 1rem;
+}
+[data-theme='gothic'] .involve-ico svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+/* a hairline brick rule between title and body — printed-ledger feel */
+[data-theme='gothic'] .involve-card-title {
+  color: var(--color-navy);
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.005em;
+  line-height: 0.98;
+  font-stretch: condensed;
+}
+[data-theme='gothic'] .involve-body {
+  color: var(--color-ink);
+  opacity: 0.85;
+}
+
+/* push the CTA to the bottom edge of the panel */
+[data-theme='gothic'] .involve-card .involve-cta {
+  margin-top: auto;
+  padding-top: 1.25rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NEWSLETTER — a CLIP & MAIL tear-out coupon on the cream sheet
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .newsletter {
+  background-color: var(--color-cream);
+  position: relative;
+}
+
+/* the coupon shell: a dashed cut-line border on cream-deep stock */
+[data-theme='gothic'] .nl-coupon {
+  position: relative;
+  margin-inline: auto;
+  max-width: 40rem;
+  background-color: var(--color-cream-deep);
+  border: 3px dashed var(--color-navy);
+  padding: 2rem 1.5rem 2rem;
+  box-shadow: var(--g-shadow);
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .nl-coupon {
+    padding: 2.5rem 2.5rem 2.25rem;
+  }
+}
+
+/* scissors riding the top cut-line, snipping the dashes */
+[data-theme='gothic'] .nl-scissors {
+  position: absolute;
+  top: -0.85rem;
+  left: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.7rem;
+  background-color: var(--color-cream-deep);
+  color: var(--color-brick-strong);
+  padding-inline: 0.15rem;
+}
+[data-theme='gothic'] .nl-scissors svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+/* a little "cut here" tag trailing the scissors along the cut edge */
+[data-theme='gothic'] .nl-cuttag {
+  position: absolute;
+  top: -0.72rem;
+  left: 4rem;
+  background-color: var(--color-cream-deep);
+  padding-inline: 0.4rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-brick-strong);
+}
+@media (max-width: 420px) {
+  [data-theme='gothic'] .nl-cuttag {
+    display: none;
+  }
+}
+
+/* postal STAMP in the top-right corner of the coupon */
+[data-theme='gothic'] .nl-stamp {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 3.25rem;
+  height: 3.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  background-color: var(--color-brick-strong);
+  color: var(--color-cream);
+  text-align: center;
+  /* perforated stamp edge cut with a radial dot mask on all sides */
+  -webkit-mask:
+    radial-gradient(circle 3px at 0 50%, transparent 0 2.6px, #000 3px) 0 0 / 100% 7px,
+    radial-gradient(circle 3px at 50% 0, transparent 0 2.6px, #000 3px) 0 0 / 7px 100%;
+  mask:
+    radial-gradient(circle 3px at 0 50%, transparent 0 2.6px, #000 3px) 0 0 / 100% 7px,
+    radial-gradient(circle 3px at 50% 0, transparent 0 2.6px, #000 3px) 0 0 / 7px 100%;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  box-shadow: 3px 3px 0 0 var(--color-navy-deep);
+}
+@media (max-width: 480px) {
+  [data-theme='gothic'] .nl-stamp {
+    width: 2.7rem;
+    height: 3.1rem;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+}
+[data-theme='gothic'] .nl-stamp svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  color: var(--color-gold);
+}
+[data-theme='gothic'] .nl-stamp-label {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.5rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* coupon eyebrow + heading */
+[data-theme='gothic'] .nl-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-brick-strong);
+}
+[data-theme='gothic'] .nl-title {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  font-stretch: condensed;
+  color: var(--color-navy);
+  font-size: clamp(1.7rem, 6vw, 2.4rem);
+  margin-top: 0.4rem;
+  padding-right: 3.5rem; /* clear the stamp */
+}
+[data-theme='gothic'] .nl-blurb {
+  color: var(--color-ink);
+  opacity: 0.82;
+}
+[data-theme='gothic'] .nl-blurb a {
+  color: var(--color-brick-strong);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+[data-theme='gothic'] .nl-blurb a:hover {
+  color: var(--color-brick);
+}
+
+/* form fields — squared poster inputs */
+[data-theme='gothic'] .nl-label {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-navy);
+  margin-bottom: 0.4rem;
+}
+[data-theme='gothic'] .nl-input {
+  width: 100%;
+  border-radius: 0;
+  border: 2px solid var(--color-navy);
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  padding: 0.7rem 0.85rem;
+  outline: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .nl-input {
+    transition:
+      border-color 160ms ease,
+      box-shadow var(--g-ease);
+  }
+}
+[data-theme='gothic'] .nl-input:focus {
+  border-color: var(--color-brick);
+  box-shadow: 4px 4px 0 0 var(--color-gold);
+}
+[data-theme='gothic'] .nl-input[aria-invalid='true'] {
+  border-color: var(--color-brick-strong);
+}
+[data-theme='gothic'] .nl-error {
+  margin-top: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-brick-strong);
+}
+
+/* chunky squared submit — shared hard shadow + press */
+[data-theme='gothic'] .nl-submit {
+  border-radius: 0;
+  border: none;
+  font-family: var(--font-body);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.85rem 2rem;
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  box-shadow: var(--g-shadow);
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .nl-submit {
+    transition:
+      transform var(--g-ease),
+      box-shadow var(--g-ease),
+      background-color 160ms ease;
+  }
+  [data-theme='gothic'] .nl-submit:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--g-shadow-press);
+  }
+  [data-theme='gothic'] .nl-submit:active {
+    transform: translate(3px, 3px);
+    box-shadow: 3px 3px 0 0 var(--color-navy-deep);
+  }
+}
+[data-theme='gothic'] .nl-submit:hover {
+  background-color: var(--color-navy-deep);
+}
+[data-theme='gothic'] .nl-submit:focus-visible {
+  outline: 3px solid var(--color-brick);
+  outline-offset: 3px;
+}
+
+/* dotted internal divider above the submit — a fold/tear cue inside the coupon */
+[data-theme='gothic'] .nl-fold {
+  border: none;
+  height: 0;
+  border-top: 2px dashed color-mix(in srgb, var(--color-navy) 45%, transparent);
+  margin: 1.5rem 0 1.25rem;
+}
+
+/* SUCCESS state — a stamped CONFIRMED poster card */
+[data-theme='gothic'] .nl-success {
+  position: relative;
+  margin-inline: auto;
+  max-width: 40rem;
+  border-radius: 0;
+  border: 3px solid var(--color-navy);
+  background-color: var(--color-cream-deep);
+  padding: 2.25rem 1.5rem;
+  text-align: center;
+  box-shadow: 6px 6px 0 0 var(--color-brick);
+  overflow: hidden;
+}
+[data-theme='gothic'] .nl-success-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 3px solid var(--color-brick-strong);
+  color: var(--color-brick-strong);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: condensed;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0.4rem 0.9rem;
+  transform: rotate(-5deg);
+  margin-bottom: 1rem;
+}
+[data-theme='gothic'] .nl-success-stamp svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+[data-theme='gothic'] .nl-success-title {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 800;
+  font-stretch: condensed;
+  letter-spacing: -0.005em;
+  color: var(--color-navy);
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+[data-theme='gothic'] .nl-success-body {
+  color: var(--color-ink);
+  opacity: 0.82;
+  margin-top: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FOOTER — poster colophon: flag-stripe top edge, halftone navy, bold columns
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='gothic'] .site-footer {
+  background-color: var(--color-navy);
+  border-top: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* MOTIF 2 — flag-stripe stack bookending the top edge (matches the hero) */
+[data-theme='gothic'] .site-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 14px;
+  z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    var(--color-brick) 0 7px,
+    var(--color-gold) 7px 11px,
+    var(--color-brick-strong) 11px 14px
+  );
+}
+
+/* halftone ink field over the navy ground */
+[data-theme='gothic'] .site-footer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(var(--color-cream) 0.9px, transparent 1.1px);
+  background-size: 7px 7px;
+  opacity: 0.05;
+}
+[data-theme='gothic'] .site-footer > div {
+  position: relative;
+  z-index: 1;
+}
+
+/* keep the columns clear of the stripe */
+[data-theme='gothic'] .site-footer > div:first-child {
+  padding-top: 3.5rem;
+}
+
+/* brand block wordmark */
+[data-theme='gothic'] .footer-wordmark {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 800;
+  font-stretch: condensed;
+  line-height: 0.92;
+  letter-spacing: -0.005em;
+  color: var(--color-cream);
+}
+[data-theme='gothic'] .footer-tagline {
+  color: color-mix(in srgb, var(--color-cream) 75%, transparent);
+}
+
+/* column heads — gold stamped-label tracking, with a short gold tick under */
+[data-theme='gothic'] .footer-col-head {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  position: relative;
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+[data-theme='gothic'] .footer-col-head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 26px;
+  height: 3px;
+  background-color: var(--color-brick);
+}
+
+/* link lists */
+[data-theme='gothic'] .footer-link {
+  color: color-mix(in srgb, var(--color-cream) 80%, transparent);
+  font-family: var(--font-body);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .footer-link {
+    transition: color 140ms ease;
+  }
+}
+[data-theme='gothic'] .footer-link:hover {
+  color: var(--color-gold);
+}
+[data-theme='gothic'] .footer-strong {
+  color: var(--color-cream);
+  font-weight: 700;
+}
+
+/* squared social stamps (drop the round pills — stay on-system) */
+[data-theme='gothic'] .footer-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0;
+  /* >=3:1 UI boundary on navy (cream@55% ~= 4.0:1; the prior 35% was 2.5:1) */
+  border: 2px solid color-mix(in srgb, var(--color-cream) 55%, transparent);
+  color: color-mix(in srgb, var(--color-cream) 85%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .footer-social {
+    transition:
+      transform var(--g-ease),
+      border-color 140ms ease,
+      color 140ms ease,
+      background-color 140ms ease;
+  }
+  [data-theme='gothic'] .footer-social:hover {
+    transform: translate(-2px, -2px);
+  }
+}
+[data-theme='gothic'] .footer-social:hover {
+  background-color: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-navy-deep);
+}
+
+/* bottom legal bar — flag-stripe hairline above, AA-legible disclaimer */
+[data-theme='gothic'] .footer-legal {
+  border-top: 2px solid color-mix(in srgb, var(--color-cream) 18%, transparent);
+}
+[data-theme='gothic'] .footer-legal-text {
+  color: color-mix(in srgb, var(--color-cream) 70%, transparent);
+}
+[data-theme='gothic'] .footer-legal .footer-star {
+  color: var(--color-gold);
+}
