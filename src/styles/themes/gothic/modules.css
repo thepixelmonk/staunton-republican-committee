@@ -20,13 +20,6 @@
    no hardcoded hex. All selectors scoped under [data-theme='gothic'].
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Shared poster knobs (re-declared so this partial stands alone) ────────── */
-[data-theme='gothic'] {
-  --g-shadow: 6px 6px 0 0 var(--color-navy-deep);
-  --g-shadow-press: 9px 9px 0 0 var(--color-navy-deep);
-  --g-ease: 130ms cubic-bezier(0.2, 0.7, 0.3, 1);
-}
-
 /* ═══════════════════════════════════════════════════════════════════════════
    MISSION — section frame + intro
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -53,6 +46,10 @@
   padding: 2.25rem 1.6rem 1.7rem;
   box-shadow: var(--g-shadow);
 }
+/* the shadow change always applies; only the lift is motion-gated */
+[data-theme='gothic'] .value-card:hover {
+  box-shadow: var(--g-shadow-press);
+}
 @media (prefers-reduced-motion: no-preference) {
   [data-theme='gothic'] .value-card {
     transition:
@@ -61,22 +58,10 @@
   }
   [data-theme='gothic'] .value-card:hover {
     transform: translate(-3px, -3px);
-    box-shadow: var(--g-shadow-press);
   }
 }
 
-/* halftone ben-day ink field on the navy panel (light dots) */
-[data-theme='gothic'] .value-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  color: var(--color-cream);
-  background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
-  background-size: 7px 7px;
-  opacity: 0.06;
-}
+/* MOTIF 1 — the shared halftone (system.css), tuned for a navy panel */
 
 /* big stamped index numeral, top-right of each panel (01–04) */
 [data-theme='gothic'] .value-card::before {
@@ -178,21 +163,20 @@
 [data-theme='gothic'] .events {
   position: relative;
   overflow: hidden;
-  background-color: var(--color-gold);
+  /* --g-band is the ticket's surrounding colour: the punch notches are holes,
+     so they must be painted with whatever shows through them. Declaring it
+     once here is what stops the notches from desyncing when the band changes. */
+  --g-band: var(--color-gold);
+  --g-stub-w: 5.25rem;
+  --g-dot-ink: var(--color-navy-deep);
+  --g-dot-opacity: 0.08;
+  background-color: var(--g-band);
+}
+@media (min-width: 640px) {
+  [data-theme='gothic'] .events { --g-stub-w: 6rem; }
 }
 
-/* darker halftone field for the warm wheat band */
-[data-theme='gothic'] .events::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  color: var(--color-navy-deep);
-  background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
-  background-size: 7px 7px;
-  opacity: 0.08;
-}
+/* MOTIF 1 — darker ink, because this band is warm wheat rather than navy */
 /* lift heading + ticket list above the ink field */
 [data-theme='gothic'] .events > div {
   position: relative;
@@ -225,6 +209,9 @@
   overflow: hidden;
   box-shadow: var(--g-shadow);
 }
+[data-theme='gothic'] .event-card:hover {
+  box-shadow: var(--g-shadow-press);
+}
 @media (prefers-reduced-motion: no-preference) {
   [data-theme='gothic'] .event-card {
     transition:
@@ -233,7 +220,6 @@
   }
   [data-theme='gothic'] .event-card:hover {
     transform: translate(-3px, -3px);
-    box-shadow: var(--g-shadow-press);
   }
 }
 
@@ -246,27 +232,16 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 5.25rem;
+  width: var(--g-stub-w);
   padding: 1.25rem 0.5rem;
   background-color: var(--color-navy);
   color: var(--color-cream);
   align-self: stretch;
 }
-@media (min-width: 640px) {
-  [data-theme='gothic'] .event-date {
-    width: 6rem;
-  }
-}
-[data-theme='gothic'] .event-date::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  color: var(--color-cream);
-  background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
-  background-size: 6px 6px;
-  opacity: 0.07;
+/* MOTIF 1 — the stub carries its own, finer field */
+[data-theme='gothic'] .event-date {
+  --g-dot-size: 6px;
+  --g-dot-opacity: 0.07;
 }
 [data-theme='gothic'] .event-date > * {
   position: relative;
@@ -328,19 +303,13 @@
 [data-theme='gothic'] .event-card::after {
   content: '';
   position: absolute;
-  left: 5.25rem; /* matches the stub width on mobile */
+  left: var(--g-stub-w);          /* tracks the stub automatically */
   width: 18px;
   height: 18px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background-color: var(--color-gold); /* wheat band shows through the punch */
+  background-color: var(--g-band); /* the band shows through the punch */
   z-index: 3;
-}
-@media (min-width: 640px) {
-  [data-theme='gothic'] .event-card::before,
-  [data-theme='gothic'] .event-card::after {
-    left: 6rem;
-  }
 }
 [data-theme='gothic'] .event-card::before {
   top: 0;
@@ -419,4 +388,8 @@
 }
 [data-theme='gothic'] .event-link:hover {
   color: var(--color-brick-strong);
+}
+[data-theme='gothic'] .event-link:focus-visible {
+  outline: var(--g-focus);
+  outline-offset: 3px;
 }

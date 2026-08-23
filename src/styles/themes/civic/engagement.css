@@ -1,0 +1,438 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   LETTERPRESS CIVIC — ENGAGEMENT: GET INVOLVED · NEWSLETTER · FOOTER
+   data-theme='civic'
+
+   GET INVOLVED — the structural move no other direction makes: the navy band
+                  is NOT full-bleed. It is a pressed plate laid onto the sheet
+                  with cream paper visible on all four sides, carrying MOTIF 1
+                  inverted (paper rules on an ink ground).
+
+   NEWSLETTER   — a small framed broadside: MOTIF 1 at coupon scale, an
+                  ornamental fold rule, and fields debossed into the stock.
+
+   FOOTER       — the colophon, headed by a tapering printer's rule.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GET INVOLVED — the inverted plate
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .involve {
+  overflow: hidden;
+  margin-inline: 1rem;
+  margin-block: 2.5rem;
+  padding-block: 4.5rem;
+  box-shadow: 0 18px 40px -30px color-mix(in srgb, var(--color-navy) 90%, transparent);
+}
+@media (min-width: 640px) {
+  [data-theme='civic'] .involve {
+    margin-inline: 2rem;
+    margin-block: 3.5rem;
+    padding-block: 6.5rem;
+  }
+}
+@media (min-width: 1200px) {
+  [data-theme='civic'] .involve { margin-inline: auto; max-width: 76rem; }
+}
+/* clear the two MOTIF 1 layers */
+[data-theme='civic'] .involve > div {
+  position: relative;
+  z-index: 4;
+}
+
+[data-theme='civic'] .involve-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+[data-theme='civic'] .involve-eyebrow { color: var(--color-gold); }   /* 5.48:1 */
+[data-theme='civic'] .involve-title   { color: var(--color-cream); }  /* 12.43:1 */
+[data-theme='civic'] .involve-intro {
+  margin: 1.7rem auto 0;
+  max-width: 44ch;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.72;
+  color: color-mix(in srgb, var(--color-cream) 84%, transparent); /* 9.18:1 */
+}
+[data-theme='civic'] .involve-grid {
+  margin-top: 3.5rem;
+  gap: 1.5rem;
+}
+
+/* outline plates with a gold top keyline — the dark counterpart of the
+   value cards, so the two grids read as one system printed two ways */
+[data-theme='civic'] .involve-card {
+  border-radius: 1px;
+  border: 1px solid color-mix(in srgb, var(--color-cream) 22%, transparent);
+  border-top: 2.5px solid color-mix(in srgb, var(--color-gold) 72%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 6%, transparent);
+  padding: 1.85rem 1.6rem 1.6rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='civic'] .involve-card {
+    transition:
+      transform var(--lc-ease),
+      border-color var(--lc-ease),
+      background-color var(--lc-ease);
+  }
+  [data-theme='civic'] .involve-card:hover { transform: translateY(-3px); }
+}
+[data-theme='civic'] .involve-card:hover {
+  border-color: color-mix(in srgb, var(--color-cream) 34%, transparent);
+  border-top-color: var(--color-gold);
+  background-color: color-mix(in srgb, var(--color-cream) 9%, transparent);
+}
+
+/* the icon chip is a gold hairline SQUARE, not a filled stamp */
+[data-theme='civic'] .involve-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.85rem;
+  height: 2.85rem;
+  border-radius: 1px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 72%, transparent);
+  background-color: transparent;
+  color: var(--color-gold);
+  margin-bottom: 1.1rem;
+}
+[data-theme='civic'] .involve-ico svg { width: 1.4rem; height: 1.4rem; }
+
+[data-theme='civic'] .involve-card-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: none;
+  font-size: 1.22rem;
+  line-height: 1.2;
+  color: var(--color-cream);
+}
+[data-theme='civic'] .involve-body {
+  margin-top: 0.6rem;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent); /* 8.88:1 */
+}
+[data-theme='civic'] .involve-card .involve-cta {
+  margin-top: auto;
+  padding-top: 1.4rem;
+}
+/* on the dark plate the brick focus ring would disappear — go gold */
+[data-theme='civic'] .involve .btn:focus-visible {
+  outline: var(--lc-focus-invert);
+  outline-offset: 3px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NEWSLETTER — a small framed broadside
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .newsletter {
+  background-color: var(--color-cream);
+}
+
+/* the section lead (was .nl-blurb until the section/coupon collision was
+   renamed — see AGENTS.md) */
+[data-theme='civic'] .newsletter-contact {
+  margin: 1.9rem auto 0;
+  max-width: 46ch;
+  font-size: 1.1rem;
+  line-height: 1.72;
+  color: color-mix(in srgb, var(--color-ink) 84%, transparent);
+}
+[data-theme='civic'] .newsletter-contact a {
+  color: var(--color-brick-strong);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-gold) 85%, transparent);
+  text-underline-offset: 4px;
+  overflow-wrap: anywhere;
+}
+[data-theme='civic'] .newsletter-contact a:hover { color: var(--color-brick); }
+
+/* .nl-coupon and .nl-success inherit MOTIF 1 at the coupon scale */
+[data-theme='civic'] .nl-coupon,
+[data-theme='civic'] .nl-success {
+  margin-inline: auto;
+  max-width: 38rem;
+  padding: 2.5rem 1.75rem 2.25rem;
+  text-align: center;
+}
+@media (min-width: 640px) {
+  [data-theme='civic'] .nl-coupon,
+  [data-theme='civic'] .nl-success { padding: 3rem 2.75rem 2.5rem; }
+}
+
+/* MOTIF 2 at coupon scale */
+[data-theme='civic'] .nl-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  margin-bottom: 1.1rem;
+}
+[data-theme='civic'] .nl-ornament > span {
+  display: block;
+  height: 1.5px;
+  width: 2.5rem;
+  background-image: linear-gradient(
+    to right, transparent, color-mix(in srgb, var(--color-gold) 92%, transparent));
+}
+[data-theme='civic'] .nl-ornament > span:last-child {
+  background-image: linear-gradient(
+    to left, transparent, color-mix(in srgb, var(--color-gold) 92%, transparent));
+}
+
+[data-theme='civic'] .nl-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  color: var(--color-brick-strong);
+}
+[data-theme='civic'] .nl-title {
+  margin-top: 0.55rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.55rem, 5vw, 2.15rem);
+  line-height: 1.12;
+  color: var(--color-navy);
+}
+[data-theme='civic'] .nl-coupon .nl-blurb {
+  margin-inline: auto;
+  max-width: 40ch;
+  color: color-mix(in srgb, var(--color-ink) 80%, transparent);
+}
+
+/* the fold: a hairline ink rule with gold diamond terminals */
+[data-theme='civic'] .nl-fold {
+  position: relative;
+  border: 0;
+  height: 1px;
+  margin: 1.75rem auto 1.5rem;
+  width: 60%;
+  background-color: color-mix(in srgb, var(--color-navy) 25%, transparent);
+}
+[data-theme='civic'] .nl-fold::before,
+[data-theme='civic'] .nl-fold::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 4.5px;
+  height: 4.5px;
+  background-color: var(--color-gold);
+  transform: translateY(-50%) rotate(45deg);
+}
+[data-theme='civic'] .nl-fold::before { left: -2px; }
+[data-theme='civic'] .nl-fold::after  { right: -2px; }
+
+[data-theme='civic'] .nl-coupon form { text-align: left; }
+[data-theme='civic'] .nl-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.63rem;
+  letter-spacing: 0.18em;
+  color: var(--color-stone); /* 5.86:1 on paper-hi */
+}
+/* the field is pressed INTO the sheet — the theme's shadow direction, applied
+   to an input */
+[data-theme='civic'] .nl-input {
+  width: 100%;
+  border-radius: 1px;
+  border: 1px solid color-mix(in srgb, var(--color-navy) 60%, transparent); /* 3.80:1 */
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  padding: 0.75rem 0.9rem;
+  outline: none;
+  box-shadow: inset 0 1px 3px color-mix(in srgb, var(--color-navy) 14%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='civic'] .nl-input {
+    transition: border-color var(--lc-ease), box-shadow var(--lc-ease);
+  }
+}
+[data-theme='civic'] .nl-input:focus {
+  border-color: var(--color-navy);
+  box-shadow:
+    inset 0 1px 3px color-mix(in srgb, var(--color-navy) 14%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--color-gold) 42%, transparent);
+}
+[data-theme='civic'] .nl-input[aria-invalid='true'] { border-color: var(--color-brick-strong); }
+[data-theme='civic'] .nl-error {
+  margin-top: 0.4rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--color-brick-strong);
+}
+
+[data-theme='civic'] .nl-submit {
+  border: 0;
+  border-radius: 1px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  padding: 0.85rem 2rem;
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-cream) 18%, transparent),
+    0 1px 0 var(--color-navy-deep);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='civic'] .nl-submit {
+    transition: background-color 180ms ease, box-shadow 180ms ease, transform 110ms ease;
+  }
+  [data-theme='civic'] .nl-submit:active { transform: translateY(1px); }
+}
+[data-theme='civic'] .nl-submit:hover { background-color: var(--color-navy-deep); }
+[data-theme='civic'] .nl-submit:active { box-shadow: none; }
+[data-theme='civic'] .nl-submit:focus-visible {
+  outline: var(--lc-focus);
+  outline-offset: 3px;
+}
+
+/* SUCCESS — a struck "RECEIVED" mark. Not rotated: a rubber stamp is Gothic's
+   idiom; a broadside is struck square. */
+[data-theme='civic'] .nl-success-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 1px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 85%, transparent);
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+  letter-spacing: 0.26em;
+  text-indent: 0.26em;
+  color: var(--color-brass-ink);
+  transform: none;
+  margin-bottom: 1.1rem;
+}
+[data-theme='civic'] .nl-success-stamp svg { width: 0.9rem; height: 0.9rem; }
+[data-theme='civic'] .nl-success-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: none;
+  font-size: clamp(1.4rem, 4.6vw, 1.9rem);
+  color: var(--color-navy);
+}
+[data-theme='civic'] .nl-success-body {
+  margin-top: 0.55rem;
+  color: color-mix(in srgb, var(--color-ink) 80%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FOOTER — the colophon
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .site-footer {
+  position: relative;
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+}
+/* the printer's rule at the head of the colophon — tapering, like MOTIF 2 */
+[data-theme='civic'] .site-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--color-gold) 60%, transparent) 16%,
+    color-mix(in srgb, var(--color-gold) 60%, transparent) 84%,
+    transparent
+  );
+}
+[data-theme='civic'] .site-footer > div:first-child { padding-top: 3.75rem; }
+[data-theme='civic'] .site-footer .seal { color: var(--color-gold); }
+
+[data-theme='civic'] .footer-wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.08;
+  color: var(--color-cream);
+}
+[data-theme='civic'] .footer-tagline {
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent); /* 8.88:1 */
+}
+[data-theme='civic'] .footer-col-head {
+  position: relative;
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.95rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  color: var(--color-gold); /* 5.48:1 on navy */
+}
+[data-theme='civic'] .footer-col-head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 2.25rem;
+  height: 1px;
+  background-image: linear-gradient(
+    to right, color-mix(in srgb, var(--color-gold) 85%, transparent), transparent);
+}
+[data-theme='civic'] .footer-link {
+  font-family: var(--font-body);
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='civic'] .footer-link { transition: color 160ms ease; }
+}
+[data-theme='civic'] .footer-link:hover { color: var(--color-gold); }
+[data-theme='civic'] .footer-strong { color: var(--color-cream); font-weight: 600; }
+
+/* social = a gold hairline square medallion */
+[data-theme='civic'] .footer-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 1px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 80%, transparent);
+  color: color-mix(in srgb, var(--color-cream) 88%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='civic'] .footer-social {
+    transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+  }
+}
+[data-theme='civic'] .footer-social:hover {
+  background-color: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-navy-deep);
+}
+
+/* every interactive thing on the dark ground takes the inverted focus ring */
+[data-theme='civic'] .site-footer a:focus-visible {
+  outline: var(--lc-focus-invert);
+  outline-offset: 3px;
+}
+
+[data-theme='civic'] .footer-legal {
+  border-top: 1px solid color-mix(in srgb, var(--color-cream) 20%, transparent);
+}
+[data-theme='civic'] .footer-legal-text {
+  color: color-mix(in srgb, var(--color-cream) 70%, transparent); /* 6.87:1 */
+}
+[data-theme='civic'] .footer-star { color: var(--color-gold); }

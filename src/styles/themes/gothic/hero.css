@@ -57,17 +57,12 @@
   }
 }
 
-/* MOTIF 1 — faint ben-day field over the whole navy ground (under content). */
-[data-theme='gothic'] .hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  color: var(--color-cream);
-  background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
-  background-size: 6px 6px;
-  opacity: 0.05;
+/* MOTIF 1 — faint ben-day field over the navy ground. The rule itself lives
+   in system.css; the hero only tunes the three knobs. */
+[data-theme='gothic'] .hero {
+  --g-dot-ink: var(--color-cream);
+  --g-dot-size: 6px;
+  --g-dot-opacity: 0.05;
 }
 
 /* lift real content above the ground texture */
@@ -181,19 +176,16 @@
 }
 [data-theme='gothic'] .hero-title span {
   display: block;
-  /* "REPUBLICAN" (10 condensed caps) is the longest word; vw term keeps it
-     inside the padded window at every width — no clip, no overflow. */
-  font-size: clamp(2.1rem, 11vw, 6rem);
+  /* "REPUBLICAN" (10 condensed caps) is the longest word; the vw term keeps it
+     inside the padded window at every width — no clip, no overflow. One clamp
+     only: the 11vw term already saturates before 1024px, so the old desktop
+     media query was a second mechanism fighting this one. */
+  font-size: clamp(2.1rem, 11vw, 6.5rem);
 }
 /* the middle word reads as the wheat-gold accent line */
 [data-theme='gothic'] .hero-title span:nth-child(2) {
   color: var(--color-gold);
   text-shadow: 0 2px 0 color-mix(in srgb, var(--color-navy-deep) 80%, transparent);
-}
-@media (min-width: 1024px) {
-  [data-theme='gothic'] .hero-title span {
-    font-size: 6.5rem;
-  }
 }
 
 /* ── Tagline ──────────────────────────────────────────────────────────────── */

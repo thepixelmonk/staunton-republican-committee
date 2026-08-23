@@ -12,13 +12,6 @@
    wins on equal specificity (same [data-theme='gothic'] prefix, later cascade).
    ═══════════════════════════════════════════════════════════════════════════ */
 
-[data-theme='gothic'] {
-  /* shared knobs (mirror the base sheet so this partial stands alone too) */
-  --g-shadow: 6px 6px 0 0 var(--color-navy-deep);
-  --g-shadow-press: 9px 9px 0 0 var(--color-navy-deep);
-  --g-ease: 130ms cubic-bezier(0.2, 0.7, 0.3, 1);
-}
-
 /* ═══════════════════════════════════════════════════════════════════════════
    GET INVOLVED — dark navy band, three bold cream poster panels
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -28,17 +21,7 @@
   overflow: hidden;
 }
 
-/* halftone ink field on the navy band (light dots) */
-[data-theme='gothic'] .involve::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image: radial-gradient(var(--color-cream) 0.9px, transparent 1.1px);
-  background-size: 7px 7px;
-  opacity: 0.06;
-}
+/* MOTIF 1 — the shared halftone (system.css) at its default navy-panel tune */
 [data-theme='gothic'] .involve > div {
   position: relative;
   z-index: 1;
@@ -82,15 +65,12 @@
 [data-theme='gothic'] .involve-rule::before {
   content: '';
   display: block;
-  width: 108px;
+  width: 96px;           /* same width as .section-rule */
   height: 8px;
   margin-inline: auto;
-  background: linear-gradient(
-    to right,
-    var(--color-gold) 0 36px,
-    var(--color-brick) 36px 72px,
-    var(--color-gold) 72px 108px
-  );
+  /* the SAME 40/30/30 DNA as --g-stripe-h, with the navy band swapped for
+     cream so the third stripe still reads against the navy ground */
+  background: var(--g-stripe-h-invert);
 }
 
 /* the panels — squared cream cards, big brick drop, satisfying press */
@@ -288,17 +268,20 @@
   margin-top: 0.4rem;
   padding-right: 3.5rem; /* clear the stamp */
 }
-[data-theme='gothic'] .nl-blurb {
+[data-theme='gothic'] .nl-blurb,
+[data-theme='gothic'] .newsletter-contact {
   color: var(--color-ink);
   opacity: 0.82;
 }
-[data-theme='gothic'] .nl-blurb a {
+[data-theme='gothic'] .nl-blurb a,
+[data-theme='gothic'] .newsletter-contact a {
   color: var(--color-brick-strong);
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-[data-theme='gothic'] .nl-blurb a:hover {
+[data-theme='gothic'] .nl-blurb a:hover,
+[data-theme='gothic'] .newsletter-contact a:hover {
   color: var(--color-brick);
 }
 
@@ -468,16 +451,9 @@
   );
 }
 
-/* halftone ink field over the navy ground */
-[data-theme='gothic'] .site-footer::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image: radial-gradient(var(--color-cream) 0.9px, transparent 1.1px);
-  background-size: 7px 7px;
-  opacity: 0.05;
+/* MOTIF 1 — the shared halftone, a touch quieter over the colophon */
+[data-theme='gothic'] .site-footer {
+  --g-dot-opacity: 0.05;
 }
 [data-theme='gothic'] .site-footer > div {
   position: relative;
@@ -487,6 +463,12 @@
 /* keep the columns clear of the stripe */
 [data-theme='gothic'] .site-footer > div:first-child {
   padding-top: 3.5rem;
+}
+
+/* the seal's ink — was a text-gold utility on the component until the theme
+   took ownership of colour */
+[data-theme='gothic'] .site-footer .seal {
+  color: var(--color-gold);
 }
 
 /* brand block wordmark */
@@ -582,4 +564,21 @@
 }
 [data-theme='gothic'] .footer-legal .footer-star {
   color: var(--color-gold);
+}
+
+/* ── FOCUS ────────────────────────────────────────────────────────────────
+   The brick ring is invisible on navy, so everything interactive on the dark
+   panels and the colophon takes the gold variant. */
+[data-theme='gothic'] .site-footer a:focus-visible {
+  outline: var(--g-focus-invert);
+  outline-offset: 3px;
+}
+[data-theme='gothic'] .involve .btn:focus-visible {
+  outline: var(--g-focus-invert);
+  outline-offset: 3px;
+}
+[data-theme='gothic'] .newsletter-contact a:focus-visible,
+[data-theme='gothic'] .nl-blurb a:focus-visible {
+  outline: var(--g-focus);
+  outline-offset: 3px;
 }

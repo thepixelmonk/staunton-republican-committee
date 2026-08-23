@@ -1,30 +1,8 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import Mission from '../components/Mission.astro';
-import Events from '../components/Events.astro';
-import GetInvolved from '../components/GetInvolved.astro';
-import SectionHeading from '../components/SectionHeading.astro';
-import Newsletter from '../components/Newsletter.svelte';
-import { site } from '../data/site';
+import GothicLayout from '../layouts/GothicLayout.astro';
+import HomeSections from '../components/HomeSections.astro';
 ---
 
-<BaseLayout>
-  <Hero />
-  <Mission />
-  <Events />
-  <GetInvolved />
-
-  <section id="contact" class="newsletter py-20 sm:py-28">
-    <div class="mx-auto max-w-6xl px-6">
-      <SectionHeading eyebrow="Stay Connected" title="Join Our Newsletter" />
-      <p class="nl-blurb mx-auto mt-6 max-w-2xl text-center font-body text-lg leading-relaxed">
-        Prefer to reach us directly? Email{' '}
-        <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.
-      </p>
-      <div class="mt-10">
-        <Newsletter client:visible />
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+<GothicLayout>
+  <HomeSections theme="gothic" />
+</GothicLayout>

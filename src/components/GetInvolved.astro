@@ -1,5 +1,6 @@
 ---
 import Button from './Button.astro';
+import Star from './Star.astro';
 import { site } from '../data/site';
 
 // Flat, 2-color screenprint WPA glyphs — one per involvement card, in order.
@@ -17,11 +18,12 @@ const icons = [
 <section id="get-involved" class="involve py-20 sm:py-28">
   <div class="mx-auto max-w-6xl px-6">
     <div class="involve-heading text-center">
-      <p class="involve-eyebrow mb-3 font-body text-xs uppercase">Join Us</p>
-      <h2 class="involve-title font-display">Get Involved</h2>
+      <p class="involve-eyebrow mb-3">Join Us</p>
+      <h2 class="involve-title">Get Involved</h2>
       <div class="involve-rule mt-5 flex items-center justify-center gap-3" aria-hidden="true">
-        <span class="h-px w-10"></span>
-        <span class="h-px w-10"></span>
+        <span class="section-rule-tick h-px w-10"></span>
+        <Star size={14} class="section-rule-star" />
+        <span class="section-rule-tick h-px w-10"></span>
       </div>
     </div>
 
@@ -35,7 +37,7 @@ const icons = [
         site.getInvolved.map((item, i) => (
           <div class="involve-card flex flex-col">
             <span class="involve-ico" aria-hidden="true" set:html={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">${icons[i]}</svg>`} />
-            <h3 class="involve-card-title font-display text-xl">{item.title}</h3>
+            <h3 class="involve-card-title text-xl">{item.title}</h3>
             <p class="involve-body mt-2 flex-1 font-body text-sm leading-relaxed">{item.body}</p>
             <div class="involve-cta">
               <Button href={item.cta.href} variant="accent" size="sm">

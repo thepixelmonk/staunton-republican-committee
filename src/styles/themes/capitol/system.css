@@ -1,0 +1,501 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   CAPITOL CREAM — SYSTEM + HEADER
+   data-theme='capitol'
+
+   A quiet, premium INSTITUTIONAL document: the annual report of a university
+   press, or the letterhead of an old civic society. A single left-anchored
+   column standing in a wide field of cream.
+
+   Nothing is centred. Nothing is boxed. Nothing is textured. There is NO
+   shadow anywhere in this theme. Two background changes on the whole page,
+   against Civic's four and Gothic's five, and roughly 1.4x their vertical
+   rhythm. Where Gothic fills and Civic frames, Capitol LEAVES OUT.
+
+   The four motifs:
+     MOTIF 1 — TICK-RULE      a 1px navy hairline with a short 2px brass tick
+                              standing on its left end. EVERY horizontal
+                              division in the theme is this rule.
+     MOTIF 2 — FOLIO NUMERAL  the signature. A CSS counter in Fraunces italic
+                              hanging in the left gutter, numbering the page
+                              01-05 like a document.
+     MOTIF 3 — EDITORIAL LEAD Fraunces italic for every introductory paragraph.
+     MOTIF 4 — DOCUMENT EDGE  a vertical brass hairline down the column's left.
+
+   FRAUNCES: every font-variation-settings 'opsz' MUST be paired with
+   font-optical-sizing: none, or the browser's automatic optical sizing
+   overrides it and the axis silently does nothing. The full-axis font files
+   are imported in CapitolLayout.astro (the default package entry is
+   weight-axis only).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── THEME TOKENS ─────────────────────────────────────────────────────────── */
+[data-theme='capitol'] {
+  --color-cream: #f6f1e7;        /* clean stationery stock — 4 of 6 sections */
+  --color-cream-deep: #ece5d4;   /* reserved for the events hover wash */
+  --color-ink: #211d17;          /* document black — body copy (14.89:1) */
+  --color-navy: #1c2b4a;         /* institutional navy — heads, leaf, footer */
+  --color-navy-deep: #14213b;    /* hover / depth */
+  --color-brick: #9e3b34;        /* the seal red — .btn--accent fill */
+  --color-brick-strong: #8a322c; /* AA-safe red for small caps (7.25:1) */
+  --color-gold: #b08a3e;         /* brass — HAIRLINES AND TICKS ONLY.
+                                    2.85:1 on cream: decorative, never text. */
+  --color-stone: #6d665b;        /* quiet neutral, 5.04:1 on cream */
+
+  /* extra slots. The old theme patched the failing brass THREE separate times
+     with inline color-mix(); these two slots replace every one of them. */
+  --color-brass-ink: #7a5d24;    /* brass that carries TEXT on cream:
+                                    5.46:1 cream / 4.89:1 cream-deep */
+  --color-brass-lit: #cfa95c;    /* brass that carries TEXT on navy:
+                                    6.35:1 navy / 7.24:1 navy-deep */
+
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --font-body: "Inter Variable", system-ui, -apple-system, sans-serif;
+
+  /* ── the measure system ───────────────────────────────────────────────── */
+  --cc-measure: 68rem;   /* the document column */
+  --cc-gutter: 1.5rem;   /* the folio gutter — grows on wide screens */
+  --cc-flow: 2.25rem;    /* the standard gap between blocks */
+  --cc-ease: 240ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  --cc-hair: color-mix(in srgb, var(--color-navy) 18%, transparent);
+  --cc-hair-dark: color-mix(in srgb, var(--color-cream) 22%, transparent);
+
+  --cc-header-h: 5.25rem;
+
+  --cc-focus: 2px solid var(--color-navy);
+  --cc-focus-invert: 2px solid var(--color-brass-lit);
+}
+@media (min-width: 1080px) {
+  [data-theme='capitol'] { --cc-gutter: 6rem; }
+}
+
+[data-theme='capitol'] body {
+  background-color: var(--color-cream);
+  background-image: none;   /* NO grain — this is clean stock */
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.72;
+  letter-spacing: 0.001em;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  counter-reset: cc-folio;  /* MOTIF 2's running folio — declared once, here */
+}
+
+[data-theme='capitol'] ::selection {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+}
+
+[data-theme='capitol'] h1,
+[data-theme='capitol'] h2,
+[data-theme='capitol'] h3,
+[data-theme='capitol'] h4 {
+  font-family: var(--font-display);
+  font-optical-sizing: none;
+  font-variation-settings: 'opsz' 110, 'wght' 460, 'SOFT' 0, 'WONK' 0;
+  text-transform: none;
+  letter-spacing: -0.014em;
+  line-height: 1.08;
+  color: var(--color-navy);
+}
+
+/* ONE column for the whole document. The folio gutter is carved out of the
+   left padding, so a numeral can never push past the viewport edge. */
+[data-theme='capitol'] .hero-inner,
+[data-theme='capitol'] .site-header__bar,
+[data-theme='capitol'] .mission > div,
+[data-theme='capitol'] .events > div,
+[data-theme='capitol'] .involve > div,
+[data-theme='capitol'] .newsletter > div,
+[data-theme='capitol'] .site-footer > div {
+  max-width: var(--cc-measure);
+  margin-inline: auto;
+  padding-left: var(--cc-gutter);
+  padding-right: 1.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTIF 1 — TICK-RULE  (canonical recipe)
+   The markup ships spans + a Star inside .section-rule; here the RULE IS THE
+   ELEMENT, so the children are dropped rather than restyled. Capitol removes.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='capitol'] .section-rule,
+[data-theme='capitol'] .involve-rule {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  height: 1px;
+  margin-top: 1.75rem;
+  background-color: var(--cc-hair);
+  --cc-tick-w: 2.25rem;
+}
+[data-theme='capitol'] .involve-rule { background-color: var(--cc-hair-dark); }
+[data-theme='capitol'] .section-rule > *,
+[data-theme='capitol'] .involve-rule > * { display: none; }
+
+[data-theme='capitol'] .section-rule::before,
+[data-theme='capitol'] .involve-rule::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: var(--cc-tick-w);
+  height: 2px;
+  background-color: var(--color-gold);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTIF 2 — FOLIO NUMERAL
+   counter-increment runs in DOM order: hero 01 · mission 02 · events 03 ·
+   involve 04 · newsletter 05. HeroCapitol.astro ships .hero-masthead purely so
+   the hero can take 01 — removing it renumbers the whole document.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='capitol'] .hero-masthead,
+[data-theme='capitol'] .section-heading,
+[data-theme='capitol'] .involve-heading {
+  counter-increment: cc-folio;
+  position: relative;
+  text-align: left;
+  max-width: 52rem;
+  display: block;
+}
+
+[data-theme='capitol'] .hero-masthead::before,
+[data-theme='capitol'] .section-heading::before,
+[data-theme='capitol'] .involve-heading::before {
+  content: counter(cc-folio, decimal-leading-zero);
+  display: block;
+  font-family: var(--font-display);
+  font-optical-sizing: none;
+  font-variation-settings: 'opsz' 144, 'wght' 340, 'ital' 1;
+  font-style: italic;
+  font-size: clamp(2.25rem, 5vw, 3.4rem);
+  line-height: 0.9;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.85rem;
+  color: var(--color-brass-ink);  /* 5.46:1 — no color-mix hack needed */
+  font-feature-settings: 'tnum' 1;
+}
+/* on the dark leaf the folio switches to the lit brass */
+[data-theme='capitol'] .involve-heading::before { color: var(--color-brass-lit); }
+
+/* at >=1080px the numeral hangs in the gutter --cc-gutter carved out; below
+   that it simply stacks above the eyebrow, so it can never overflow */
+@media (min-width: 1080px) {
+  [data-theme='capitol'] .hero-masthead::before,
+  [data-theme='capitol'] .section-heading::before,
+  [data-theme='capitol'] .involve-heading::before {
+    position: absolute;
+    left: calc(-1 * var(--cc-gutter));
+    top: 0.15rem;
+    width: calc(var(--cc-gutter) - 1.25rem);
+    margin-bottom: 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTIF 3 — EDITORIAL LEAD  (Fraunces italic)
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='capitol'] .hero-tagline,
+[data-theme='capitol'] .involve-intro,
+[data-theme='capitol'] .newsletter-contact {
+  font-family: var(--font-display);
+  font-optical-sizing: none;
+  font-variation-settings: 'opsz' 36, 'wght' 360, 'ital' 1;
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+  line-height: 1.55;
+  letter-spacing: -0.004em;
+  max-width: 42ch;
+  margin-inline: 0;
+  text-align: left;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTIF 4 — DOCUMENT EDGE
+   One hairline down the column's left, twice on the page: the hero sets the
+   spine and the value grid repeats it.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (min-width: 1080px) {
+  [data-theme='capitol'] .hero-inner,
+  [data-theme='capitol'] .value-grid { position: relative; }
+
+  [data-theme='capitol'] .hero-inner::before,
+  [data-theme='capitol'] .value-grid::before {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--cc-gutter) + 1.5rem);
+    top: 0.4rem;
+    bottom: 0.4rem;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in srgb, var(--color-gold) 60%, transparent) 16%,
+      color-mix(in srgb, var(--color-gold) 60%, transparent) 84%,
+      transparent
+    );
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION HEADINGS
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='capitol'] .section-heading { padding-top: 0.25rem; }
+[data-theme='capitol'] .section-eyebrow,
+[data-theme='capitol'] .involve-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.26em;
+  margin-bottom: 1.1rem;
+  color: var(--color-brick-strong);  /* 7.25:1 */
+  font-feature-settings: 'tnum' 1;
+}
+[data-theme='capitol'] .involve-eyebrow { color: var(--color-brass-lit); } /* 6.35:1 */
+[data-theme='capitol'] .section-title,
+[data-theme='capitol'] .involve-title {
+  font-family: var(--font-display);
+  font-optical-sizing: none;
+  font-variation-settings: 'opsz' 120, 'wght' 480, 'SOFT' 0, 'WONK' 0;
+  font-size: clamp(2rem, 4.2vw, 3rem);
+  line-height: 1.04;
+  letter-spacing: -0.024em;
+  text-transform: none;
+  color: var(--color-navy);
+  max-width: 18ch;
+  text-wrap: balance;
+}
+[data-theme='capitol'] .involve-title { color: var(--color-cream); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BUTTONS
+   Flat. The hover is a printed brass UNDERSCORE, never a lift — nothing in
+   this theme moves position.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='capitol'] .btn {
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  padding: 0.9rem 2rem;
+}
+[data-theme='capitol'] .btn--sm { font-size: 0.68rem; padding: 0.6rem 1.35rem; }
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='capitol'] .btn {
+    transition: background-color 220ms ease, color 220ms ease, box-shadow 220ms ease;
+  }
+}
+
+[data-theme='capitol'] .btn--solid {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  box-shadow: none;
+}
+[data-theme='capitol'] .btn--solid:hover {
+  background-color: var(--color-navy-deep);
+  box-shadow: 0 6px 0 -4px var(--color-gold);
+}
+[data-theme='capitol'] .btn--solid:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* the ghost has NO box — the most "fine print" control in the set */
+[data-theme='capitol'] .btn--ghost {
+  position: relative;
+  border: none;
+  background: transparent;
+  color: var(--color-navy);
+  padding: 0.9rem 0.1rem;
+}
+[data-theme='capitol'] .btn--ghost::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.72rem;
+  height: 1px;
+  background-color: color-mix(in srgb, var(--color-gold) 85%, transparent);
+  transform: scaleX(0.55);
+  transform-origin: left center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='capitol'] .btn--ghost::after {
+    transition: transform var(--cc-ease), background-color 200ms ease;
+  }
+}
+[data-theme='capitol'] .btn--ghost:hover {
+  color: var(--color-navy-deep);
+  background: transparent;
+}
+[data-theme='capitol'] .btn--ghost:hover::after,
+[data-theme='capitol'] .btn--ghost:focus-visible::after {
+  transform: scaleX(1);
+  background-color: var(--color-brick-strong);
+}
+[data-theme='capitol'] .btn--ghost:focus-visible {
+  outline: var(--cc-focus);
+  outline-offset: 3px;
+}
+
+[data-theme='capitol'] .btn--accent {
+  background-color: var(--color-brick);  /* cream on it = 5.96:1 */
+  color: var(--color-cream);
+  padding: 0.8rem 1.6rem;
+  box-shadow: none;
+}
+[data-theme='capitol'] .btn--accent:hover {
+  background-color: var(--color-brick-strong);
+  box-shadow: 0 6px 0 -4px var(--color-brass-lit);
+}
+[data-theme='capitol'] .btn--accent:focus-visible {
+  outline: var(--cc-focus-invert);
+  outline-offset: 3px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MASTHEAD — a quiet nameplate
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='capitol'] .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: color-mix(in srgb, var(--color-cream) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--cc-hair);
+  box-shadow: none;
+}
+/* .flag-stripe becomes a brass rule exactly as wide as the document column —
+   not a bar, a MEASURE. */
+[data-theme='capitol'] .site-header .flag-stripe {
+  display: block;
+  height: 2px;
+  max-width: var(--cc-measure);
+  margin-inline: auto;
+  background-color: color-mix(in srgb, var(--color-gold) 85%, transparent);
+}
+[data-theme='capitol'] .site-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  height: var(--cc-header-h);
+}
+[data-theme='capitol'] .masthead-lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+}
+/* no chip, no square, no ring — the seal sits bare on the paper */
+[data-theme='capitol'] .masthead-seal {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--color-navy);
+}
+[data-theme='capitol'] .masthead-seal .seal { width: 34px; height: 34px; }
+[data-theme='capitol'] .masthead-wordmark {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+[data-theme='capitol'] .masthead-name {
+  font-family: var(--font-display);
+  font-optical-sizing: none;
+  font-variation-settings: 'opsz' 60, 'wght' 500, 'SOFT' 0, 'WONK' 0;
+  text-transform: none;   /* title case, not caps */
+  font-size: 1.05rem;
+  line-height: 1.12;
+  letter-spacing: -0.016em;
+  color: var(--color-navy);
+}
+@media (min-width: 640px) { [data-theme='capitol'] .masthead-name { font-size: 1.22rem; } }
+[data-theme='capitol'] .masthead-city {
+  font-family: var(--font-body);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  margin-top: 0.32rem;
+  color: var(--color-stone);  /* 5.04:1 */
+}
+
+[data-theme='capitol'] .masthead-nav {
+  display: none;
+  align-items: center;
+  gap: 2.5rem;
+}
+@media (min-width: 768px) { [data-theme='capitol'] .masthead-nav { display: flex; } }
+[data-theme='capitol'] .masthead-nav a:not(.btn) {
+  position: relative;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+  text-transform: none;   /* NOT caps — that is the poster's voice */
+  color: var(--color-ink);
+}
+[data-theme='capitol'] .masthead-nav a:not(.btn)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.4rem;
+  height: 1px;
+  background-color: var(--color-brick);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='capitol'] .masthead-nav a:not(.btn)::after {
+    transition: transform var(--cc-ease);
+  }
+}
+[data-theme='capitol'] .masthead-nav a:not(.btn):hover::after,
+[data-theme='capitol'] .masthead-nav a:not(.btn):focus-visible::after { transform: scaleX(1); }
+[data-theme='capitol'] .masthead-nav a:not(.btn):focus-visible {
+  outline: var(--cc-focus);
+  outline-offset: 4px;
+}
+
+/* ── MOBILE ───────────────────────────────────────────────────────────────── */
+[data-theme='capitol'] .masthead-mobile { display: flex; }
+@media (min-width: 768px) { [data-theme='capitol'] .masthead-mobile { display: none; } }
+[data-theme='capitol'] .masthead-mobile button {
+  border-radius: 0;
+  border: 1px solid color-mix(in srgb, var(--color-navy) 60%, transparent); /* 3.83:1 */
+  color: var(--color-navy);
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='capitol'] .masthead-mobile button {
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+}
+[data-theme='capitol'] .masthead-mobile button:hover {
+  background-color: transparent;
+  color: var(--color-brick-strong);
+  border-color: var(--color-brick-strong);
+}
+[data-theme='capitol'] .masthead-mobile #mobile-menu {
+  background-color: var(--color-cream);
+  border-bottom: 1px solid var(--cc-hair);
+  box-shadow: none;
+}
+[data-theme='capitol'] .masthead-mobile .mobile-menu-link {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--color-ink);
+  border-bottom: 1px solid var(--cc-hair);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='capitol'] .masthead-mobile .mobile-menu-link { transition: color 200ms ease; }
+}
+[data-theme='capitol'] .masthead-mobile .mobile-menu-link:hover { color: var(--color-brick-strong); }

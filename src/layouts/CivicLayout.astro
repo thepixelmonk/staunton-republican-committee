@@ -1,0 +1,20 @@
+---
+// PREVIEW-ONLY — delete when a direction is chosen (see AGENTS.md).
+// Letterpress Civic. Zilla Slab is NOT a variable font; import only the four
+// weights the theme actually sets rather than the whole family.
+import '../styles/global.css';
+import '@fontsource/zilla-slab/400.css';
+import '@fontsource/zilla-slab/500.css';
+import '@fontsource/zilla-slab/600.css';
+import '@fontsource/zilla-slab/700.css';
+import '@fontsource-variable/source-sans-3';
+import '../styles/themes/civic/system.css';
+import '../styles/themes/civic/hero.css';
+import '../styles/themes/civic/modules.css';
+import '../styles/themes/civic/engagement.css';
+
+import BaseLayout, { type Props as BaseProps } from './BaseLayout.astro';
+type Props = Omit<BaseProps, 'theme'>;
+---
+
+<BaseLayout theme="civic" {...Astro.props}><slot /></BaseLayout>

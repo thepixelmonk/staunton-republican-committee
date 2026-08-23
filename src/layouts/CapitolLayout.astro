@@ -1,0 +1,20 @@
+---
+// PREVIEW-ONLY — delete when a direction is chosen (see AGENTS.md).
+// Capitol Cream. Fraunces must come from the FULL-axis files: the default
+// package entry ships the wght axis only, and this theme drives opsz / SOFT /
+// WONK / ital. (Every font-variation-settings 'opsz' also needs
+// font-optical-sizing: none, or the browser overrides it — see system.css.)
+import '../styles/global.css';
+import '@fontsource-variable/fraunces/full.css';
+import '@fontsource-variable/fraunces/full-italic.css';
+import '@fontsource-variable/inter';
+import '../styles/themes/capitol/system.css';
+import '../styles/themes/capitol/hero.css';
+import '../styles/themes/capitol/modules.css';
+import '../styles/themes/capitol/engagement.css';
+
+import BaseLayout, { type Props as BaseProps } from './BaseLayout.astro';
+type Props = Omit<BaseProps, 'theme'>;
+---
+
+<BaseLayout theme="capitol" {...Astro.props}><slot /></BaseLayout>

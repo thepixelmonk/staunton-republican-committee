@@ -15,6 +15,30 @@
    Every selector is scoped under [data-theme='gothic'].
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* ── THEME TOKENS ─────────────────────────────────────────────────────────────
+   Gothic re-declares the same nine colour slots + two font slots that
+   global.css's @theme establishes. Redundant on `/` (where these ARE the
+   @theme values) but deliberate: it keeps each theme folder self-contained,
+   and Tailwind never processes this block, so nothing here can be
+   tree-shaken away. */
+[data-theme='gothic'] {
+  --color-cream: #f2ecdd;
+  --color-cream-deep: #e7dfca;
+  --color-ink: #222a2e;
+  --color-navy: #2c3e52;
+  --color-navy-deep: #213039;
+  --color-brick: #b0524b;
+  --color-brick-strong: #8c3f39;
+  --color-gold: #d9b26a;
+  --color-stone: #586453;
+
+  /* Gothic keeps gold as a poster accent and never sets gold text on cream
+     (1.69:1). Every gold text run in this theme sits on navy (5.49:1). */
+
+  --font-display: "Big Shoulders Variable", "Arial Narrow", sans-serif;
+  --font-body: "Hanken Grotesk Variable", system-ui, -apple-system, sans-serif;
+}
+
 /* ── Poster tuning knobs (scoped) ─────────────────────────────────────────────
    The ONE shadow + ONE easing curve the whole poster shares. Other partials
    reference these vars so a press feels identical everywhere. */
@@ -24,7 +48,6 @@
      engagement.css mirror these exact values so the press feels identical
      regardless of partial load order (resting 6px → press 9px). */
   --g-shadow-press: 9px 9px 0 0 var(--color-navy-deep);
-  --g-shadow-gold: 6px 6px 0 0 var(--color-ink);     /* hard shadow on gold grounds */
   --g-ease: 130ms cubic-bezier(0.2, 0.7, 0.3, 1);
 
   /* the flag-stripe band proportions, reused by every stripe in the poster */
@@ -41,8 +64,21 @@
     var(--color-gold) 40% 70%,
     var(--color-navy) 70% 100%
   );
+  /* the same DNA for rules sitting ON navy — the third band goes cream so it
+     still reads. A named variant, not a one-off. */
+  --g-stripe-h-invert: linear-gradient(
+    to right,
+    var(--color-brick) 0 40%,
+    var(--color-gold) 40% 70%,
+    var(--color-cream) 70% 100%
+  );
 
   --g-header-h: 4.5rem;
+
+  /* one focus recipe. Brick reads on cream (4.29:1 as a 2px boundary);
+     on the navy panels and footer it disappears, so those use the gold. */
+  --g-focus: 2px solid var(--color-brick);
+  --g-focus-invert: 2px solid var(--color-gold);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -71,23 +107,38 @@
 
 /* ═══════════════════════════════════════════════════════════════════════════
    MOTIF 1 — HALFTONE / BEN-DAY FIELD  (canonical recipe)
-   Any panel that wants the screenprinted-ink feel adds .has-halftone (and is
-   position:relative). The dots inherit currentColor so the caller controls the
-   ink tone; dark panels typically scope currentColor to cream, gold panels to
-   navy/ink. Always subtle, always 6px grid, pointer-events off, behind content.
+
+   ONE rule, applied to every panel that wants the screenprinted-ink feel.
+   Each host tunes it with three variables:
+     --g-dot-ink      the ink colour (cream on dark grounds, navy on gold)
+     --g-dot-size     the grid pitch  (default 7px)
+     --g-dot-opacity  how present it is (0.05–0.10)
+
+   It paints on ::after rather than ::before because ::before is already
+   spoken for on three of the hosts (the hero and footer flag-stripes, the
+   value panel's index numeral). Hosts must be position:relative and lift
+   their own content above it.
    ═══════════════════════════════════════════════════════════════════════════ */
-[data-theme='gothic'] .has-halftone {
-  position: relative;
+[data-theme='gothic'] {
+  --g-dot-ink: var(--color-cream);
+  --g-dot-size: 7px;
+  --g-dot-opacity: 0.06;
 }
-[data-theme='gothic'] .has-halftone::before {
+
+[data-theme='gothic'] .hero::after,
+[data-theme='gothic'] .value-card::after,
+[data-theme='gothic'] .events::after,
+[data-theme='gothic'] .event-date::after,
+[data-theme='gothic'] .involve::after,
+[data-theme='gothic'] .site-footer::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
-  background-size: 6px 6px;
-  opacity: 0.1;
+  background-image: radial-gradient(var(--g-dot-ink) 0.9px, transparent 1.1px);
+  background-size: var(--g-dot-size) var(--g-dot-size);
+  opacity: var(--g-dot-opacity);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -135,11 +186,18 @@
   text-wrap: balance;
 }
 
-/* section titles — clamp(1.9rem, 4vw, 2.9rem) per the shared system */
-[data-theme='gothic'] .section-title,
-[data-theme='gothic'] .involve-title {
-  font-size: clamp(1.9rem, 4vw, 2.9rem);
+/* THE type scale. Two named steps, so the CTA band's deliberately larger
+   head is a choice rather than an accident of two competing declarations. */
+[data-theme='gothic'] {
+  --g-title: clamp(1.9rem, 4vw, 2.9rem);
+  --g-title-lg: clamp(2.1rem, 5.2vw, 3.5rem);
+}
+[data-theme='gothic'] .section-title {
+  font-size: var(--g-title);
   color: var(--color-navy);
+}
+[data-theme='gothic'] .involve-title {
+  font-size: var(--g-title-lg);
 }
 
 /* the canonical eyebrow / stamped label, shared everywhere */
@@ -207,26 +265,13 @@
 
 /* ═══════════════════════════════════════════════════════════════════════════
    MOTIF 3 — HARD POSTER SHADOW + PRESS  (canonical recipe)
-   Any element that carries the poster shadow + satisfying press uses
-   .has-press. Resting → 6px ink shadow; hover lifts up-left & grows to 8px;
-   active slams to 0,0 with no shadow. Motion is gated on reduced-motion.
+   Resting → 6px ink shadow; hover lifts up-left and grows to 9px; active slams
+   to 0,0. Applied via --g-shadow / --g-shadow-press by .btn here and by the
+   card modules in modules.css / engagement.css.
+
+   The lift is gated on reduced-motion; the SHADOW change is not, so a
+   reduced-motion user still gets a hover affordance.
    ═══════════════════════════════════════════════════════════════════════════ */
-[data-theme='gothic'] .has-press {
-  box-shadow: var(--g-shadow);
-  transition:
-    transform var(--g-ease),
-    box-shadow var(--g-ease);
-}
-@media (prefers-reduced-motion: no-preference) {
-  [data-theme='gothic'] .has-press:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: var(--g-shadow-press);
-  }
-  [data-theme='gothic'] .has-press:active {
-    transform: translate(0, 0);
-    box-shadow: 0 0 0 0 var(--color-navy-deep);
-  }
-}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    MOTIF 4 — BUTTONS  (canonical recipe)
@@ -266,6 +311,23 @@
     transform: translate(0, 0);
     box-shadow: 0 0 0 0 var(--color-navy-deep);
   }
+}
+
+/* Size steps. These were Tailwind's text-xs / text-sm on the component until
+   the theme took ownership of button typography — without them every button
+   would fall back to the inherited body size. */
+[data-theme='gothic'] .btn--sm {
+  font-size: 0.75rem;
+  padding: 0.55rem 1.1rem;
+}
+[data-theme='gothic'] .btn--md {
+  font-size: 0.875rem;
+}
+
+/* the focus ring the component used to carry as a Tailwind utility */
+[data-theme='gothic'] .btn:focus-visible {
+  outline: var(--g-focus);
+  outline-offset: 3px;
 }
 
 /* Solid — navy on a light ground */
@@ -445,7 +507,7 @@
   right: 0;
 }
 [data-theme='gothic'] .masthead-nav a:not(.btn):focus-visible {
-  outline: 2px solid var(--color-brick);
+  outline: var(--g-focus);
   outline-offset: 3px;
 }
 
@@ -496,20 +558,32 @@
   }
 }
 /* the mobile drop panel — squared poster sheet with a navy base rule.
-   MobileNav ships the panel at top:4rem (top-16); our masthead is the 6px
-   stripe + var(--g-header-h) bar, so re-anchor the panel flush under it. */
+   Positioning is the component's job (top:100% against the sticky header);
+   the panel owns its OWN ground here, because the component no longer ships
+   bg-cream and the sheet would otherwise be transparent over the hero. */
 [data-theme='gothic'] .masthead-mobile #mobile-menu {
-  top: calc(var(--g-header-h) + 6px);
+  background-color: var(--color-cream);
   border-bottom: 3px solid var(--color-navy);
   box-shadow: 0 3px 0 0 var(--color-gold);
 }
-[data-theme='gothic'] .masthead-mobile #mobile-menu a {
+[data-theme='gothic'] .masthead-mobile .mobile-menu-link {
   font-family: var(--font-body);
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.08em;
+  font-size: 1rem;
+  color: var(--color-ink);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 18%, transparent);
 }
-[data-theme='gothic'] .masthead-mobile #mobile-menu a:last-child {
-  border-radius: 0;
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='gothic'] .masthead-mobile .mobile-menu-link {
+    transition: color 140ms ease;
+  }
+}
+[data-theme='gothic'] .masthead-mobile .mobile-menu-link:hover {
+  color: var(--color-brick-strong);
+}
+/* the panel CTA is a real .btn now, so it only needs the poster drop */
+[data-theme='gothic'] .masthead-mobile #mobile-menu .btn {
   box-shadow: 4px 4px 0 0 var(--color-brick);
 }

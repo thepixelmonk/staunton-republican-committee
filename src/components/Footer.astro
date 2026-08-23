@@ -7,12 +7,12 @@ import Star from './Star.astro';
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer bg-navy text-cream">
+<footer class="site-footer">
   <div class="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
     <!-- Brand -->
     <div class="sm:col-span-2 lg:col-span-1">
       <div class="flex items-center gap-3">
-        <Seal size={42} class="text-gold" decorative />
+        <Seal size={42} decorative />
         <span class="footer-wordmark text-xl">{site.name}</span>
       </div>
       <p class="footer-tagline mt-4 max-w-xs font-body text-sm leading-relaxed">

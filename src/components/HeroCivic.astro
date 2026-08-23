@@ -1,0 +1,55 @@
+---
+// PREVIEW-ONLY — delete when a direction is chosen (see AGENTS.md).
+//
+// Letterpress Civic's hero: a PURE TYPOGRAPHIC BROADSIDE. No illustration.
+// The nameplate is set in three decks — a ranged small line, the big line, and
+// a foot line carried across the measure by flanking hairline arms — so the
+// block reads as one optical rectangle, the way a job printer would set it.
+// .hero-frame is the host for MOTIF 1 (the pressed corner rule).
+import Button from './Button.astro';
+import Star from './Star.astro';
+import Seal from './Seal.astro';
+import { site } from '../data/site';
+---
+
+<section id="hero" class="hero">
+  <div class="hero-inner">
+    <div class="hero-frame">
+      <p class="hero-eyebrow">
+        <span class="hero-eyebrow-star" aria-hidden="true"><Star size={11} /></span>
+        {site.city}
+        <span class="hero-eyebrow-star" aria-hidden="true"><Star size={11} /></span>
+      </p>
+
+      <h1 class="hero-title">
+        <span class="hero-deck hero-deck--top">Staunton</span>
+        <span class="hero-deck hero-deck--main">Republican</span>
+        <span class="hero-deck hero-deck--foot">
+          <span class="hero-deck-arm" aria-hidden="true"></span>
+          Committee
+          <span class="hero-deck-arm" aria-hidden="true"></span>
+        </span>
+      </h1>
+
+      <!-- MOTIF 2 at hero scale: the seal takes the central star's place -->
+      <div class="hero-ornament" aria-hidden="true">
+        <span></span><Seal size={30} decorative /><span></span>
+      </div>
+
+      <p class="hero-tagline">{site.tagline}</p>
+
+      <p class="hero-standfirst">
+        <span>{site.meeting.cadence}</span>
+        <span class="hero-standfirst-sep" aria-hidden="true"></span>
+        <span>{site.meeting.when}</span>
+      </p>
+
+      <div class="hero-actions">
+        <Button href={site.primaryCta.href} variant="solid" size="md">
+          {site.primaryCta.label}
+        </Button>
+        <Button href="#events" variant="ghost" size="md">Upcoming Events</Button>
+      </div>
+    </div>
+  </div>
+</section>

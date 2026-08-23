@@ -1,0 +1,300 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   LETTERPRESS CIVIC — MODULES: MISSION + EVENTS
+   data-theme='civic'
+
+   MISSION  — a drop-capped lead (MOTIF 4) over four printed catalogue cards.
+              The lead is the ONE left-set, justified block on an otherwise
+              centred sheet: a floated initial cannot live in centred text, and
+              a justified column under a centred head is exactly how a
+              broadside is composed.
+
+   EVENTS   — the second sheet (cream-deep) carrying printed PROGRAM CARDS:
+              MOTIF 1 at its small scale, a struck navy date plate, and a
+              dashed tear seam between stub and body.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MISSION
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .mission {
+  background-color: var(--color-cream);
+}
+
+[data-theme='civic'] .mission .section-intro {
+  margin: 2rem auto 0;
+  max-width: 44ch;
+  font-family: var(--font-body);
+  font-size: 1.12rem;
+  line-height: 1.75;
+  color: color-mix(in srgb, var(--color-ink) 84%, transparent); /* 9.9:1 */
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
+}
+
+/* ── MOTIF 4 — SLAB CAPITAL ───────────────────────────────────────────────── */
+[data-theme='civic'] .mission .section-intro::first-letter {
+  float: left;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 3.6rem;
+  line-height: 0.76;
+  margin: 0.16rem 0.55rem 0 0;
+  color: var(--color-brick-strong);
+  /* the second impression: a hair of gold slipped 1px off register */
+  text-shadow: 1px 1px 0 color-mix(in srgb, var(--color-gold) 55%, transparent);
+}
+
+/* ── VALUE CARDS — printed catalogue entries ──────────────────────────────
+   Hairline box, GOLD top keyline, deboss. No corner rule here: MOTIF 1 is
+   reserved for the three big scales so it keeps its authority. */
+[data-theme='civic'] .value-grid {
+  margin-top: 3.5rem;
+  gap: 1.5rem;
+}
+
+[data-theme='civic'] .value-card {
+  position: relative;
+  border-radius: 1px;
+  border: 1px solid color-mix(in srgb, var(--color-navy) 18%, transparent);
+  border-top: 2.5px solid var(--color-gold);
+  background-color: var(--color-paper-hi);
+  padding: 1.7rem 1.45rem 1.6rem;
+  box-shadow: var(--lc-deboss-sm);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='civic'] .value-card {
+    transition:
+      transform var(--lc-ease),
+      border-color var(--lc-ease),
+      box-shadow var(--lc-ease);
+  }
+  [data-theme='civic'] .value-card:hover { transform: translateY(-3px); }
+}
+/* the colour/shadow half of the hover always applies, so reduced-motion users
+   still get an affordance */
+[data-theme='civic'] .value-card:hover {
+  border-color: color-mix(in srgb, var(--color-navy) 32%, transparent);
+  box-shadow:
+    var(--lc-deboss-sm),
+    0 12px 24px -18px color-mix(in srgb, var(--color-navy) 60%, transparent);
+}
+
+/* the glyph sits in a gold hairline ROUNDEL — a printer's cut */
+[data-theme='civic'] .value-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 88%, transparent);
+  background-color: var(--color-cream);
+  box-shadow:
+    inset 0 0 0 3px var(--color-paper-hi),
+    inset 0 1px 5px color-mix(in srgb, var(--color-navy) 12%, transparent);
+  color: var(--color-navy);
+}
+[data-theme='civic'] .value-glyph {
+  width: 2.15rem;
+  height: 2.15rem;
+  display: block;
+}
+
+/* ── EMBLEM INK ROLES — ENGRAVED ──────────────────────────────────────────
+   Solid masses become contours; that conversion is what makes the glyphs read
+   as engraving rather than screenprint. Only .g-spark stays filled, as the
+   single struck highlight on the plate. */
+[data-theme='civic'] .value-glyph {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+[data-theme='civic'] .value-glyph * { vector-effect: non-scaling-stroke; }
+
+[data-theme='civic'] .value-glyph .g-fill {
+  fill: none;
+  stroke: var(--color-navy);
+  stroke-width: 1.5;
+}
+[data-theme='civic'] .value-glyph .g-line {
+  fill: none;
+  stroke: var(--color-navy);
+  stroke-width: 1.5;
+}
+/* the side neighbours recede — a lighter second pass on the same plate */
+[data-theme='civic'] .value-glyph .g-line-fill {
+  fill: none;
+  stroke: var(--color-navy);
+  stroke-width: 1.15;
+  opacity: 0.55;
+}
+/* the "live" element is the second colour of the press run */
+[data-theme='civic'] .value-glyph .g-flame {
+  fill: none;
+  stroke: var(--color-brick-strong);
+  stroke-width: 1.5;
+}
+[data-theme='civic'] .value-glyph .g-spark {
+  fill: var(--color-gold);
+  stroke: none;
+  opacity: 1;
+}
+/* the wheat rows would clot at this size — thin them further */
+[data-theme='civic'] .value-card[data-icon='opportunity'] .value-glyph .g-line {
+  stroke-width: 1.15;
+}
+
+[data-theme='civic'] .value-title {
+  margin-top: 1.05rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.22rem;
+  text-transform: none;
+  letter-spacing: 0.004em;
+  color: var(--color-navy);
+}
+[data-theme='civic'] .value-body {
+  margin-top: 0.6rem;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent); /* 7.18:1 */
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EVENTS — the second sheet, carrying program cards
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .events {
+  background-color: var(--color-cream-deep);
+}
+[data-theme='civic'] .events-empty {
+  margin-top: 3rem;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+[data-theme='civic'] .event-list {
+  margin-top: 3.25rem;
+  gap: 1.35rem;
+  max-width: 46rem;
+}
+
+/* .event-card inherits MOTIF 1 at the small scale (system.css) */
+[data-theme='civic'] .event-card {
+  display: flex;
+  align-items: stretch;
+  gap: 1.5rem;
+  padding: 1.4rem;
+}
+@media (min-width: 640px) {
+  [data-theme='civic'] .event-card { padding: 1.6rem 1.85rem; gap: 1.85rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='civic'] .event-card {
+    transition: transform var(--lc-ease), box-shadow var(--lc-ease);
+  }
+  [data-theme='civic'] .event-card:hover { transform: translateX(3px); }
+}
+[data-theme='civic'] .event-card:hover {
+  box-shadow:
+    var(--lc-deboss),
+    0 10px 22px -18px color-mix(in srgb, var(--color-navy) 60%, transparent);
+}
+
+/* ── THE DATE PLATE — a struck navy slug with a gold keyline inside ──────── */
+[data-theme='civic'] .event-date {
+  flex: 0 0 4.5rem;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding: 0.7rem 0.4rem 0.75rem;
+  border-radius: 1px;
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-gold) 55%, transparent);
+}
+[data-theme='civic'] .event-date-mon {
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  color: var(--color-gold); /* 5.48:1 on navy — a legitimate ink here */
+}
+[data-theme='civic'] .event-date-day {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.15rem;
+  line-height: 1;
+  margin-top: 0.12rem;
+  color: var(--color-cream);
+}
+
+/* ── THE TEAR SEAM ────────────────────────────────────────────────────────
+   Lives on .event-body-wrap because MOTIF 1 has already claimed both of
+   .event-card's pseudo-elements. */
+[data-theme='civic'] .event-body-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+[data-theme='civic'] .event-body-wrap::before {
+  content: '';
+  position: absolute;
+  left: -0.85rem;
+  top: 0.15rem;
+  bottom: 0.15rem;
+  border-left: 1px dashed color-mix(in srgb, var(--color-navy) 34%, transparent);
+}
+@media (min-width: 640px) {
+  [data-theme='civic'] .event-body-wrap::before { left: -1rem; }
+}
+
+[data-theme='civic'] .event-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: none;
+  font-size: 1.22rem;
+  line-height: 1.2;
+  color: var(--color-navy);
+}
+[data-theme='civic'] .event-meta {
+  margin-top: 0.4rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-brick-strong); /* 5.49:1 on cream-deep */
+}
+[data-theme='civic'] .event-body {
+  margin-top: 0.6rem;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+[data-theme='civic'] .event-link {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-navy);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-gold) 85%, transparent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+}
+[data-theme='civic'] .event-link:hover {
+  color: var(--color-brick-strong);
+  text-decoration-color: var(--color-brick-strong);
+}
+[data-theme='civic'] .event-link:focus-visible {
+  outline: var(--lc-focus);
+  outline-offset: 3px;
+}

@@ -1,0 +1,544 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   LETTERPRESS CIVIC — SYSTEM + HEADER
+   data-theme='civic'
+
+   A dignified town BROADSIDE pressed onto cream stock. Centred and symmetric,
+   because a broadside is a symmetric object. Navy is the ink; brick is the
+   second colour of the press run; gold is the metallic third pass and is NEVER
+   a fill — only hairlines, diamond ticks and corner ornaments.
+
+   Where Gothic shouts with flat slabs and hard OUTWARD shadows, Civic PRESSES:
+   every shadow in this theme goes inward.
+
+   The four motifs, defined once here and referenced everywhere after:
+     MOTIF 1 — PRESSED CORNER RULE  outer ink hairline + inner gold hairline
+                                    mitred short at the corners, four gold star
+                                    pins filling the openings, inner deboss.
+     MOTIF 2 — ORNAMENTAL RULE      two hairlines tapering outward from a gold
+                                    star, each ending in a gold diamond tick.
+     MOTIF 3 — DEBOSS               the one shared inset-shadow stack.
+     MOTIF 4 — SLAB CAPITAL         a floated initial with a 1px gold ghost
+                                    slipped off register (the second pull).
+
+   All colour comes from tokens — no hardcoded hex, including inside data-URIs
+   (the star URI carries geometry only; its ink is a background-color).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── THEME TOKENS ───────────────────────────────────────────────────────────
+   Nine colour slots + two font slots, re-declared as literals so this folder
+   is self-contained and Tailwind can never tree-shake them. */
+[data-theme='civic'] {
+  --color-cream: #f4efe3;        /* warm sheet stock — the page ground */
+  --color-cream-deep: #ece4d2;   /* the second sheet — the Events band */
+  --color-ink: #26211b;          /* warm black ink — body copy (13.91:1) */
+  --color-navy: #1f2a44;         /* the primary ink — heads, plates, footer */
+  --color-navy-deep: #16203a;    /* the same ink, over-inked — hover/depth */
+  --color-brick: #a8443b;        /* second-run red — accent fills, borders */
+  --color-brick-strong: #9a3a32; /* AA-safe red for small text (6.05:1) */
+  --color-gold: #c49a4a;         /* metallic third pass. 2.27:1 on cream, so
+                                    RULES AND ORNAMENTS ONLY on paper; it is a
+                                    legitimate text ink on navy (5.48:1). */
+  --color-stone: #655f55;        /* corrected from #6f6a5e, which was 4.26:1
+                                    on cream-deep — below AA. Now 5.51/5.00. */
+
+  /* extra slots — see the theme review: gold cannot carry text on paper */
+  --color-brass-ink: #7f5c22;    /* brass that DOES carry text on paper:
+                                    5.30:1 cream / 4.80:1 cream-deep */
+  --color-paper-hi: #f9f6ef;     /* the lighter stock a framed panel is printed
+                                    on, so frames read as pasted-on sheets */
+
+  --font-display: "Zilla Slab", Georgia, "Times New Roman", serif;
+  --font-body: "Source Sans 3 Variable", system-ui, -apple-system, sans-serif;
+
+  /* ── shared knobs ─────────────────────────────────────────────────────── */
+  /* MOTIF 3 — DEBOSS. The ONE inward shadow the whole sheet shares. */
+  --lc-deboss:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-cream-deep) 70%, transparent),
+    inset 0 2px 14px color-mix(in srgb, var(--color-navy) 13%, transparent),
+    0 1px 0 0 var(--color-paper-hi);
+  --lc-deboss-sm:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-cream-deep) 60%, transparent),
+    inset 0 1px 8px color-mix(in srgb, var(--color-navy) 10%, transparent);
+  --lc-ease: 200ms cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  --lc-header-h: 4.75rem;
+
+  /* one focus recipe, with an inverted variant for the dark plate + footer */
+  --lc-focus: 2px solid var(--color-brick);
+  --lc-focus-invert: 2px solid var(--color-gold);
+
+  /* geometry only — no fill attribute, so this URI carries no palette */
+  --lc-star-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1.5 14.47 8.6 21.99 8.76 15.99 13.3 18.17 20.49 12 16.2 5.83 20.49 8.01 13.3 2.01 8.76 9.53 8.6Z'/%3E%3C/svg%3E");
+
+  /* MOTIF 1 defaults = the hero (largest) scale */
+  --lc-inset: 10px;
+  --lc-pin: 14px;
+  --lc-gap: 12px;
+  --lc-rule-outer: color-mix(in srgb, var(--color-navy) 42%, transparent);
+  --lc-rule-inner: color-mix(in srgb, var(--color-gold) 80%, transparent);
+  --lc-frame-paper: var(--color-paper-hi);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAPER — a two-pass stock: a warm head vignette (the sheet catching light)
+   over a fine fibre grain. Never competes with content.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] body {
+  background-color: var(--color-cream);
+  background-image:
+    radial-gradient(
+      120% 80% at 50% -12%,
+      color-mix(in srgb, var(--color-cream-deep) 55%, transparent) 0%,
+      transparent 58%
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.038'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, repeat;
+  font-family: var(--font-body);
+  line-height: 1.68;
+  letter-spacing: 0.004em;
+}
+
+[data-theme='civic'] ::selection {
+  background-color: var(--color-brick);
+  color: var(--color-cream);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTIF 1 — PRESSED CORNER RULE  (canonical recipe)
+
+   Do NOT try to punch a gold border with background layers: backgrounds paint
+   UNDER borders, so it cannot work. Instead the inner rule is four background
+   hairlines that each stop --lc-gap short of the corners (a real compositor
+   mitres them short), and the star pins drop into those openings via a MASK —
+   so the ink is a background-color token and the data-URI is pure geometry.
+
+   Scale by re-declaring --lc-inset / --lc-pin / --lc-gap on the host.
+   Invariants: --lc-inset >= --lc-pin / 2
+               --lc-gap   >= --lc-pin / 2 + 3px
+
+   NOTE: this motif consumes BOTH pseudo-elements on its host. That is why the
+   event ticket's tear seam lives on .event-body-wrap::before.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .hero-frame,
+[data-theme='civic'] .event-card,
+[data-theme='civic'] .involve,
+[data-theme='civic'] .nl-coupon,
+[data-theme='civic'] .nl-success {
+  position: relative;
+  border: 1.5px solid var(--lc-rule-outer);
+  border-radius: 1px;
+  background-color: var(--lc-frame-paper);
+  box-shadow: var(--lc-deboss);
+}
+
+[data-theme='civic'] .hero-frame::before,
+[data-theme='civic'] .event-card::before,
+[data-theme='civic'] .involve::before,
+[data-theme='civic'] .nl-coupon::before,
+[data-theme='civic'] .nl-success::before {
+  content: '';
+  position: absolute;
+  inset: var(--lc-inset);
+  pointer-events: none;
+  z-index: 2;
+  background-image:
+    linear-gradient(var(--lc-rule-inner), var(--lc-rule-inner)),
+    linear-gradient(var(--lc-rule-inner), var(--lc-rule-inner)),
+    linear-gradient(var(--lc-rule-inner), var(--lc-rule-inner)),
+    linear-gradient(var(--lc-rule-inner), var(--lc-rule-inner));
+  background-repeat: no-repeat;
+  background-size:
+    calc(100% - 2 * var(--lc-gap)) 1px,
+    calc(100% - 2 * var(--lc-gap)) 1px,
+    1px calc(100% - 2 * var(--lc-gap)),
+    1px calc(100% - 2 * var(--lc-gap));
+  background-position: center top, center bottom, left center, right center;
+}
+
+[data-theme='civic'] .hero-frame::after,
+[data-theme='civic'] .event-card::after,
+[data-theme='civic'] .involve::after,
+[data-theme='civic'] .nl-coupon::after,
+[data-theme='civic'] .nl-success::after {
+  content: '';
+  position: absolute;
+  inset: calc(var(--lc-inset) - var(--lc-pin) / 2);
+  pointer-events: none;
+  z-index: 3;
+  background-color: var(--color-gold);
+  -webkit-mask-image: var(--lc-star-shape), var(--lc-star-shape),
+                      var(--lc-star-shape), var(--lc-star-shape);
+          mask-image: var(--lc-star-shape), var(--lc-star-shape),
+                      var(--lc-star-shape), var(--lc-star-shape);
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: var(--lc-pin) var(--lc-pin);
+          mask-size: var(--lc-pin) var(--lc-pin);
+  -webkit-mask-position: left 0 top 0, right 0 top 0, left 0 bottom 0, right 0 bottom 0;
+          mask-position: left 0 top 0, right 0 top 0, left 0 bottom 0, right 0 bottom 0;
+}
+
+/* real content must clear the two frame layers */
+[data-theme='civic'] .hero-frame > *,
+[data-theme='civic'] .nl-coupon > *,
+[data-theme='civic'] .nl-success > * {
+  position: relative;
+  z-index: 4;
+}
+
+/* per-host scale overrides */
+[data-theme='civic'] .event-card {
+  --lc-inset: 6px;
+  --lc-pin: 9px;
+  --lc-gap: 8px;
+}
+[data-theme='civic'] .nl-coupon,
+[data-theme='civic'] .nl-success {
+  --lc-inset: 8px;
+  --lc-pin: 11px;
+  --lc-gap: 10px;
+}
+/* the Get Involved plate is the motif INVERTED — ink ground, paper rules */
+[data-theme='civic'] .involve {
+  --lc-inset: 14px;
+  --lc-pin: 16px;
+  --lc-gap: 15px;
+  --lc-rule-outer: color-mix(in srgb, var(--color-cream) 26%, transparent);
+  --lc-rule-inner: color-mix(in srgb, var(--color-gold) 62%, transparent);
+  --lc-frame-paper: var(--color-navy);
+}
+@media (min-width: 640px) {
+  [data-theme='civic'] .involve {
+    --lc-inset: 20px;
+    --lc-gap: 18px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTIF 2 — ORNAMENTAL RULE
+   The markup ships <span/><Star/><span/>; we taper the spans and pin a gold
+   diamond on each outer end.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .section-rule,
+[data-theme='civic'] .involve-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+}
+[data-theme='civic'] .section-rule > span:not(.section-rule-star),
+[data-theme='civic'] .involve-rule > span:not(.section-rule-star) {
+  position: relative;
+  display: block;
+  height: 1.5px;
+  width: 3.5rem;
+  background-color: transparent;
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--color-gold) 92%, transparent)
+  );
+}
+[data-theme='civic'] .section-rule > span:last-of-type,
+[data-theme='civic'] .involve-rule > span:last-of-type {
+  background-image: linear-gradient(
+    to left,
+    transparent,
+    color-mix(in srgb, var(--color-gold) 92%, transparent)
+  );
+}
+/* the gold diamond terminals at the outer ends */
+[data-theme='civic'] .section-rule > span:first-of-type::before,
+[data-theme='civic'] .section-rule > span:last-of-type::after,
+[data-theme='civic'] .involve-rule > span:first-of-type::before,
+[data-theme='civic'] .involve-rule > span:last-of-type::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 4.5px;
+  height: 4.5px;
+  background-color: var(--color-gold);
+  transform: translateY(-50%) rotate(45deg);
+}
+[data-theme='civic'] .section-rule > span:first-of-type::before,
+[data-theme='civic'] .involve-rule > span:first-of-type::before { left: 0; }
+[data-theme='civic'] .section-rule > span:last-of-type::after,
+[data-theme='civic'] .involve-rule > span:last-of-type::after { right: 0; }
+
+[data-theme='civic'] .section-rule-star { color: var(--color-gold); }
+[data-theme='civic'] .involve-rule .section-rule-star { color: var(--color-gold); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TYPE
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] h1,
+[data-theme='civic'] h2,
+[data-theme='civic'] h3,
+[data-theme='civic'] h4 {
+  font-family: var(--font-display);
+  color: var(--color-navy);
+  letter-spacing: 0.002em;
+  line-height: 1.1;
+}
+
+[data-theme='civic'] .section-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+[data-theme='civic'] .section-eyebrow,
+[data-theme='civic'] .involve-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em; /* cancel the trailing letter-space so it stays centred */
+  margin-bottom: 0.95rem;
+  color: var(--color-brick-strong);
+}
+[data-theme='civic'] .section-title,
+[data-theme='civic'] .involve-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: none;
+  font-size: clamp(1.85rem, 4.4vw, 2.7rem);
+  line-height: 1.08;
+  letter-spacing: 0.004em;
+  color: var(--color-navy);
+  text-wrap: balance;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTIF: BUTTONS — the letterpress slug
+   An inset top highlight plus a 1px hard bottom edge reads as a type slug
+   catching light; pressing sinks it into the paper and the edge disappears.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .btn {
+  border-radius: 1px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.8rem 1.7rem;
+  font-size: 0.8rem;
+}
+@media (min-width: 640px) {
+  [data-theme='civic'] .btn { padding: 0.85rem 1.9rem; }
+}
+[data-theme='civic'] .btn--sm {
+  font-size: 0.72rem;
+  padding: 0.55rem 1.15rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='civic'] .btn {
+    transition:
+      background-color 180ms ease,
+      color 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      transform 110ms ease;
+  }
+  [data-theme='civic'] .btn:active { transform: translateY(1px); }
+}
+[data-theme='civic'] .btn:active { box-shadow: none; }
+[data-theme='civic'] .btn:focus-visible {
+  outline: var(--lc-focus);
+  outline-offset: 3px;
+}
+
+[data-theme='civic'] .btn--solid {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-cream) 18%, transparent),
+    0 1px 0 var(--color-navy-deep);
+}
+[data-theme='civic'] .btn--solid:hover { background-color: var(--color-navy-deep); }
+
+[data-theme='civic'] .btn--ghost {
+  background-color: transparent;
+  color: var(--color-navy);
+  /* navy@60% on cream = 3.80:1, clears the 3:1 UI-boundary bar */
+  border: 1.5px solid color-mix(in srgb, var(--color-navy) 60%, transparent);
+  box-shadow: none;
+}
+[data-theme='civic'] .btn--ghost:hover {
+  background-color: var(--color-navy);
+  border-color: var(--color-navy);
+  color: var(--color-cream);
+}
+
+[data-theme='civic'] .btn--accent {
+  background-color: var(--color-brick-strong); /* cream on it = 6.05:1 */
+  color: var(--color-cream);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-cream) 16%, transparent),
+    0 1px 0 color-mix(in srgb, var(--color-ink) 45%, transparent);
+}
+[data-theme='civic'] .btn--accent:hover { background-color: var(--color-brick); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MASTHEAD — a quiet nameplate: hairline ink rule + a fine gold under-tick
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme='civic'] .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: color-mix(in srgb, var(--color-cream) 94%, transparent);
+  backdrop-filter: saturate(1.05) blur(6px);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 30%, transparent);
+  box-shadow: 0 1.5px 0 0 color-mix(in srgb, var(--color-gold) 55%, transparent);
+}
+
+/* .flag-stripe is repurposed as the printer's top rule — a gold hairline that
+   tapers to nothing at both edges. Never a three-colour bar; that is Gothic. */
+[data-theme='civic'] .site-header .flag-stripe {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent 0,
+    color-mix(in srgb, var(--color-gold) 70%, transparent) 14%,
+    color-mix(in srgb, var(--color-gold) 70%, transparent) 86%,
+    transparent 100%
+  );
+}
+
+[data-theme='civic'] .site-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--lc-header-h);
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+[data-theme='civic'] .masthead-lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-width: 0;
+}
+/* the seal sits in a gold hairline ROUNDEL — a struck medallion, not a stamp */
+[data-theme='civic'] .masthead-seal {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.6rem;
+  height: 2.6rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 85%, transparent);
+  background-color: var(--color-paper-hi);
+  box-shadow: var(--lc-deboss-sm);
+  color: var(--color-navy);
+}
+[data-theme='civic'] .masthead-wordmark {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+[data-theme='civic'] .masthead-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.018em;
+  font-size: 1rem;
+  line-height: 1.05;
+  color: var(--color-navy);
+}
+@media (min-width: 400px) { [data-theme='civic'] .masthead-name { font-size: 1.15rem; } }
+@media (min-width: 640px) { [data-theme='civic'] .masthead-name { font-size: 1.32rem; } }
+[data-theme='civic'] .masthead-city {
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  text-indent: 0.26em;
+  font-size: 0.56rem;
+  margin-top: 0.28rem;
+  color: var(--color-brick-strong);
+}
+
+[data-theme='civic'] .masthead-nav {
+  display: none;
+  align-items: center;
+  gap: 2rem;
+}
+@media (min-width: 768px) { [data-theme='civic'] .masthead-nav { display: flex; } }
+
+/* nav links — a gold under-tick that grows from the left. Quiet, not a wipe. */
+[data-theme='civic'] .masthead-nav a:not(.btn) {
+  position: relative;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.84rem;
+  letter-spacing: 0.05em;
+  color: var(--color-ink);
+  padding-bottom: 0.3rem;
+}
+[data-theme='civic'] .masthead-nav a:not(.btn)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.5px;
+  background-color: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='civic'] .masthead-nav a:not(.btn)::after {
+    transition: transform var(--lc-ease);
+  }
+}
+[data-theme='civic'] .masthead-nav a:not(.btn):hover { color: var(--color-brick-strong); }
+[data-theme='civic'] .masthead-nav a:not(.btn):hover::after,
+[data-theme='civic'] .masthead-nav a:not(.btn):focus-visible::after { transform: scaleX(1); }
+[data-theme='civic'] .masthead-nav a:not(.btn):focus-visible {
+  outline: var(--lc-focus);
+  outline-offset: 3px;
+}
+
+/* ── MOBILE ───────────────────────────────────────────────────────────────── */
+[data-theme='civic'] .masthead-mobile { display: flex; }
+@media (min-width: 768px) { [data-theme='civic'] .masthead-mobile { display: none; } }
+[data-theme='civic'] .masthead-mobile button {
+  border-radius: 1px;
+  border: 1px solid color-mix(in srgb, var(--color-navy) 60%, transparent);
+  color: var(--color-navy);
+  box-shadow: var(--lc-deboss-sm);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='civic'] .masthead-mobile button {
+    transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+  }
+}
+[data-theme='civic'] .masthead-mobile button:hover {
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  border-color: var(--color-navy);
+}
+/* the drop panel owns its own ground — the component ships no background */
+[data-theme='civic'] .masthead-mobile #mobile-menu {
+  background-color: var(--color-cream);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 25%, transparent);
+  box-shadow: 0 1.5px 0 0 color-mix(in srgb, var(--color-gold) 55%, transparent);
+}
+[data-theme='civic'] .masthead-mobile .mobile-menu-link {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-ink);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 14%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme='civic'] .masthead-mobile .mobile-menu-link { transition: color 160ms ease; }
+}
+[data-theme='civic'] .masthead-mobile .mobile-menu-link:hover { color: var(--color-brick-strong); }

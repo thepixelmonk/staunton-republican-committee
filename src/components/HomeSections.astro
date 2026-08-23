@@ -1,0 +1,36 @@
+---
+// The one and only copy of the homepage body. All three routes render this;
+// only Hero and Newsletter need to know which direction is active.
+import Hero from './Hero.astro';
+import Mission from './Mission.astro';
+import Events from './Events.astro';
+import GetInvolved from './GetInvolved.astro';
+import SectionHeading from './SectionHeading.astro';
+import Newsletter from './Newsletter.svelte';
+import { site } from '../data/site';
+import { themes, type ThemeId } from '../data/themes';
+
+interface Props {
+  theme: ThemeId;
+}
+const { theme } = Astro.props;
+const newsletter = themes[theme].newsletter;
+---
+
+<Hero theme={theme} />
+<Mission />
+<Events />
+<GetInvolved />
+
+<section id="contact" class="newsletter py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-6">
+    <SectionHeading eyebrow="Stay Connected" title="Join Our Newsletter" />
+    <p class="newsletter-contact mx-auto mt-6 max-w-2xl text-center font-body text-lg leading-relaxed">
+      Prefer to reach us directly? Email{' '}
+      <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.
+    </p>
+    <div class="mt-10">
+      <Newsletter client:visible {...newsletter} />
+    </div>
+  </div>
+</section>

@@ -1,10 +1,19 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────────────────
-   "Heartland Gothic" design tokens — Staunton Republican Committee
-   (WPA / national-park silkscreen poster). Tailwind v4 reads these and
-   auto-generates utilities like bg-navy, text-cream, font-display, etc.
-   Structural poster styling lives in src/styles/gothic/*.css.
+   SHARED FOUNDATION — Staunton Republican Committee
+
+   This file is theme-agnostic. It declares the Tailwind v4 token SLOTS (so
+   utilities like bg-navy / text-cream / font-display exist at all) and the
+   base rules every direction inherits.
+
+   The values below are Heartland Gothic's, because `/` is Gothic. Each theme
+   then re-declares the SAME slots as literals in its own
+   src/styles/themes/<id>/system.css, unlayered, so it wins over this block.
+   Tailwind never processes those per-theme blocks, which also makes them
+   immune to token tree-shaking.
+
+   Structural styling lives in src/styles/themes/<id>/*.css.
    ───────────────────────────────────────────────────────────────────────── */
 @theme {
   /* Palette */
@@ -48,6 +57,23 @@
     background-color: var(--color-brick);
     color: var(--color-cream);
   }
+}
+
+/* The skip link is site chrome, not theme chrome — but it must re-skin with
+   whichever direction is active, so it reads from the tokens rather than
+   baking one palette into the markup. Unlayered so it beats utilities. */
+.skip-link:focus {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 50;
+  background-color: var(--color-navy);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {

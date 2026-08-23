@@ -29,7 +29,7 @@
 <button
   bind:this={btn}
   type="button"
-  class="inline-flex h-10 w-10 items-center justify-center rounded-[2px] border border-navy/30 text-navy transition-colors hover:bg-navy hover:text-cream focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brick"
+  class="inline-flex h-10 w-10 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2"
   aria-label={open ? 'Close menu' : 'Open menu'}
   aria-expanded={open}
   aria-controls="mobile-menu"
@@ -47,25 +47,19 @@
 </button>
 
 {#if open}
-  <div
-    id="mobile-menu"
-    class="fixed inset-x-0 top-16 z-30 border-b border-navy/15 bg-cream shadow-lg"
-  >
+  <!-- Anchored to the header (which is position:sticky, so it is a positioning
+       context) rather than to the viewport. A fixed panel would need to know
+       how much chrome sits above the header — and the preview bar's height
+       changes with viewport width — so `top: 100%` is the only version that
+       stays flush in every theme at every width. -->
+  <div id="mobile-menu" class="mobile-menu absolute inset-x-0 top-full z-30">
     <nav class="mx-auto flex max-w-6xl flex-col px-6 py-3" aria-label="Mobile">
       {#each navItems as item}
-        <a
-          href={item.href}
-          onclick={close}
-          class="border-b border-navy/10 py-3 font-body text-base font-semibold text-ink transition-colors hover:text-brick"
-        >
+        <a href={item.href} onclick={close} class="mobile-menu-link block py-3">
           {item.label}
         </a>
       {/each}
-      <a
-        href={cta.href}
-        onclick={close}
-        class="mt-4 inline-flex items-center justify-center rounded-[2px] bg-navy px-6 py-3 font-body text-sm font-semibold uppercase tracking-[0.08em] text-cream transition-colors hover:bg-navy-deep"
-      >
+      <a href={cta.href} onclick={close} class="btn btn--solid btn--md mt-4 w-full">
         {cta.label}
       </a>
     </nav>
