@@ -1,4 +1,7 @@
 ---
+// THE COLOPHON — the foot of the sheet. The struck seal's second and last
+// appearance, three columns of particulars, then the imprint and the legal
+// line. Meeting details live in The Committee now, so this stays at three.
 import { site } from '../data/site';
 import Seal from './Seal.astro';
 import SocialIcon from './SocialIcon.astro';
@@ -8,19 +11,19 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
-    <!-- Brand -->
-    <div class="sm:col-span-2 lg:col-span-1">
-      <div class="flex items-center gap-3">
+  <!-- names the landmark and gives the column heads an ancestor -->
+  <h2 class="sr-only">Committee information</h2>
+
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-lockup">
         <Seal size={42} decorative />
-        <span class="footer-wordmark text-xl">{site.name}</span>
+        <span class="footer-wordmark">{site.name}</span>
       </div>
-      <p class="footer-tagline mt-4 max-w-xs font-body text-sm leading-relaxed">
-        {site.tagline}
-      </p>
+      <p class="footer-tagline">{site.tagline}</p>
       {
         site.socials.length > 0 && (
-          <div class="mt-5 flex gap-3">
+          <div class="footer-socials">
             {site.socials.map((s) => (
               <a
                 href={s.href}
@@ -37,56 +40,51 @@ const year = new Date().getFullYear();
       }
     </div>
 
-    <!-- Explore -->
     <div>
       <h3 class="footer-col-head">Explore</h3>
-      <ul class="space-y-2.5">
+      <ul class="footer-list">
         {
           site.nav.map((item) => (
             <li>
-              <a href={item.href} class="footer-link text-sm">
+              <a href={item.href} class="footer-link">
                 {item.label}
               </a>
             </li>
           ))
         }
+        <li>
+          <a href={site.primaryCta.href} class="footer-link">
+            {site.primaryCta.label}
+          </a>
+        </li>
       </ul>
     </div>
 
-    <!-- Contact -->
     <div>
       <h3 class="footer-col-head">Contact</h3>
-      <ul class="space-y-2.5 font-body text-sm">
+      <ul class="footer-list">
         <li>
           <a href={`mailto:${site.contact.email}`} class="footer-link">
             {site.contact.email}
           </a>
         </li>
-        <li class="footer-link">{site.contact.phone}</li>
-        <li class="footer-link">{site.contact.mailing}</li>
-      </ul>
-    </div>
-
-    <!-- Meetings -->
-    <div>
-      <h3 class="footer-col-head">Meetings</h3>
-      <ul class="space-y-2.5 font-body text-sm">
-        <li class="footer-strong">{site.meeting.cadence}</li>
-        <li class="footer-link">{site.meeting.when}</li>
-        <li class="footer-link">{site.meeting.where}</li>
+        <li><span class="footer-link">{site.contact.phone}</span></li>
+        <li><span class="footer-link">{site.contact.mailing}</span></li>
       </ul>
     </div>
   </div>
 
   <div class="footer-legal">
-    <div
-      class="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-6 text-xs sm:flex-row sm:items-center sm:justify-between"
-    >
-      <p class="footer-legal-text flex items-center gap-2">
-        <Star size={11} class="footer-star" />
-        © {year} {site.name}. All rights reserved.
+    <div class="footer-legal-inner">
+      <!-- the imprint: the line at the foot of a broadside naming who had it
+           printed. The sheet's last star, and its only one down here. -->
+      <p class="footer-imprint">
+        <Star size={10} class="footer-star" />
+        {site.imprint}
       </p>
-      <p class="footer-legal-text max-w-md leading-relaxed sm:text-right">{site.disclaimer}</p>
+      <p class="footer-legal-text">
+        {site.disclaimer} © {year} {site.name}.
+      </p>
     </div>
   </div>
 </footer>

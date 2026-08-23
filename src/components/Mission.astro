@@ -3,10 +3,14 @@ import SectionHeading from './SectionHeading.astro';
 import { site } from '../data/site';
 
 // ─────────────────────────────────────────────────────────────────────────
-// WPA / silkscreen line-icon set — one geometric, flat, two-tone emblem per
-// value, drawn to read like a printed poster stamp. Decorative → aria-hidden.
-// Keyed by value title so the data file stays copy-only. Falls back to the
-// shield if a title isn't matched.
+// One emblem per value. The paths are drawn as solid masses and CONVERTED to
+// engraved contours by the ink-role classes in modules.css (.g-fill, .g-line,
+// .g-line-fill, .g-flame, .g-spark) — that conversion is what makes them read
+// as engraving rather than screenprint, and Get Involved's glyphs use the same
+// contract so the sheet has ONE icon language.
+//
+// Decorative → the wrapper carries aria-hidden. Keyed by value title so the
+// data file stays copy-only; falls back to the shield if a title isn't matched.
 // ─────────────────────────────────────────────────────────────────────────
 type IconKey = 'liberty' | 'community' | 'opportunity' | 'integrity';
 
@@ -18,15 +22,15 @@ const ICON_FOR: Record<string, IconKey> = {
 };
 ---
 
-<section id="about" class="mission py-20 sm:py-28">
-  <div class="mx-auto max-w-6xl px-6">
-    <SectionHeading eyebrow="Who We Are" title="Standing Up for Staunton" />
+<section id="about" class="mission section" aria-labelledby="about-title">
+  <div class="section-inner">
+    <SectionHeading eyebrow="Who We Are" title="Standing Up for Staunton" headingId="about-title" />
 
-    <p class="section-intro mx-auto mt-6 max-w-2xl text-center font-body text-lg leading-relaxed">
-      {site.description}
-    </p>
+    <!-- the one left-set, justified block on a centred sheet: a floated
+         initial cannot live in centred text -->
+    <p class="section-lead">{site.description}</p>
 
-    <div class="value-grid mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="value-grid">
       {
         site.values.map((value) => {
           const key = ICON_FOR[value.title] ?? 'integrity';

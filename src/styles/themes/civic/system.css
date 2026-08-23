@@ -1,57 +1,132 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   LETTERPRESS CIVIC — SYSTEM + HEADER
-   data-theme='civic'
+   LETTERPRESS CIVIC — SYSTEM, SECTIONS, BUTTONS, MASTHEAD
 
-   A dignified town BROADSIDE pressed onto cream stock. Centred and symmetric,
-   because a broadside is a symmetric object. Navy is the ink; brick is the
-   second colour of the press run; gold is the metallic third pass and is NEVER
-   a fill — only hairlines, diamond ticks and corner ornaments.
+   The page is a job printer's sheet: set on the American point system and
+   pulled in THREE PASSES. Every mark on the page must be assignable to one:
 
-   Where Gothic shouts with flat slabs and hard OUTWARD shadows, Civic PRESSES:
-   every shadow in this theme goes inward.
+     PASS 1 · NAVY   the forme — heads, plates, rules of record, structure.
+     PASS 2 · BRICK  the second colour — only things that ask for attention:
+                     eyebrows, the slab capital, accent CTAs, the live element
+                     inside a glyph.
+     PASS 3 · GOLD   the metallic — ornament ONLY. It measures 2.06–2.41:1 on
+                     all three paper grounds, so on paper it is rules, keylines,
+                     diamonds and star pins and NEVER text. On navy it is a
+                     legitimate ink (5.48:1). --color-brass-ink is the
+                     gold-coloured ink that DOES pass on paper (5.30–5.63:1).
 
-   The four motifs, defined once here and referenced everywhere after:
-     MOTIF 1 — PRESSED CORNER RULE  outer ink hairline + inner gold hairline
-                                    mitred short at the corners, four gold star
-                                    pins filling the openings, inner deboss.
-     MOTIF 2 — ORNAMENTAL RULE      two hairlines tapering outward from a gold
-                                    star, each ending in a gold diamond tick.
-     MOTIF 3 — DEBOSS               the one shared inset-shadow stack.
-     MOTIF 4 — SLAB CAPITAL         a floated initial with a 1px gold ghost
-                                    slipped off register (the second pull).
+   If a mark cannot be assigned a pass, it does not belong on the sheet.
+
+   Two more rules hold the sheet together:
+
+     ONE MEASURE   two column widths for the whole page (--lc-measure and
+                   --lc-measure-wide), never a third. The hero frame and the
+                   reply card come out the same width, so the sheet opens and
+                   closes on the same edge.
+     ONE SCALE     type is the traditional point sizes a compositor had in the
+                   case; vertical space is multiples of the 6pt quad. No
+                   value in these four files is off-scale.
+
+   THE MOTIFS — defined once here, referenced everywhere after. There are three
+   now, not four; the budget is deliberate, because a sheet with four competing
+   ornaments has none.
+
+     MOTIF 1 — PRESSED CORNER RULE   outer ink hairline + inner gold hairline
+                                     mitred short at the corners, four gold star
+                                     pins filling the openings, inner deboss.
+                                     Hosts: .hero-frame and the reply card ONLY
+                                     — the two printed FORMS on the page.
+     MOTIF 2 — DEBOSS                the one inward shadow the sheet shares.
+                                     Civic presses: every shadow goes inward.
+     MOTIF 3 — OFF-REGISTER PULL     the signature. A gold ghost of the type
+                                     slipped off register, as though the second
+                                     colour missed the lay. ONE value, used
+                                     twice on the sheet — the hero's main deck
+                                     and the slab capital — and once more on
+                                     the 404, which is the same press run.
 
    All colour comes from tokens — no hardcoded hex, including inside data-URIs
    (the star URI carries geometry only; its ink is a background-color).
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── THEME TOKENS ───────────────────────────────────────────────────────────
-   Nine colour slots + two font slots, re-declared as literals so this folder
-   is self-contained and Tailwind can never tree-shake them. */
-[data-theme='civic'] {
+:root {
+  /* ── PASS 1–3: the inks ────────────────────────────────────────────────
+     Re-declared as literals (not var() into @theme) so this folder is
+     self-contained and Tailwind can never tree-shake them. Keep in sync with
+     the @theme block in styles/global.css — this file is the source of truth. */
   --color-cream: #f4efe3;        /* warm sheet stock — the page ground */
-  --color-cream-deep: #ece4d2;   /* the second sheet — the Events band */
+  --color-cream-deep: #ece4d2;   /* the second sheet — the mid-page band */
+  --color-paper-hi: #f9f6ef;     /* lighter stock, so a framed panel reads as
+                                    a sheet pasted onto the sheet */
   --color-ink: #26211b;          /* warm black ink — body copy (13.91:1) */
-  --color-navy: #1f2a44;         /* the primary ink — heads, plates, footer */
+  --color-navy: #1f2a44;         /* the forme (12.43:1 on cream) */
   --color-navy-deep: #16203a;    /* the same ink, over-inked — hover/depth */
-  --color-brick: #a8443b;        /* second-run red — accent fills, borders */
+  --color-brick: #a8443b;        /* second-run red — accent fills (5.15:1) */
   --color-brick-strong: #9a3a32; /* AA-safe red for small text (6.05:1) */
-  --color-gold: #c49a4a;         /* metallic third pass. 2.27:1 on cream, so
-                                    RULES AND ORNAMENTS ONLY on paper; it is a
-                                    legitimate text ink on navy (5.48:1). */
-  --color-stone: #655f55;        /* corrected from #6f6a5e, which was 4.26:1
-                                    on cream-deep — below AA. Now 5.51/5.00. */
-
-  /* extra slots — see the theme review: gold cannot carry text on paper */
+  --color-gold: #c49a4a;         /* the metallic. 2.27:1 on cream — ORNAMENT
+                                    ONLY on paper; 5.48:1 on navy, an ink there */
   --color-brass-ink: #7f5c22;    /* brass that DOES carry text on paper:
                                     5.30:1 cream / 4.80:1 cream-deep */
-  --color-paper-hi: #f9f6ef;     /* the lighter stock a framed panel is printed
-                                    on, so frames read as pasted-on sheets */
+
+  /* Two greys on paper, two on ink. These replace fourteen inline color-mix
+     calls that ran at five barely-different strengths. All clear AA. */
+  --color-ink-body:  color-mix(in srgb, var(--color-ink) 84%, transparent);
+                                 /* 8.67 cream · 8.09 cream-deep · 9.07 paper-hi */
+  --color-ink-muted: color-mix(in srgb, var(--color-ink) 76%, transparent);
+                                 /* 6.74 cream · 6.30 cream-deep · 6.94 paper-hi */
+  --color-cream-body:  color-mix(in srgb, var(--color-cream) 84%, transparent);
+                                 /* 9.18 on navy */
+  --color-cream-muted: color-mix(in srgb, var(--color-cream) 70%, transparent);
+                                 /* 6.87 on navy */
 
   --font-display: "Zilla Slab", Georgia, "Times New Roman", serif;
   --font-body: "Source Sans 3 Variable", system-ui, -apple-system, sans-serif;
 
-  /* ── shared knobs ─────────────────────────────────────────────────────── */
-  /* MOTIF 3 — DEBOSS. The ONE inward shadow the whole sheet shares. */
+  /* ── ONE SCALE · TYPE ──────────────────────────────────────────────────
+     The point sizes a job case actually held, at 16px root = 12pt. Nothing on
+     the sheet is set at a size that is not one of these (fluid heads clamp
+     between two adjacent steps). */
+  --t-6:  0.500rem;  /*  6pt */
+  --t-7:  0.583rem;  /*  7pt — agate: the city line, the smallest label */
+  --t-8:  0.667rem;  /*  8pt — eyebrows, field labels, date-plate month */
+  --t-9:  0.750rem;  /*  9pt — meta, small buttons, legal */
+  --t-10: 0.833rem;  /* 10pt — nav, buttons, footer links */
+  --t-11: 0.917rem;  /* 11pt — card and list body */
+  --t-12: 1.000rem;  /* 12pt — the em; form fields */
+  --t-14: 1.167rem;  /* 14pt — section leads */
+  --t-16: 1.333rem;  /* 16pt — card titles, wordmarks */
+  --t-18: 1.500rem;  /* 18pt */
+  --t-24: 2.000rem;  /* 24pt — date-plate day, minimum for display heads */
+  --t-30: 2.500rem;  /* 30pt */
+  --t-36: 3.000rem;  /* 36pt — section titles at full size */
+  --t-48: 4.000rem;  /* 48pt — the slab capital */
+  --t-60: 5.000rem;  /* 60pt — the hero's main deck at full size */
+
+  /* ── ONE SCALE · SPACE ─────────────────────────────────────────────────
+     Multiples of the 6pt quad (0.5rem); the finest step is the 3pt hair. */
+  --s-1:  0.25rem;   --s-2:  0.5rem;   --s-3:  0.75rem;  --s-4:  1rem;
+  --s-5:  1.25rem;   --s-6:  1.5rem;   --s-8:  2rem;     --s-10: 2.5rem;
+  --s-12: 3rem;      --s-14: 3.5rem;   --s-16: 4rem;     --s-20: 5rem;
+  --s-24: 6rem;      --s-28: 7rem;     --s-32: 8rem;
+
+  /* ── ONE SCALE · TRACKING ──────────────────────────────────────────────
+     Every ranged-caps rule pairs its tracking with a matching text-indent, so
+     the trailing letter-space is cancelled and the line stays optically
+     centred. Never set one without the other. */
+  --tr-text:    0.004em;   /* running text and display */
+  --tr-nav:     0.05em;    /* nav links */
+  --tr-slug:    0.12em;    /* buttons — the type slug */
+  --tr-meta:    0.2em;     /* small caps carrying data */
+  --tr-eyebrow: 0.3em;     /* eyebrows and column heads */
+  --tr-deck:    0.5em;     /* the hero's ranged decks only */
+
+  /* ── ONE MEASURE ───────────────────────────────────────────────────────
+     Two widths. `measure` is every document and prose column — the hero frame,
+     section leads, the event list, the reply card. `measure-wide` is the grids. */
+  --lc-measure: 44rem;
+  --lc-measure-wide: 68rem;
+  --lc-gutter: var(--s-6);
+
+  /* ── MOTIF 2 — DEBOSS ──────────────────────────────────────────────────── */
   --lc-deboss:
     inset 0 0 0 1px color-mix(in srgb, var(--color-cream-deep) 70%, transparent),
     inset 0 2px 14px color-mix(in srgb, var(--color-navy) 13%, transparent),
@@ -59,22 +134,35 @@
   --lc-deboss-sm:
     inset 0 0 0 1px color-mix(in srgb, var(--color-cream-deep) 60%, transparent),
     inset 0 1px 8px color-mix(in srgb, var(--color-navy) 10%, transparent);
-  --lc-ease: 200ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* the same shadow with every ink pulled — the sheet before the press comes
+     down. Same shadow count and offsets, so it interpolates cleanly. */
+  --lc-deboss-flat:
+    inset 0 0 0 1px transparent,
+    inset 0 2px 14px transparent,
+    0 1px 0 0 transparent;
 
+  /* ── MOTIF 3 — OFF-REGISTER PULL ───────────────────────────────────────
+     The second colour, a hair off the lay. Display type only, and only in the
+     places named in the header comment. */
+  --lc-offreg: 2px 2px 0 color-mix(in srgb, var(--color-gold) 52%, transparent);
+
+  --lc-ease: 200ms cubic-bezier(0.22, 0.61, 0.36, 1);
   --lc-header-h: 4.75rem;
 
-  /* one focus recipe, with an inverted variant for the dark plate + footer */
-  --lc-focus: 2px solid var(--color-brick);
-  --lc-focus-invert: 2px solid var(--color-gold);
+  /* One focus recipe, with an inverted variant for the dark plate + footer. */
+  --lc-focus: 2px solid var(--color-brick);          /* 5.15:1 on cream */
+  --lc-focus-invert: 2px solid var(--color-gold);    /* 5.48:1 on navy */
+  --lc-focus-offset: 3px;
 
-  /* geometry only — no fill attribute, so this URI carries no palette */
+  /* Geometry only — no fill attribute, so this URI carries no palette. Same
+     path as components/Star.astro; keep the two identical. */
   --lc-star-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1.5 14.47 8.6 21.99 8.76 15.99 13.3 18.17 20.49 12 16.2 5.83 20.49 8.01 13.3 2.01 8.76 9.53 8.6Z'/%3E%3C/svg%3E");
 
   /* MOTIF 1 defaults = the hero (largest) scale */
   --lc-inset: 10px;
   --lc-pin: 14px;
   --lc-gap: 12px;
-  --lc-rule-outer: color-mix(in srgb, var(--color-navy) 42%, transparent);
+  --lc-rule-outer: color-mix(in srgb, var(--color-navy) 50%, transparent);
   --lc-rule-inner: color-mix(in srgb, var(--color-gold) 80%, transparent);
   --lc-frame-paper: var(--color-paper-hi);
 }
@@ -83,7 +171,7 @@
    PAPER — a two-pass stock: a warm head vignette (the sheet catching light)
    over a fine fibre grain. Never competes with content.
    ═══════════════════════════════════════════════════════════════════════════ */
-[data-theme='civic'] body {
+body {
   background-color: var(--color-cream);
   background-image:
     radial-gradient(
@@ -91,16 +179,51 @@
       color-mix(in srgb, var(--color-cream-deep) 55%, transparent) 0%,
       transparent 58%
     ),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.038'/%3E%3C/svg%3E");
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.042'/%3E%3C/svg%3E");
   background-repeat: no-repeat, repeat;
   font-family: var(--font-body);
+  font-size: var(--t-12);
   line-height: 1.68;
-  letter-spacing: 0.004em;
+  letter-spacing: var(--tr-text);
 }
 
-[data-theme='civic'] ::selection {
-  background-color: var(--color-brick);
-  color: var(--color-cream);
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTIONS — the sheet's vertical rhythm and its two measures.
+   Components carry `.section` + one `.section-inner*`; they set no padding,
+   no max-width and no gutter of their own.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.section { padding-block: var(--s-20); }
+@media (min-width: 640px) { .section { padding-block: var(--s-28); } }
+
+.section-inner {
+  max-width: var(--lc-measure-wide);
+  margin-inline: auto;
+  padding-inline: var(--lc-gutter);
+}
+/* the narrow measure — documents and prose */
+.section-inner--measure { max-width: var(--lc-measure); }
+
+/* The second sheet. Order of Business and Upcoming Events are printed on ONE
+   continuous deep sheet — what the committee does, and when it does it — so
+   they close the gap between them and a fold rule marks the seam. */
+.sheet-deep { background-color: var(--color-cream-deep); }
+.sheet-deep--head { padding-bottom: var(--s-14); }
+.sheet-deep--foot { position: relative; padding-top: var(--s-14); }
+.sheet-deep--foot::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(var(--lc-measure), calc(100% - 2 * var(--lc-gutter)));
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--color-gold) 85%, transparent) 30%,
+    color-mix(in srgb, var(--color-gold) 85%, transparent) 70%,
+    transparent
+  );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -116,14 +239,11 @@
    Invariants: --lc-inset >= --lc-pin / 2
                --lc-gap   >= --lc-pin / 2 + 3px
 
-   NOTE: this motif consumes BOTH pseudo-elements on its host. That is why the
-   event ticket's tear seam lives on .event-body-wrap::before.
+   NOTE: this motif consumes BOTH pseudo-elements on its host.
    ═══════════════════════════════════════════════════════════════════════════ */
-[data-theme='civic'] .hero-frame,
-[data-theme='civic'] .event-card,
-[data-theme='civic'] .involve,
-[data-theme='civic'] .nl-coupon,
-[data-theme='civic'] .nl-success {
+.hero-frame,
+.nl-coupon,
+.nl-success {
   position: relative;
   border: 1.5px solid var(--lc-rule-outer);
   border-radius: 1px;
@@ -131,11 +251,9 @@
   box-shadow: var(--lc-deboss);
 }
 
-[data-theme='civic'] .hero-frame::before,
-[data-theme='civic'] .event-card::before,
-[data-theme='civic'] .involve::before,
-[data-theme='civic'] .nl-coupon::before,
-[data-theme='civic'] .nl-success::before {
+.hero-frame::before,
+.nl-coupon::before,
+.nl-success::before {
   content: '';
   position: absolute;
   inset: var(--lc-inset);
@@ -155,11 +273,9 @@
   background-position: center top, center bottom, left center, right center;
 }
 
-[data-theme='civic'] .hero-frame::after,
-[data-theme='civic'] .event-card::after,
-[data-theme='civic'] .involve::after,
-[data-theme='civic'] .nl-coupon::after,
-[data-theme='civic'] .nl-success::after {
+.hero-frame::after,
+.nl-coupon::after,
+.nl-success::after {
   content: '';
   position: absolute;
   inset: calc(var(--lc-inset) - var(--lc-pin) / 2);
@@ -179,160 +295,198 @@
 }
 
 /* real content must clear the two frame layers */
-[data-theme='civic'] .hero-frame > *,
-[data-theme='civic'] .nl-coupon > *,
-[data-theme='civic'] .nl-success > * {
+.hero-frame > *,
+.nl-coupon > *,
+.nl-success > * {
   position: relative;
   z-index: 4;
 }
 
-/* per-host scale overrides */
-[data-theme='civic'] .event-card {
-  --lc-inset: 6px;
-  --lc-pin: 9px;
-  --lc-gap: 8px;
-}
-[data-theme='civic'] .nl-coupon,
-[data-theme='civic'] .nl-success {
+/* the reply card is the smaller of the two forms */
+.nl-coupon,
+.nl-success {
   --lc-inset: 8px;
   --lc-pin: 11px;
   --lc-gap: 10px;
 }
-/* the Get Involved plate is the motif INVERTED — ink ground, paper rules */
-[data-theme='civic'] .involve {
-  --lc-inset: 14px;
-  --lc-pin: 16px;
-  --lc-gap: 15px;
-  --lc-rule-outer: color-mix(in srgb, var(--color-cream) 26%, transparent);
-  --lc-rule-inner: color-mix(in srgb, var(--color-gold) 62%, transparent);
-  --lc-frame-paper: var(--color-navy);
-}
-@media (min-width: 640px) {
-  [data-theme='civic'] .involve {
-    --lc-inset: 20px;
-    --lc-gap: 18px;
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   MOTIF 2 — ORNAMENTAL RULE
-   The markup ships <span/><Star/><span/>; we taper the spans and pin a gold
-   diamond on each outer end.
-   ═══════════════════════════════════════════════════════════════════════════ */
-[data-theme='civic'] .section-rule,
-[data-theme='civic'] .involve-rule {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.9rem;
-  margin-top: 1.5rem;
-}
-[data-theme='civic'] .section-rule > span:not(.section-rule-star),
-[data-theme='civic'] .involve-rule > span:not(.section-rule-star) {
-  position: relative;
-  display: block;
-  height: 1.5px;
-  width: 3.5rem;
-  background-color: transparent;
-  background-image: linear-gradient(
-    to right,
-    transparent,
-    color-mix(in srgb, var(--color-gold) 92%, transparent)
-  );
-}
-[data-theme='civic'] .section-rule > span:last-of-type,
-[data-theme='civic'] .involve-rule > span:last-of-type {
-  background-image: linear-gradient(
-    to left,
-    transparent,
-    color-mix(in srgb, var(--color-gold) 92%, transparent)
-  );
-}
-/* the gold diamond terminals at the outer ends */
-[data-theme='civic'] .section-rule > span:first-of-type::before,
-[data-theme='civic'] .section-rule > span:last-of-type::after,
-[data-theme='civic'] .involve-rule > span:first-of-type::before,
-[data-theme='civic'] .involve-rule > span:last-of-type::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 4.5px;
-  height: 4.5px;
-  background-color: var(--color-gold);
-  transform: translateY(-50%) rotate(45deg);
-}
-[data-theme='civic'] .section-rule > span:first-of-type::before,
-[data-theme='civic'] .involve-rule > span:first-of-type::before { left: 0; }
-[data-theme='civic'] .section-rule > span:last-of-type::after,
-[data-theme='civic'] .involve-rule > span:last-of-type::after { right: 0; }
-
-[data-theme='civic'] .section-rule-star { color: var(--color-gold); }
-[data-theme='civic'] .involve-rule .section-rule-star { color: var(--color-gold); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    TYPE
    ═══════════════════════════════════════════════════════════════════════════ */
-[data-theme='civic'] h1,
-[data-theme='civic'] h2,
-[data-theme='civic'] h3,
-[data-theme='civic'] h4 {
+h1, h2, h3, h4 {
   font-family: var(--font-display);
+  font-weight: 600;   /* explicit: only 500/600/700 of Zilla Slab are loaded */
   color: var(--color-navy);
-  letter-spacing: 0.002em;
+  letter-spacing: var(--tr-text);
   line-height: 1.1;
 }
 
-[data-theme='civic'] .section-heading {
+/* ── SECTION HEADS ────────────────────────────────────────────────────────
+   Three ingredients — a brick eyebrow, a display title, a gold hairline —
+   arranged two ways, so the sheet has a hierarchy instead of the same stack
+   printed five times.
+
+     .section-heading--plate    centred. The prose sections: Who We Are,
+                                Upcoming Events, Contact, and the navy plate.
+                                A leading and trailing gold diamond flank the
+                                eyebrow; no rule under the title, because the
+                                ornamental rule is the hero's alone now.
+     .section-heading--running  ranged left, with a gold hairline running out
+                                from the title to the right margin. A printed
+                                programme's running head; it marks the two LIST
+                                sections (Order of Business, The Committee) as
+                                a different kind of document. */
+.section-heading { display: flex; flex-direction: column; }
+.section-heading--plate { align-items: center; text-align: center; }
+.section-heading--running { align-items: stretch; text-align: left; }
+
+.section-eyebrow {
   display: flex;
-  flex-direction: column;
   align-items: center;
-}
-[data-theme='civic'] .section-eyebrow,
-[data-theme='civic'] .involve-eyebrow {
+  gap: var(--s-2);
+  margin: 0 0 var(--s-3);
   font-family: var(--font-body);
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.68rem;
-  letter-spacing: 0.3em;
-  text-indent: 0.3em; /* cancel the trailing letter-space so it stays centred */
-  margin-bottom: 0.95rem;
+  font-size: var(--t-8);
+  letter-spacing: var(--tr-eyebrow);
   color: var(--color-brick-strong);
 }
-[data-theme='civic'] .section-title,
-[data-theme='civic'] .involve-title {
+/* letter-spacing leaves a trailing space after the last character; pull it
+   back so the two diamonds sit an equal distance from the words */
+.section-eyebrow > span:not(.section-diamond) {
+  margin-right: calc(var(--tr-eyebrow) * -1);
+}
+.section-heading--plate .section-eyebrow { justify-content: center; }
+.section-heading--running .section-eyebrow { justify-content: flex-start; }
+/* a running head takes a single leading diamond — a printer's fist, not a pair */
+.section-heading--running .section-diamond:last-child { display: none; }
+
+.section-diamond {
+  flex: 0 0 auto;
+  width: 4.5px;
+  height: 4.5px;
+  background-color: var(--color-gold);
+  transform: rotate(45deg);
+}
+
+.section-title {
   font-family: var(--font-display);
   font-weight: 700;
-  text-transform: none;
-  font-size: clamp(1.85rem, 4.4vw, 2.7rem);
+  font-size: clamp(var(--t-24), 4.4vw, var(--t-36));
   line-height: 1.08;
-  letter-spacing: 0.004em;
+  letter-spacing: var(--tr-text);
   color: var(--color-navy);
   text-wrap: balance;
 }
 
+/* the running head's rule */
+.section-titlebar { display: flex; align-items: center; gap: var(--s-4); }
+.section-runner {
+  flex: 1 1 auto;
+  min-width: var(--s-8);
+  height: 1px;
+  background-image: linear-gradient(
+    to right, color-mix(in srgb, var(--color-gold) 92%, transparent), transparent);
+}
+
+/* the section lead — one rule, four consumers */
+.section-lead {
+  margin: var(--s-6) 0 0;
+  max-width: 44ch;
+  font-family: var(--font-body);
+  font-size: var(--t-14);
+  line-height: 1.75;
+  color: var(--color-ink-body);
+}
+.section-heading--plate + .section-lead { margin-inline: auto; text-align: center; }
+
+/* ── THE RULED LIST — a printed table of business ─────────────────────────
+   A shared device: a term ranged left in the display face, its entry
+   alongside, gold hairlines between rows. Order of Business and the
+   committee's meeting particulars both use it, which is what makes those two
+   sections read as one document family under their running heads.
+
+   Rendered as a <dl>, because that is what it is. */
+.ruled-list { margin: var(--s-10) 0 0; }
+.subhead + .ruled-list { margin-top: var(--s-2); }
+.ruled-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-1);
+  padding-block: var(--s-5);
+  /* PASS 3: the rules of a printed table are gold, like every other rule */
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 60%, transparent);
+}
+.ruled-row:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 60%, transparent);
+}
+@media (min-width: 640px) {
+  .ruled-row {
+    grid-template-columns: 11rem 1fr;
+    gap: var(--s-6);
+    align-items: baseline;
+  }
+}
+.ruled-term {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--t-16);
+  line-height: 1.2;
+  color: var(--color-navy);
+}
+.ruled-def {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--t-11);
+  line-height: 1.7;
+  color: var(--color-ink-muted);
+}
+
+/* a mini running head, one rank below .section-heading--running */
+.subhead {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  margin: var(--s-12) 0 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: var(--t-8);
+  letter-spacing: var(--tr-eyebrow);
+  color: var(--color-brick-strong);
+}
+.subhead::after {
+  content: '';
+  flex: 1 1 auto;
+  height: 1px;
+  background-image: linear-gradient(
+    to right, color-mix(in srgb, var(--color-gold) 92%, transparent), transparent);
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
-   MOTIF: BUTTONS — the letterpress slug
+   BUTTONS — the letterpress slug
    An inset top highlight plus a 1px hard bottom edge reads as a type slug
    catching light; pressing sinks it into the paper and the edge disappears.
    ═══════════════════════════════════════════════════════════════════════════ */
-[data-theme='civic'] .btn {
+.btn {
   border-radius: 1px;
   font-family: var(--font-body);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  padding: 0.8rem 1.7rem;
-  font-size: 0.8rem;
+  letter-spacing: var(--tr-slug);
+  padding: var(--s-3) var(--s-6);
+  font-size: var(--t-10);
 }
 @media (min-width: 640px) {
-  [data-theme='civic'] .btn { padding: 0.85rem 1.9rem; }
+  .btn { padding: var(--s-3) var(--s-8); }
 }
-[data-theme='civic'] .btn--sm {
-  font-size: 0.72rem;
-  padding: 0.55rem 1.15rem;
+.btn--sm {
+  font-size: var(--t-9);
+  padding: var(--s-2) var(--s-5);
 }
 @media (prefers-reduced-motion: no-preference) {
-  [data-theme='civic'] .btn {
+  .btn {
     transition:
       background-color 180ms ease,
       color 180ms ease,
@@ -340,49 +494,52 @@
       box-shadow 180ms ease,
       transform 110ms ease;
   }
-  [data-theme='civic'] .btn:active { transform: translateY(1px); }
+  .btn:active { transform: translateY(1px); }
 }
-[data-theme='civic'] .btn:active { box-shadow: none; }
-[data-theme='civic'] .btn:focus-visible {
+.btn:active { box-shadow: none; }
+.btn:focus-visible {
   outline: var(--lc-focus);
-  outline-offset: 3px;
+  outline-offset: var(--lc-focus-offset);
 }
 
-[data-theme='civic'] .btn--solid {
+.btn--solid {
   background-color: var(--color-navy);
   color: var(--color-cream);
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, var(--color-cream) 18%, transparent),
     0 1px 0 var(--color-navy-deep);
 }
-[data-theme='civic'] .btn--solid:hover { background-color: var(--color-navy-deep); }
+.btn--solid:hover { background-color: var(--color-navy-deep); }
 
-[data-theme='civic'] .btn--ghost {
+.btn--ghost {
   background-color: transparent;
   color: var(--color-navy);
   /* navy@60% on cream = 3.80:1, clears the 3:1 UI-boundary bar */
   border: 1.5px solid color-mix(in srgb, var(--color-navy) 60%, transparent);
   box-shadow: none;
 }
-[data-theme='civic'] .btn--ghost:hover {
+.btn--ghost:hover {
   background-color: var(--color-navy);
   border-color: var(--color-navy);
   color: var(--color-cream);
 }
 
-[data-theme='civic'] .btn--accent {
+.btn--accent {
   background-color: var(--color-brick-strong); /* cream on it = 6.05:1 */
   color: var(--color-cream);
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, var(--color-cream) 16%, transparent),
     0 1px 0 color-mix(in srgb, var(--color-ink) 45%, transparent);
 }
-[data-theme='civic'] .btn--accent:hover { background-color: var(--color-brick); }
+.btn--accent:hover { background-color: var(--color-brick); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   MASTHEAD — a quiet nameplate: hairline ink rule + a fine gold under-tick
+   MASTHEAD — set type, not a device.
+   A broadside's masthead is the name in metal with a rule under it. The struck
+   seal appears twice on the page and twice only: the hero, and its echo in the
+   colophon. Repeating it here, 200px above the hero, would be the third.
    ═══════════════════════════════════════════════════════════════════════════ */
-[data-theme='civic'] .site-header {
+.site-header {
   position: sticky;
   top: 0;
   z-index: 40;
@@ -392,9 +549,8 @@
   box-shadow: 0 1.5px 0 0 color-mix(in srgb, var(--color-gold) 55%, transparent);
 }
 
-/* .flag-stripe is repurposed as the printer's top rule — a gold hairline that
-   tapers to nothing at both edges. Never a three-colour bar; that is Gothic. */
-[data-theme='civic'] .site-header .flag-stripe {
+/* the printer's top rule — a gold hairline tapering to nothing at both edges */
+.site-header .flag-stripe {
   display: block;
   width: 100%;
   height: 2px;
@@ -407,82 +563,64 @@
   );
 }
 
-[data-theme='civic'] .site-header__bar {
+.site-header__bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: var(--s-4);
   height: var(--lc-header-h);
-  max-width: 72rem;
+  max-width: var(--lc-measure-wide);
   margin-inline: auto;
-  padding-inline: 1.5rem;
+  padding-inline: var(--lc-gutter);
 }
 
-[data-theme='civic'] .masthead-lockup {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  min-width: 0;
-}
-/* the seal sits in a gold hairline ROUNDEL — a struck medallion, not a stamp */
-[data-theme='civic'] .masthead-seal {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 2.6rem;
-  height: 2.6rem;
-  padding: 0;
-  border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--color-gold) 85%, transparent);
-  background-color: var(--color-paper-hi);
-  box-shadow: var(--lc-deboss-sm);
-  color: var(--color-navy);
-}
-[data-theme='civic'] .masthead-wordmark {
+.masthead-lockup {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   min-width: 0;
 }
-[data-theme='civic'] .masthead-name {
+.masthead-name {
   font-family: var(--font-display);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.018em;
-  font-size: 1rem;
+  font-size: var(--t-12);
   line-height: 1.05;
   color: var(--color-navy);
 }
-@media (min-width: 400px) { [data-theme='civic'] .masthead-name { font-size: 1.15rem; } }
-@media (min-width: 640px) { [data-theme='civic'] .masthead-name { font-size: 1.32rem; } }
-[data-theme='civic'] .masthead-city {
+@media (min-width: 400px) { .masthead-name { font-size: var(--t-14); } }
+@media (min-width: 640px) { .masthead-name { font-size: var(--t-16); } }
+
+.masthead-city {
   font-family: var(--font-body);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.26em;
   text-indent: 0.26em;
-  font-size: 0.56rem;
-  margin-top: 0.28rem;
+  font-size: var(--t-7);
+  margin-top: var(--s-1);
   color: var(--color-brick-strong);
 }
 
-[data-theme='civic'] .masthead-nav {
+.masthead-nav {
   display: none;
   align-items: center;
-  gap: 2rem;
+  gap: var(--s-8);
 }
-@media (min-width: 768px) { [data-theme='civic'] .masthead-nav { display: flex; } }
+@media (min-width: 768px) { .masthead-nav { display: flex; } }
 
 /* nav links — a gold under-tick that grows from the left. Quiet, not a wipe. */
-[data-theme='civic'] .masthead-nav a:not(.btn) {
+.masthead-nav a:not(.btn) {
   position: relative;
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 0.84rem;
-  letter-spacing: 0.05em;
+  font-size: var(--t-10);
+  letter-spacing: var(--tr-nav);
   color: var(--color-ink);
-  padding-bottom: 0.3rem;
+  padding-bottom: var(--s-1);
 }
-[data-theme='civic'] .masthead-nav a:not(.btn)::after {
+.masthead-nav a:not(.btn)::after {
   content: '';
   position: absolute;
   left: 0;
@@ -494,51 +632,68 @@
   transform-origin: left center;
 }
 @media (prefers-reduced-motion: no-preference) {
-  [data-theme='civic'] .masthead-nav a:not(.btn)::after {
-    transition: transform var(--lc-ease);
-  }
+  .masthead-nav a:not(.btn)::after { transition: transform var(--lc-ease); }
 }
-[data-theme='civic'] .masthead-nav a:not(.btn):hover { color: var(--color-brick-strong); }
-[data-theme='civic'] .masthead-nav a:not(.btn):hover::after,
-[data-theme='civic'] .masthead-nav a:not(.btn):focus-visible::after { transform: scaleX(1); }
-[data-theme='civic'] .masthead-nav a:not(.btn):focus-visible {
+.masthead-nav a:not(.btn):hover { color: var(--color-brick-strong); }
+.masthead-nav a:not(.btn):hover::after,
+.masthead-nav a:not(.btn):focus-visible::after { transform: scaleX(1); }
+.masthead-nav a:not(.btn):focus-visible,
+.masthead-lockup:focus-visible {
   outline: var(--lc-focus);
-  outline-offset: 3px;
+  outline-offset: var(--lc-focus-offset);
 }
 
 /* ── MOBILE ───────────────────────────────────────────────────────────────── */
-[data-theme='civic'] .masthead-mobile { display: flex; }
-@media (min-width: 768px) { [data-theme='civic'] .masthead-mobile { display: none; } }
-[data-theme='civic'] .masthead-mobile button {
+.masthead-mobile { display: flex; }
+@media (min-width: 768px) { .masthead-mobile { display: none; } }
+.masthead-mobile button {
   border-radius: 1px;
   border: 1px solid color-mix(in srgb, var(--color-navy) 60%, transparent);
   color: var(--color-navy);
   box-shadow: var(--lc-deboss-sm);
 }
 @media (prefers-reduced-motion: no-preference) {
-  [data-theme='civic'] .masthead-mobile button {
+  .masthead-mobile button {
     transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
   }
 }
-[data-theme='civic'] .masthead-mobile button:hover {
+.masthead-mobile button:hover {
   background-color: var(--color-navy);
   color: var(--color-cream);
   border-color: var(--color-navy);
 }
+.masthead-mobile button:focus-visible {
+  outline: var(--lc-focus);
+  outline-offset: var(--lc-focus-offset);
+}
 /* the drop panel owns its own ground — the component ships no background */
-[data-theme='civic'] .masthead-mobile #mobile-menu {
+.masthead-mobile #mobile-menu {
   background-color: var(--color-cream);
   border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 25%, transparent);
   box-shadow: 0 1.5px 0 0 color-mix(in srgb, var(--color-gold) 55%, transparent);
 }
-[data-theme='civic'] .masthead-mobile .mobile-menu-link {
+.masthead-mobile .mobile-menu-inner {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--lc-measure-wide);
+  margin-inline: auto;
+  padding: var(--s-3) var(--lc-gutter);
+}
+.masthead-mobile .mobile-menu-cta { width: 100%; margin-top: var(--s-4); }
+.masthead-mobile .mobile-menu-link {
+  display: block;
+  padding-block: var(--s-3);
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--t-12);
   color: var(--color-ink);
   border-bottom: 1px solid color-mix(in srgb, var(--color-navy) 14%, transparent);
 }
 @media (prefers-reduced-motion: no-preference) {
-  [data-theme='civic'] .masthead-mobile .mobile-menu-link { transition: color 160ms ease; }
+  .masthead-mobile .mobile-menu-link { transition: color 160ms ease; }
 }
-[data-theme='civic'] .masthead-mobile .mobile-menu-link:hover { color: var(--color-brick-strong); }
+.masthead-mobile .mobile-menu-link:hover { color: var(--color-brick-strong); }
+.masthead-mobile a:focus-visible {
+  outline: var(--lc-focus);
+  outline-offset: var(--lc-focus-offset);
+}

@@ -1,36 +1,52 @@
 ---
-// The one and only copy of the homepage body. All three routes render this;
-// only Hero and Newsletter need to know which direction is active.
+// The homepage body, in the order the sheet is read:
+//   the nameplate · what we believe · what we do · when · who serves ·
+//   the ask · how to reach us
+//
+// Order of Business and Upcoming Events share ONE continuous deep sheet — what
+// the committee does, and when it does it — with a fold rule marking the seam.
 import Hero from './Hero.astro';
 import Mission from './Mission.astro';
+import Business from './Business.astro';
 import Events from './Events.astro';
+import Committee from './Committee.astro';
 import GetInvolved from './GetInvolved.astro';
 import SectionHeading from './SectionHeading.astro';
 import Newsletter from './Newsletter.svelte';
 import { site } from '../data/site';
-import { themes, type ThemeId } from '../data/themes';
-
-interface Props {
-  theme: ThemeId;
-}
-const { theme } = Astro.props;
-const newsletter = themes[theme].newsletter;
 ---
 
-<Hero theme={theme} />
+<Hero />
 <Mission />
+<Business />
 <Events />
+<Committee />
 <GetInvolved />
 
-<section id="contact" class="newsletter py-20 sm:py-28">
-  <div class="mx-auto max-w-6xl px-6">
-    <SectionHeading eyebrow="Stay Connected" title="Join Our Newsletter" />
-    <p class="newsletter-contact mx-auto mt-6 max-w-2xl text-center font-body text-lg leading-relaxed">
-      Prefer to reach us directly? Email{' '}
-      <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.
-    </p>
-    <div class="mt-10">
-      <Newsletter client:visible {...newsletter} />
+<section id="contact" class="contact section" aria-labelledby="contact-title">
+  <div class="section-inner section-inner--measure">
+    <SectionHeading
+      eyebrow="Stay Connected"
+      title="Contact the Committee"
+      headingId="contact-title"
+    />
+
+    <Newsletter client:visible {...site.newsletter} />
+
+    <!-- the escape hatch comes AFTER the primary action, not before it -->
+    <div class="contact-direct">
+      <div class="contact-item">
+        <p class="contact-label">Email</p>
+        <a class="contact-value" href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+      </div>
+      <div class="contact-item">
+        <p class="contact-label">Phone</p>
+        <p class="contact-value">{site.contact.phone}</p>
+      </div>
+      <div class="contact-item">
+        <p class="contact-label">Mail</p>
+        <p class="contact-value">{site.contact.mailing}</p>
+      </div>
     </div>
   </div>
 </section>

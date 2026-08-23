@@ -1,0 +1,37 @@
+---
+// ORDER OF BUSINESS — the committee's standing duties, as a printed table.
+//
+// Deliberately NOT numbered. These are standing duties, not a sequence;
+// numbering content that has no order is decoration pretending to be
+// structure. The ruled list is a shared device — the meeting particulars in
+// The Committee use the same one, which is what makes the two running-head
+// sections read as one document family.
+import SectionHeading from './SectionHeading.astro';
+import { site } from '../data/site';
+---
+
+<section
+  id="business"
+  class="business section sheet-deep sheet-deep--head"
+  aria-labelledby="business-title"
+>
+  <div class="section-inner section-inner--measure">
+    <SectionHeading
+      variant="running"
+      eyebrow="What We Do"
+      title="Order of Business"
+      headingId="business-title"
+    />
+
+    <dl class="ruled-list">
+      {
+        site.business.map((item) => (
+          <div class="ruled-row">
+            <dt class="ruled-term">{item.title}</dt>
+            <dd class="ruled-def">{item.body}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

@@ -1,23 +1,20 @@
 ---
+// The masthead is SET TYPE, not a device. A broadside puts its name in metal
+// with a rule under it; the struck seal appears twice on the page and twice
+// only — the hero, and its echo in the colophon.
 import { site, url } from '../data/site';
-import Seal from './Seal.astro';
 import Button from './Button.astro';
 import MobileNav from './MobileNav.svelte';
 ---
 
 <header class="site-header">
-  <!-- flag-stripe accent caps the very top edge of the poster -->
+  <!-- the printer's top rule -->
   <span class="flag-stripe" aria-hidden="true"></span>
 
   <div class="site-header__bar">
     <a href={url()} class="masthead-lockup" aria-label={`${site.name} — home`}>
-      <span class="masthead-seal" aria-hidden="true">
-        <Seal size={30} decorative />
-      </span>
-      <span class="masthead-wordmark">
-        <span class="masthead-name">{site.name}</span>
-        <span class="masthead-city">{site.city}</span>
-      </span>
+      <span class="masthead-name">{site.name}</span>
+      <span class="masthead-city">{site.city}</span>
     </a>
 
     <nav class="masthead-nav" aria-label="Primary">
@@ -26,7 +23,10 @@ import MobileNav from './MobileNav.svelte';
     </nav>
 
     <div class="masthead-mobile">
-      <MobileNav client:load navItems={site.nav} cta={site.primaryCta} />
+      <!-- client:media, not client:load: the toggle is display:none above
+           768px, so desktop should never pay for the Svelte runtime. Keep the
+           query in step with the breakpoint in system.css. -->
+      <MobileNav client:media="(max-width: 767px)" navItems={site.nav} cta={site.primaryCta} />
     </div>
   </div>
 </header>

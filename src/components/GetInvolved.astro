@@ -1,44 +1,66 @@
 ---
+import SectionHeading from './SectionHeading.astro';
 import Button from './Button.astro';
-import Star from './Star.astro';
 import { site } from '../data/site';
 
-// Flat, 2-color screenprint WPA glyphs — one per involvement card, in order.
-// Decorative (aria-hidden); drawn in currentColor so the chip tints them gold.
+// ─────────────────────────────────────────────────────────────────────────
+// One glyph per card, drawn as solid masses and converted to ENGRAVED
+// contours by the ink-role classes in engagement.css — the same .g-fill /
+// .g-line / .g-line-fill / .g-flame / .g-spark contract the value glyphs use,
+// translated to the dark plate. One icon language for the whole sheet.
+//
+// Volunteer is an hourglass rather than the obvious hand: the card's own copy
+// is about the hour, and an hourglass engraves cleanly at 32px where a hand
+// does not. Decorative → the wrapper carries aria-hidden.
+// ─────────────────────────────────────────────────────────────────────────
 const icons = [
-  // Volunteer — raised hand / pledge
-  '<path d="M12 2.2c-.9 0-1.6.7-1.6 1.6v6.1H9.2V5.1c0-.9-.7-1.6-1.6-1.6S6 4.2 6 5.1v8.4l-1.4-1.6c-.6-.7-1.6-.7-2.2-.1-.6.6-.7 1.5-.2 2.2l3.6 4.8c.8 1.1 2.1 1.7 3.5 1.7h4.1c2.4 0 4.4-2 4.4-4.4V8c0-.9-.7-1.6-1.6-1.6s-1.6.7-1.6 1.6v2h-.9V5.6c0-.9-.7-1.6-1.6-1.6s-1.6.7-1.6 1.6v4.3h-.9V3.8c0-.9-.7-1.6-1.6-1.6Z"/>',
-  // Attend a Meeting — calendar
-  '<path d="M7 2.5a1 1 0 0 1 1 1v1h8v-1a1 1 0 1 1 2 0v1h1.2A1.8 1.8 0 0 1 22 6.3v13.4A1.8 1.8 0 0 1 20.2 21.5H3.8A1.8 1.8 0 0 1 2 19.7V6.3a1.8 1.8 0 0 1 1.8-1.8H5v-1a1 1 0 0 1 1-1ZM4 9.5v10.2c0 .1.1.2.2.2h15.6c.1 0 .2-.1.2-.2V9.5Zm3 2.8h3v3H7Z"/>',
-  // Spread the Word — megaphone
-  '<path d="M3.5 9.2A1.8 1.8 0 0 0 1.7 11v2A1.8 1.8 0 0 0 3.5 14.8h1.1l1.4 4.3a1.4 1.4 0 0 0 1.3.95h.8a1.1 1.1 0 0 0 1.05-1.45l-1.2-3.8 9 4V5.2l-9 4Zm17.3-1.1c-.5-.3-1.2-.1-1.5.4-.3.5-.1 1.2.4 1.5.5.3.8.9.8 1.5s-.3 1.2-.8 1.5c-.5.3-.7 1-.4 1.5.3.5 1 .7 1.5.4 1.1-.7 1.8-1.95 1.8-3.4s-.7-2.7-1.8-3.4Z"/>',
+  // Volunteer — an hourglass. "Every hour moves us forward."
+  `<path class="g-fill" d="M16 7 H32 L24 24 L32 41 H16 L24 24 Z"/>
+   <path class="g-line" d="M14 6 H34 M14 42 H34" stroke-width="2"/>
+   <path class="g-flame" d="M24 25 L29 39 H19 Z"/>
+   <circle class="g-spark" cx="24" cy="20" r="1.5"/>`,
+  // Attend a Meeting — a calendar with the date struck
+  `<path class="g-fill" d="M8 12 H40 V41 H8 Z"/>
+   <path class="g-line" d="M8 21 H40"/>
+   <path class="g-line" d="M16 7 V15 M32 7 V15" stroke-width="2"/>
+   <path class="g-flame" d="M24 24 L25.65 28.73 L30.66 28.84 L26.66 31.87 L28.11 36.66 L24 33.8 L19.89 36.66 L21.34 31.87 L17.34 28.84 L22.35 28.73 Z"/>`,
+  // Spread the Word — a megaphone, bell to the right
+  `<path class="g-fill" d="M9 19 L29 9 V39 L9 29 Z"/>
+   <path class="g-line" d="M13 28.5 L16 41 H21 L18.6 30.3"/>
+   <path class="g-flame" d="M34 16 A10 10 0 0 1 34 32"/>
+   <path class="g-line-fill" d="M39 11 A16 16 0 0 1 39 37"/>`,
 ];
 ---
 
-<section id="get-involved" class="involve py-20 sm:py-28">
-  <div class="mx-auto max-w-6xl px-6">
-    <div class="involve-heading text-center">
-      <p class="involve-eyebrow mb-3">Join Us</p>
-      <h2 class="involve-title">Get Involved</h2>
-      <div class="involve-rule mt-5 flex items-center justify-center gap-3" aria-hidden="true">
-        <span class="section-rule-tick h-px w-10"></span>
-        <Star size={14} class="section-rule-star" />
-        <span class="section-rule-tick h-px w-10"></span>
-      </div>
-    </div>
+<section id="get-involved" class="involve" aria-labelledby="get-involved-title">
+  <div class="section-inner">
+    <SectionHeading
+      tone="ink"
+      eyebrow="Join Us"
+      title="Get Involved"
+      headingId="get-involved-title"
+    />
 
-    <p class="involve-intro mx-auto mt-6 max-w-2xl text-center font-body text-lg leading-relaxed">
-      There's a place for every neighbor here. Whether you have an hour or an evening,
+    <p class="section-lead">
+      There’s a place for every neighbor here. Whether you have an hour or an evening,
       your time and voice help build a stronger Staunton.
     </p>
 
-    <div class="involve-grid mt-14 grid gap-6 sm:grid-cols-3">
+    <div class="involve-grid">
       {
         site.getInvolved.map((item, i) => (
-          <div class="involve-card flex flex-col">
-            <span class="involve-ico" aria-hidden="true" set:html={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">${icons[i]}</svg>`} />
-            <h3 class="involve-card-title text-xl">{item.title}</h3>
-            <p class="involve-body mt-2 flex-1 font-body text-sm leading-relaxed">{item.body}</p>
+          <div class="involve-card">
+            <span class="involve-ico" aria-hidden="true">
+              <svg
+                class="involve-glyph"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 48 48"
+                fill="none"
+                set:html={icons[i]}
+              />
+            </span>
+            <h3 class="involve-card-title">{item.title}</h3>
+            <p class="involve-body">{item.body}</p>
             <div class="involve-cta">
               <Button href={item.cta.href} variant="accent" size="sm">
                 {item.cta.label}

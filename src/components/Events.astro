@@ -1,6 +1,7 @@
 ---
 import SectionHeading from './SectionHeading.astro';
 import { events } from '../data/events';
+import { site } from '../data/site';
 
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 const MONTHS_FULL = [
@@ -8,32 +9,56 @@ const MONTHS_FULL = [
   'July', 'August', 'September', 'October', 'November', 'December',
 ];
 
+/** Splits the ISO string rather than constructing a Date — no timezone drift. */
 function fmtDate(iso: string) {
-  const [, m, d] = iso.split('-').map(Number);
-  return { mon: MONTHS[m - 1], day: String(d).padStart(2, '0'), full: `${MONTHS_FULL[m - 1]} ${d}` };
+  const [y, m, d] = iso.split('-').map(Number);
+  return {
+    mon: MONTHS[m - 1],
+    day: String(d).padStart(2, '0'),
+    full: `${MONTHS_FULL[m - 1]} ${d}, ${y}`,
+  };
 }
+
+// Only future dates render, so a stale data file quietly falls back to the
+// empty state instead of advertising a day that has already gone by. The
+// comparison is a plain ISO string compare against the build date (UTC), which
+// keeps an event listed through the whole of its own day.
+const today = new Date().toISOString().slice(0, 10);
+const upcoming = events
+  .filter((event) => event.date >= today)
+  .sort((a, b) => a.date.localeCompare(b.date));
 ---
 
-<section id="events" class="events py-20 sm:py-28">
-  <div class="mx-auto max-w-6xl px-6">
-    <SectionHeading eyebrow="Mark Your Calendar" title="Upcoming Events" />
+<section
+  id="events"
+  class="events section sheet-deep sheet-deep--foot"
+  aria-labelledby="events-title"
+>
+  <div class="section-inner section-inner--measure">
+    <SectionHeading eyebrow="Mark Your Calendar" title="Upcoming Events" headingId="events-title" />
 
     {
-      events.length === 0 ? (
-        <p class="events-empty mx-auto mt-12 max-w-md text-center font-body">
-          New events are being planned — check back soon.
+      upcoming.length === 0 ? (
+        <p class="events-empty">
+          Nothing on the calendar just yet. The committee meets on the second Tuesday of
+          every month — <a href="#contact">write to us</a> and we’ll send you the next date.
         </p>
       ) : (
-        <div class="event-list mx-auto mt-12 flex max-w-3xl flex-col gap-7">
-          {events.map((event) => {
+        <ul class="event-list">
+          {upcoming.map((event) => {
             const { mon, day, full } = fmtDate(event.date);
             return (
-              <article class="event-card">
-                <div class="event-date">
-                  <span class="event-date-mon">{mon}</span>
-                  <span class="event-date-day">{day}</span>
+              <li class="event-card">
+                {/* the visible plate is decorative; the full date is what gets announced */}
+                <time class="event-date" datetime={event.date}>
+                  <span class="event-date-mon" aria-hidden="true">
+                    {mon}
+                  </span>
+                  <span class="event-date-day" aria-hidden="true">
+                    {day}
+                  </span>
                   <span class="sr-only">{full}</span>
-                </div>
+                </time>
                 <div class="event-body-wrap">
                   <h3 class="event-title">{event.title}</h3>
                   <p class="event-meta">
@@ -46,10 +71,10 @@ function fmtDate(iso: string) {
                     </a>
                   )}
                 </div>
-              </article>
+              </li>
             );
           })}
-        </div>
+        </ul>
       )
     }
   </div>

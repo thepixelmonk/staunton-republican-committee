@@ -1,43 +1,45 @@
-# Astro Starter Kit: Minimal
+# Staunton Republican Committee
 
-```sh
-npm create astro@latest -- --template minimal
-```
+A single-page site for the Staunton Republican Committee, built with Astro and
+deployed to GitHub Pages.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The design is **Letterpress Civic**: a job printer's sheet, set on the American
+point system and pulled in three passes — navy for the forme, brick for the
+second colour, gold for ornament. See [AGENTS.md](AGENTS.md) for the design
+system and the rules that keep it coherent.
 
-## 🚀 Project Structure
+## Commands
 
-Inside of your Astro project, you'll see the following folders and files:
+| Command | Action |
+| :--- | :--- |
+| `npm install` | Install dependencies |
+| `npm run dev` | Dev server at `localhost:4321` (use `astro dev --background` to detach) |
+| `npm run build` | Build to `./dist/` |
+| `npm run preview` | Serve the built site locally |
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Content
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+All copy lives in three data files and is **placeholder** until the committee
+replaces it:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- `src/data/site.ts` — name, nav, contact details, values, order of business,
+  involvement cards, newsletter microcopy, imprint and disclaimer
+- `src/data/events.ts` — upcoming events; past dates are filtered out at build
+  time, so stale entries fall back to the empty state rather than advertising a
+  day that has gone by
+- `src/data/officers.ts` — the committee roster; ships `Name TBD`
 
-Any static assets, like images, can be placed in the `public/` directory.
+Known placeholders to replace before launch: the phone number
+(`(540) 555-0100`), the mailing address (`P.O. Box 0000`), both Facebook links
+(they point at `facebook.com/`), and every officer name.
 
-## 🧞 Commands
+The newsletter form validates in the browser but **does not submit anywhere** —
+GitHub Pages is static. To collect signups, POST to a hosted provider
+(Mailchimp, Buttondown, Formspree) from `src/components/Newsletter.svelte`.
 
-All commands are run from the root of the project, from a terminal:
+## Deployment
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+`.github/workflows/deploy.yml` builds and publishes to GitHub Pages on every
+push to `master`. The deployment target is the two lines at the top of
+`astro.config.mjs` (`site` and `base`) — see the comment there for custom
+domains and user pages.

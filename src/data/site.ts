@@ -21,10 +21,26 @@ export interface ValueItem {
   body: string;
 }
 
+export interface BusinessItem {
+  title: string;
+  body: string;
+}
+
 export interface InvolvementItem {
   title: string;
   body: string;
   cta: NavItem;
+}
+
+/** Newsletter microcopy. The form itself lives in Newsletter.svelte. */
+export interface NewsletterCopy {
+  /** Small label at the head of the card — not a heading; the section owns that. */
+  eyebrow: string;
+  blurb: string;
+  submitLabel: string;
+  successStamp: string;
+  successTitle: string;
+  successBody: string;
 }
 
 /**
@@ -60,7 +76,7 @@ export const site = {
   nav: [
     { label: 'About', href: '#about' },
     { label: 'Events', href: '#events' },
-    { label: 'Get Involved', href: '#get-involved' },
+    { label: 'Committee', href: '#committee' },
     { label: 'Contact', href: '#contact' },
   ] as NavItem[],
 
@@ -103,24 +119,59 @@ export const site = {
     },
   ] as ValueItem[],
 
+  // "Order of Business" — the committee's standing duties. Not a sequence, so
+  // the section renders as a ruled list rather than numbered steps.
+  business: [
+    {
+      title: 'Candidates',
+      body: 'We recruit and support Republican candidates for city and state office, and work to get them elected.',
+    },
+    {
+      title: 'Voters',
+      body: 'We help neighbors register to vote, answer questions about the ballot, and recruit poll volunteers each election.',
+    },
+    {
+      title: 'Neighbors',
+      body: 'We host forums, picnics, and meet-and-greets so Staunton can meet the people asking for its vote.',
+    },
+    {
+      title: 'Representation',
+      body: "We send Staunton's delegates to district and state party conventions and carry the city's voice there.",
+    },
+  ] as BusinessItem[],
+
   // "Get Involved" action cards
   getInvolved: [
     {
       title: 'Volunteer',
       body: 'Knock doors, make calls, staff events, or lend a skill. Every hour moves us forward.',
-      cta: { label: 'Sign Up', href: '#contact' },
+      cta: { label: 'Contact us', href: '#contact' },
     },
     {
       title: 'Attend a Meeting',
       body: 'Newcomers welcome. Meet the committee, hear what’s ahead, and find your place.',
-      cta: { label: 'See Schedule', href: '#events' },
+      cta: { label: 'See the schedule', href: '#events' },
     },
     {
       title: 'Spread the Word',
       body: 'Follow us, share our posts, and bring a neighbor. Local momentum starts with you.',
-      cta: { label: 'Follow Us', href: 'https://www.facebook.com/' },
+      cta: { label: 'Follow us', href: 'https://www.facebook.com/' },
     },
   ] as InvolvementItem[],
+
+  newsletter: {
+    eyebrow: 'Sign & Return',
+    blurb:
+      'Add your name and we’ll send committee news, meeting notices, and ways to lend a hand.',
+    submitLabel: 'Add me to the list',
+    successStamp: 'Received',
+    successTitle: 'You’re on the list.',
+    successBody:
+      'Committee news and meeting notices will arrive at the address you gave us.',
+  } as NewsletterCopy,
+
+  // The imprint at the foot of the sheet — a broadside names its own printer.
+  imprint: 'Printed for the Staunton Republican Committee · Staunton, Virginia',
 
   // Required-style political disclaimer (placeholder text).
   disclaimer:

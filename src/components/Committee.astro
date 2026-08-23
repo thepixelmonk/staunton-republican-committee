@@ -1,0 +1,46 @@
+---
+// THE COMMITTEE — the roster, then the meeting particulars.
+//
+// The name plates are the card device with the card taken away: a gold keyline
+// and nothing else. They echo the value cards without repeating them, and they
+// carry no photograph, which is honest — this is a roster, the way the
+// officers would be listed at the foot of a real broadside.
+import SectionHeading from './SectionHeading.astro';
+import { officers } from '../data/officers';
+import { site } from '../data/site';
+---
+
+<section id="committee" class="committee section" aria-labelledby="committee-title">
+  <div class="section-inner">
+    <SectionHeading
+      variant="running"
+      eyebrow="Who Serves"
+      title="The Committee"
+      headingId="committee-title"
+    />
+
+    <ul class="roster">
+      {
+        officers.map((officer) => (
+          <li class="roster-plate">
+            <p class="roster-office">{officer.office}</p>
+            <p class="roster-name">{officer.name}</p>
+            {officer.note && <p class="roster-note">{officer.note}</p>}
+          </li>
+        ))
+      }
+    </ul>
+
+    <h3 class="subhead">Meetings</h3>
+    <dl class="ruled-list">
+      <div class="ruled-row">
+        <dt class="ruled-term">Meets</dt>
+        <dd class="ruled-def">{site.meeting.when}</dd>
+      </div>
+      <div class="ruled-row">
+        <dt class="ruled-term">Where</dt>
+        <dd class="ruled-def">{site.meeting.where}</dd>
+      </div>
+    </dl>
+  </div>
+</section>

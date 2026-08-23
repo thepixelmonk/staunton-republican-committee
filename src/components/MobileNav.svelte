@@ -48,18 +48,17 @@
 
 {#if open}
   <!-- Anchored to the header (which is position:sticky, so it is a positioning
-       context) rather than to the viewport. A fixed panel would need to know
-       how much chrome sits above the header — and the preview bar's height
-       changes with viewport width — so `top: 100%` is the only version that
-       stays flush in every theme at every width. -->
+       context) rather than to the viewport, so the panel stays flush under the
+       masthead at every width without having to know how much chrome sits
+       above it. The panel ships no ground of its own — system.css owns it. -->
   <div id="mobile-menu" class="mobile-menu absolute inset-x-0 top-full z-30">
-    <nav class="mx-auto flex max-w-6xl flex-col px-6 py-3" aria-label="Mobile">
+    <nav class="mobile-menu-inner" aria-label="Mobile">
       {#each navItems as item}
-        <a href={item.href} onclick={close} class="mobile-menu-link block py-3">
+        <a href={item.href} onclick={close} class="mobile-menu-link">
           {item.label}
         </a>
       {/each}
-      <a href={cta.href} onclick={close} class="btn btn--solid btn--md mt-4 w-full">
+      <a href={cta.href} onclick={close} class="btn btn--solid btn--md mobile-menu-cta">
         {cta.label}
       </a>
     </nav>

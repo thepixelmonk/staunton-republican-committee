@@ -1,28 +1,62 @@
 ---
-import Star from './Star.astro';
-
+// The sheet's section head. Three ingredients — a brick eyebrow, a display
+// title, a gold hairline — arranged two ways so the page has a hierarchy
+// instead of the same stack printed five times. See system.css.
+//
+//   plate    centred, diamonds flanking the eyebrow. Prose sections.
+//   running  ranged left, a gold rule running out to the right margin.
+//            The list sections, and only those.
 interface Props {
   title: string;
   eyebrow?: string;
-  align?: 'center' | 'left';
+  variant?: 'plate' | 'running';
+  /** `ink` recolours the head for the navy plate. */
+  tone?: 'paper' | 'ink';
+  /** Set so the enclosing <section> can point aria-labelledby at the title. */
+  headingId?: string;
   class?: string;
 }
-const { title, eyebrow, align = 'center', class: className = '' } = Astro.props;
-const isCenter = align === 'center';
+const {
+  title,
+  eyebrow,
+  variant = 'plate',
+  tone = 'paper',
+  headingId,
+  class: className = '',
+} = Astro.props;
+
+const classes = [
+  'section-heading',
+  `section-heading--${variant}`,
+  tone === 'ink' && 'section-heading--ink',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
 ---
 
-<div class={`section-heading ${isCenter ? 'text-center' : 'text-left'} ${className}`}>
+<div class={classes}>
   {
     eyebrow && (
       <p class="section-eyebrow">
-        {eyebrow}
+        <span class="section-diamond" aria-hidden="true" />
+        <span>{eyebrow}</span>
+        <span class="section-diamond" aria-hidden="true" />
       </p>
     )
   }
-  <h2 class="section-title">{title}</h2>
-  <div class={`section-rule mt-5 flex items-center gap-3 ${isCenter ? 'justify-center' : 'justify-start'}`}>
-    <span class="section-rule-tick h-px w-10"></span>
-    <Star size={14} class="section-rule-star" />
-    <span class="section-rule-tick h-px w-10"></span>
-  </div>
+  {
+    variant === 'running' ? (
+      <div class="section-titlebar">
+        <h2 class="section-title" id={headingId}>
+          {title}
+        </h2>
+        <span class="section-runner" aria-hidden="true" />
+      </div>
+    ) : (
+      <h2 class="section-title" id={headingId}>
+        {title}
+      </h2>
+    )
+  }
 </div>

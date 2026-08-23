@@ -1,8 +1,15 @@
 ---
-// WPA civic emblem: a double-ring seal with a rising sun, a Blue Ridge
+// The struck civic emblem: a double-ring seal with a rising sun, a Blue Ridge
 // silhouette, and a strong central star — all in currentColor so it inherits
-// ink/cream/gold from context. Reads cleanly at 32px (header/favicon) and large
-// (footer). Decorative-vs-labelled a11y props preserved.
+// ink/cream/gold from context. The CSS in themes/civic/hero.css re-declares
+// every filled path as fill:none + stroke, which is what turns it into an
+// engraving.
+//
+// The clipPath id comes from the build-wide uid() counter, NOT from the size
+// prop: two seals at the same size used to emit the same id, and the second
+// one's clip-path then resolved against the first element's clip.
+import { uid } from '../lib/uid';
+
 interface Props {
   size?: number;
   class?: string;
@@ -16,6 +23,8 @@ const {
   title = 'Staunton Republican Committee',
   decorative = false,
 } = Astro.props;
+
+const clipId = uid('seal-inner');
 ---
 
 <svg
@@ -50,11 +59,11 @@ const {
   </g>
 
   <!-- clip the inner scene to the inner ring so nothing spills -->
-  <clipPath id={`seal-inner-${size}`}>
+  <clipPath id={clipId}>
     <circle cx="50" cy="50" r="38" />
   </clipPath>
 
-  <g clip-path={`url(#seal-inner-${size})`}>
+  <g clip-path={`url(#${clipId})`}>
     <!-- rising sun rays (top half) -->
     <g stroke="currentColor" stroke-width="1.4" opacity="0.85">
       <line x1="50" y1="36" x2="50" y2="14" />

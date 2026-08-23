@@ -1,19 +1,61 @@
 ---
-// Dispatches to the direction's hero. The three are statically imported, which
-// is free: .astro components emit no client JS, and none of them carries a
-// <style> block — a scoped style here would ship on every route, including `/`.
-import HeroGothic from './HeroGothic.astro';
-import HeroCivic from './HeroCivic.astro';
-import HeroCapitol from './HeroCapitol.astro';
-import type { ThemeId } from '../data/themes';
-
-interface Props {
-  theme: ThemeId;
-}
-const { theme } = Astro.props;
-
-const HEROES = { gothic: HeroGothic, civic: HeroCivic, capitol: HeroCapitol } as const;
-const HeroImpl = HEROES[theme];
+// A PURE TYPOGRAPHIC BROADSIDE. No illustration: the nameplate is the image.
+//
+// The name is set in three decks — a ranged small line, the big line, and a
+// foot line carried across the measure by flanking hairline arms — so the
+// block reads as one optical rectangle, the way a job printer would set a bill.
+//
+// .hero-frame hosts MOTIF 1 (the pressed corner rule) and .hero-deck--main
+// carries MOTIF 3 (the off-register pull). The load sequence that presses the
+// frame and lands the second colour lives in styles/themes/civic/hero.css.
+import Button from './Button.astro';
+import Star from './Star.astro';
+import Seal from './Seal.astro';
+import { site } from '../data/site';
 ---
 
-<HeroImpl />
+<section id="hero" class="hero" aria-labelledby="hero-title">
+  <div class="hero-inner">
+    <div class="hero-frame">
+      <p class="hero-eyebrow">
+        <span class="hero-eyebrow-star" aria-hidden="true"><Star size={11} /></span>
+        <span class="hero-eyebrow-text">{site.city}</span>
+        <span class="hero-eyebrow-star" aria-hidden="true"><Star size={11} /></span>
+      </p>
+
+      {/* The explicit {' '} are load-bearing. The decks are flex items, so
+          whitespace between them renders as nothing — but without a real text
+          node the accessible name concatenates to "StauntonRepublicanCommittee"
+          whenever the accname walk does not blockify them. */}
+      <h1 class="hero-title" id="hero-title">
+        <span class="hero-deck hero-deck--top">Staunton</span>{' '}
+        <span class="hero-deck hero-deck--main">Republican</span>{' '}
+        <span class="hero-deck hero-deck--foot">
+          <span class="hero-deck-arm" aria-hidden="true"></span>
+          Committee
+          <span class="hero-deck-arm" aria-hidden="true"></span>
+        </span>
+      </h1>
+
+      <!-- the sheet's one ornament: hairlines tapering from the struck seal -->
+      <div class="hero-ornament" aria-hidden="true">
+        <span></span><Seal size={34} decorative /><span></span>
+      </div>
+
+      <p class="hero-tagline">{site.tagline}</p>
+
+      <p class="hero-standfirst">
+        <span>{site.meeting.cadence}</span>
+        <span class="hero-standfirst-sep" aria-hidden="true"></span>
+        <span>{site.meeting.when}</span>
+      </p>
+
+      <div class="hero-actions">
+        <Button href={site.primaryCta.href} variant="solid" size="md">
+          {site.primaryCta.label}
+        </Button>
+        <Button href="#events" variant="ghost" size="md">Upcoming Events</Button>
+      </div>
+    </div>
+  </div>
+</section>

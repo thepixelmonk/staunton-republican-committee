@@ -3,40 +3,46 @@
 /* ─────────────────────────────────────────────────────────────────────────
    SHARED FOUNDATION — Staunton Republican Committee
 
-   This file is theme-agnostic. It declares the Tailwind v4 token SLOTS (so
-   utilities like bg-navy / text-cream / font-display exist at all) and the
-   base rules every direction inherits.
+   This file does two jobs and nothing else:
 
-   The values below are Heartland Gothic's, because `/` is Gothic. Each theme
-   then re-declares the SAME slots as literals in its own
-   src/styles/themes/<id>/system.css, unlayered, so it wins over this block.
-   Tailwind never processes those per-theme blocks, which also makes them
-   immune to token tree-shaking.
+     1. Declares the Tailwind v4 token SLOTS, so utilities like `bg-navy`,
+        `text-cream` and `font-display` exist at all. The values are Letterpress
+        Civic's, and they are ALSO re-declared as literals on :root in
+        styles/themes/civic/system.css — unlayered, so they win, and so
+        Tailwind can never tree-shake them out from under the theme partials.
+        Keep the two blocks in sync; system.css is the source of truth.
 
-   Structural styling lives in src/styles/themes/<id>/*.css.
+     2. The handful of base rules that are true regardless of design: document
+        behaviour, the body ground, and the skip link.
+
+   Everything else — the point-size type scale, the quad spacing scale, the
+   motifs — lives in styles/themes/civic/*.css.
    ───────────────────────────────────────────────────────────────────────── */
 @theme {
-  /* Palette */
-  --color-cream: #f2ecdd;        /* antique paper — page background */
-  --color-cream-deep: #e7dfca;   /* deeper paper — alternating band */
-  --color-ink: #222a2e;          /* near-black ink — body text */
-  --color-navy: #2c3e52;         /* weathered navy — primary, panels */
-  --color-navy-deep: #213039;    /* navy depth / hover */
-  --color-brick: #b0524b;        /* dusty barn red — accent */
-  --color-brick-strong: #8c3f39; /* AA-safe brick for smaller text/fills */
-  --color-gold: #d9b26a;         /* wheat / ochre — poster accent */
-  --color-stone: #586453;        /* muted sage neutral (AA on cream) */
+  /* Palette — see system.css for the role of each ink and its contrast notes. */
+  --color-cream: #f4efe3;        /* warm sheet stock — the page ground */
+  --color-cream-deep: #ece4d2;   /* the second sheet — the mid-page band */
+  --color-paper-hi: #f9f6ef;     /* the lighter stock a framed panel is on */
+  --color-ink: #26211b;          /* warm black ink — body copy */
+  --color-navy: #1f2a44;         /* the forme — heads, plates, footer */
+  --color-navy-deep: #16203a;    /* the same ink, over-inked — hover/depth */
+  --color-brick: #a8443b;        /* second-run red — accent fills */
+  --color-brick-strong: #9a3a32; /* AA-safe red for small text */
+  --color-gold: #c49a4a;         /* third pass. RULES AND ORNAMENT ONLY on paper */
+  --color-brass-ink: #7f5c22;    /* the brass that CAN carry text on paper */
 
   /* Type */
-  --font-display: "Big Shoulders Variable", "Arial Narrow", sans-serif;
-  --font-body: "Hanken Grotesk Variable", system-ui, -apple-system, sans-serif;
+  --font-display: "Zilla Slab", Georgia, "Times New Roman", serif;
+  --font-body: "Source Sans 3 Variable", system-ui, -apple-system, sans-serif;
 }
 
 @layer base {
   html {
     color-scheme: light;
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem; /* offset the sticky header for in-page anchors */
+    /* Clears the sticky masthead for in-page anchors. Derived from
+       --lc-header-h in system.css so the two can never drift. */
+    scroll-padding-top: calc(var(--lc-header-h, 4.75rem) + 0.75rem);
   }
 
   body {
@@ -47,21 +53,13 @@
     text-rendering: optimizeLegibility;
   }
 
-  h1, h2, h3, h4 {
-    font-family: var(--font-display);
-    color: var(--color-navy);
-    line-height: 1.1;
-  }
-
   ::selection {
     background-color: var(--color-brick);
     color: var(--color-cream);
   }
 }
 
-/* The skip link is site chrome, not theme chrome — but it must re-skin with
-   whichever direction is active, so it reads from the tokens rather than
-   baking one palette into the markup. Unlayered so it beats utilities. */
+/* The skip link is site chrome. Unlayered so it beats utilities. */
 .skip-link:focus {
   position: absolute;
   left: 1rem;
@@ -74,6 +72,10 @@
   font-weight: 600;
   padding: 0.5rem 1rem;
   border-radius: 2px;
+  /* navy ground, so it takes the inverted ring like the plate and the
+     colophon do — not the browser default blue */
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {

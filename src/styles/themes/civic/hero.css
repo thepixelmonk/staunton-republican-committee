@@ -1,6 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   LETTERPRESS CIVIC — HERO + SEAL
-   data-theme='civic'
+   LETTERPRESS CIVIC — HERO, THE IMPRESSION, SEAL
 
    A PURE TYPOGRAPHIC BROADSIDE. No illustration: the nameplate is the image.
 
@@ -8,59 +7,60 @@
    line carried across the measure by flanking hairline arms — so the block
    reads as one optical rectangle, which is how a job printer sets a bill.
 
-   .hero-frame is the host for MOTIF 1 at its largest scale (see system.css).
+   .hero-frame is the host for MOTIF 1 at its largest scale (see system.css),
+   and the main deck carries MOTIF 3, the off-register pull. This is the only
+   place on the sheet where the ornamental rule appears; section heads use the
+   quieter running-head and plate devices instead.
    ═══════════════════════════════════════════════════════════════════════════ */
 
-[data-theme='civic'] .hero {
+.hero {
   background-color: var(--color-cream);
-  padding: 3.5rem 0 4.5rem;
+  padding: var(--s-14) 0 var(--s-16);
 }
-@media (min-width: 640px)  { [data-theme='civic'] .hero { padding: 5rem 0 6.5rem; } }
-@media (min-width: 1024px) { [data-theme='civic'] .hero { padding: 6rem 0 8rem; } }
+@media (min-width: 640px)  { .hero { padding: var(--s-20) 0 var(--s-24); } }
+@media (min-width: 1024px) { .hero { padding: var(--s-24) 0 var(--s-32); } }
 
-[data-theme='civic'] .hero-inner {
-  max-width: 46rem;
+.hero-inner {
+  max-width: var(--lc-measure);
   margin-inline: auto;
-  padding-inline: 1.25rem;
+  padding-inline: var(--lc-gutter);
 }
 
-[data-theme='civic'] .hero-frame {
+.hero-frame {
   overflow: hidden;      /* belt and braces: nothing escapes the pressed rule */
   text-align: center;
-  padding: 3rem 1.5rem 2.75rem;
+  padding: var(--s-12) var(--s-6) var(--s-10);
 }
 @media (min-width: 640px) {
-  [data-theme='civic'] .hero-frame { padding: 3.75rem 3rem 3.25rem; }
+  .hero-frame { padding: var(--s-14) var(--s-12) var(--s-12); }
 }
 
 /* ── Eyebrow: ranged caps between two gold stars ──────────────────────────── */
-[data-theme='civic'] .hero-eyebrow {
+.hero-eyebrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.85rem;
+  gap: var(--s-3);
   margin: 0;
   font-family: var(--font-body);
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.68rem;
-  letter-spacing: 0.34em;
-  text-indent: 0.34em;
+  font-size: var(--t-8);
+  letter-spacing: var(--tr-eyebrow);
   color: var(--color-brick-strong);
 }
-[data-theme='civic'] .hero-eyebrow-star {
-  display: inline-flex;
-  color: var(--color-gold);
-}
+/* pull back the trailing letter-space so the two stars sit symmetrically */
+.hero-eyebrow-text { margin-right: calc(var(--tr-eyebrow) * -1); }
+.hero-eyebrow-star { display: inline-flex; color: var(--color-gold); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    THE THREE-DECK NAMEPLATE
-   A broadside sets its longest word largest and ranges the short lines with
-   heavy tracking. text-indent cancels the trailing letter-space so each ranged
-   deck stays optically centred.
+   A broadside sets its subject largest and ranges the short lines with heavy
+   tracking. text-indent cancels the trailing letter-space so each ranged deck
+   stays optically centred — never set one without the other.
    ═══════════════════════════════════════════════════════════════════════════ */
-[data-theme='civic'] .hero-title {
-  margin: 1.6rem 0 0;
+.hero-title {
+  margin: var(--s-6) 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,140 +68,204 @@
   text-transform: uppercase;
   color: var(--color-navy);
 }
-[data-theme='civic'] .hero-deck--top {
+.hero-deck--top {
   font-weight: 600;
-  font-size: clamp(0.95rem, 3.2vw, 1.5rem);
-  letter-spacing: 0.5em;
-  text-indent: 0.5em;
+  font-size: clamp(var(--t-12), 3.2vw, var(--t-18));
+  letter-spacing: var(--tr-deck);
+  text-indent: var(--tr-deck);
   line-height: 1.2;
   color: var(--color-brick-strong);
 }
-[data-theme='civic'] .hero-deck--main {
+
+/* ── MOTIF 3 — THE OFF-REGISTER PULL ──────────────────────────────────────
+   The signature. A gold ghost of the second colour, slipped off the lay. It
+   is declared HERE, unconditionally, so that a reader with reduced motion —
+   who never sees it arrive — still gets the finished impression. */
+.hero-deck--main {
   font-weight: 700;
-  font-size: clamp(2.3rem, 10.6vw, 5.1rem);
+  font-size: clamp(var(--t-24), 10.6vw, var(--t-60));
   line-height: 0.98;
-  letter-spacing: 0.004em;
-  margin-top: 0.5rem;
+  letter-spacing: var(--tr-text);
+  margin-top: var(--s-2);
+  text-shadow: var(--lc-offreg);
 }
-[data-theme='civic'] .hero-deck--foot {
+
+.hero-deck--foot {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.9rem;
+  gap: var(--s-3);
   width: 100%;
-  margin-top: 0.8rem;
+  margin-top: var(--s-3);
   font-weight: 500;
-  font-size: clamp(1.05rem, 3.8vw, 1.75rem);
-  letter-spacing: 0.32em;
-  text-indent: 0.32em;
+  font-size: clamp(var(--t-12), 3.8vw, var(--t-18));
+  letter-spacing: var(--tr-eyebrow);
+  text-indent: var(--tr-eyebrow);
   line-height: 1.2;
 }
 /* the hairline arms that carry the foot deck out to the measure */
-[data-theme='civic'] .hero-deck-arm {
+.hero-deck-arm {
   flex: 1 1 auto;
-  min-width: 1rem;
+  min-width: var(--s-4);
   height: 1px;
   background-color: color-mix(in srgb, var(--color-navy) 34%, transparent);
 }
-[data-theme='civic'] .hero-deck-arm:first-child { margin-left: 0.5rem; }
-[data-theme='civic'] .hero-deck-arm:last-child  { margin-right: 0.5rem; }
+.hero-deck-arm:first-child { margin-left: var(--s-2); }
+.hero-deck-arm:last-child  { margin-right: var(--s-2); }
 
-/* ── MOTIF 2 at hero scale — the seal takes the central star's place ──────── */
-[data-theme='civic'] .hero-ornament {
+/* ── THE ORNAMENTAL RULE — the sheet's one ornament ───────────────────────
+   Two hairlines tapering outward from the struck seal. It appears here and
+   nowhere else, which is what gives it authority. */
+.hero-ornament {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 1.9rem;
+  gap: var(--s-4);
+  margin-top: var(--s-8);
   color: var(--color-navy);
 }
-[data-theme='civic'] .hero-ornament > span {
+.hero-ornament > span {
   display: block;
   height: 1.5px;
-  width: 4.5rem;
+  width: var(--s-12);
   background-image: linear-gradient(
-    to right,
-    transparent,
-    color-mix(in srgb, var(--color-gold) 92%, transparent)
-  );
+    to right, transparent, color-mix(in srgb, var(--color-gold) 92%, transparent));
 }
-[data-theme='civic'] .hero-ornament > span:last-child {
+.hero-ornament > span:last-child {
   background-image: linear-gradient(
-    to left,
-    transparent,
-    color-mix(in srgb, var(--color-gold) 92%, transparent)
-  );
+    to left, transparent, color-mix(in srgb, var(--color-gold) 92%, transparent));
 }
 
-[data-theme='civic'] .hero-tagline {
-  margin: 1.6rem auto 0;
+.hero-tagline {
+  margin: var(--s-6) auto 0;
   max-width: 36ch;
   font-family: var(--font-body);
-  font-size: 1.1rem;
+  font-size: var(--t-14);
   line-height: 1.7;
-  color: color-mix(in srgb, var(--color-ink) 84%, transparent);
+  color: var(--color-ink-body);
 }
 
 /* ── The standfirst: the broadside's "when & where" line, in brass ────────── */
-[data-theme='civic'] .hero-standfirst {
+/* Stacked on a narrow sheet: wrapping a flex row left the gold diamond
+   orphaned at the end of the first line, separating nothing. */
+.hero-standfirst {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.7rem;
-  margin-top: 1.35rem;
+  gap: var(--s-2);
+  margin-top: var(--s-5);
   font-family: var(--font-body);
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.66rem;
-  letter-spacing: 0.2em;
+  font-size: var(--t-8);
+  letter-spacing: var(--tr-meta);
   color: var(--color-brass-ink); /* 5.63:1 on paper-hi — gold itself would fail */
 }
-[data-theme='civic'] .hero-standfirst-sep {
+.hero-standfirst-sep {
+  display: none;
   width: 4.5px;
   height: 4.5px;
   background-color: var(--color-gold);
   transform: rotate(45deg);
 }
+@media (min-width: 640px) {
+  .hero-standfirst { flex-direction: row; flex-wrap: wrap; gap: var(--s-3); }
+  .hero-standfirst-sep { display: block; }
+}
 
-[data-theme='civic'] .hero-actions {
+.hero-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 2.25rem;
+  gap: var(--s-4);
+  margin-top: var(--s-10);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   SEAL — a struck medallion.
+   THE IMPRESSION — the page-load moment, and the only animation on the sheet.
+
+   It tells the design's own story once: the sheet takes the impression, the
+   decks come up in the order a compositor set them, and then the second colour
+   lands a hair off register.
+
+   EVERYTHING here — including every `opacity: 0` starting state — lives inside
+   the no-preference query, and every rule uses `animation-fill-mode: both`.
+   That way the DEFAULT, with no animation running at all, is the finished
+   sheet. Declaring `opacity: 0` outside this block would leave a reader with
+   reduced motion staring at an empty hero.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes lc-press {
+    from { transform: scale(0.994); box-shadow: var(--lc-deboss-flat); }
+    to   { transform: scale(1);     box-shadow: var(--lc-deboss); }
+  }
+  @keyframes lc-ink { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes lc-offregister {
+    from { text-shadow: 0 0 0 color-mix(in srgb, var(--color-gold) 52%, transparent); }
+    to   { text-shadow: var(--lc-offreg); }
+  }
+
+  /* 1 · the sheet takes the impression — a press, never a slide */
+  .hero-frame {
+    animation: lc-press 300ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+  /* the inner gold rule and the star pins arrive with the second touch */
+  .hero-frame::before,
+  .hero-frame::after {
+    animation: lc-ink 240ms ease-out 120ms both;
+  }
+
+  /* 2 · the decks, in the order they were set */
+  .hero-eyebrow      { animation: lc-ink 220ms ease-out 120ms both; }
+  .hero-deck--top    { animation: lc-ink 220ms ease-out 120ms both; }
+  .hero-deck--foot   { animation: lc-ink 220ms ease-out 220ms both; }
+
+  /* 3 · the second pull lands off register — the signature moment */
+  .hero-deck--main {
+    animation:
+      lc-ink 220ms ease-out 170ms both,
+      lc-offregister 240ms cubic-bezier(0.22, 0.61, 0.36, 1) 300ms both;
+  }
+
+  /* 4 · ornament and copy settle */
+  .hero-ornament   { animation: lc-ink 220ms ease-out 330ms both; }
+  .hero-tagline    { animation: lc-ink 220ms ease-out 380ms both; }
+  .hero-standfirst { animation: lc-ink 220ms ease-out 410ms both; }
+  .hero-actions    { animation: lc-ink 220ms ease-out 440ms both; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SEAL — a struck medallion. It appears exactly twice on the page: here, and
+   as its echo in the colophon.
+
    Every filled path re-declared as fill:none + stroke becomes an ENGRAVED
    contour; CSS wins over the SVG presentation attributes because those carry
    zero specificity. non-scaling-stroke keeps every line a true hairline at
-   30px (masthead) and 62px (footer) alike.
+   34px (hero) and 42px (footer) alike.
    ═══════════════════════════════════════════════════════════════════════════ */
-[data-theme='civic'] .seal {
+.seal {
   display: inline-block;
   vertical-align: middle;
 }
-[data-theme='civic'] .seal circle,
-[data-theme='civic'] .seal line,
-[data-theme='civic'] .seal path {
-  vector-effect: non-scaling-stroke;
-}
-[data-theme='civic'] .seal > circle:nth-of-type(1) { stroke-width: 1.5; }  /* was 2.5 */
-[data-theme='civic'] .seal > circle:nth-of-type(2) {                       /* inner ring → gold */
+.seal circle,
+.seal line,
+.seal path { vector-effect: non-scaling-stroke; }
+
+.seal > circle:nth-of-type(1) { stroke-width: 1.5; }
+.seal > circle:nth-of-type(2) {                       /* inner ring → gold */
   stroke: color-mix(in srgb, var(--color-gold) 92%, transparent);
   stroke-width: 0.85;
 }
-[data-theme='civic'] .seal > g:first-of-type { stroke-width: 1; }           /* rim ticks */
-[data-theme='civic'] .seal > g[clip-path] > g { stroke-width: 0.9; opacity: 0.55; } /* rays */
+.seal > g:first-of-type { stroke-width: 1; }           /* rim ticks */
+.seal > g[clip-path] > g { stroke-width: 0.9; opacity: 0.55; } /* rays */
 /* the ridge becomes an OUTLINE. Its path closes at y=88, outside the r=38
    inner clip, so outlining yields the ridge profile with no base rectangle. */
-[data-theme='civic'] .seal > g[clip-path] > path {
+.seal > g[clip-path] > path {
   fill: none;
   stroke: currentColor;
   stroke-width: 1.35;
   stroke-linejoin: round;
 }
-[data-theme='civic'] .seal > path { fill: currentColor; } /* the star stays solid */
+.seal > path { fill: currentColor; } /* the star stays solid */
